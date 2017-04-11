@@ -1,0 +1,13 @@
+Readme - Diese Zeile NICHT löschen - Ein Cocktail pro Zeile - Format für neue Cocktails : Name, Zutat1;Zutat2;Zutat3;Zutat4;Zutat5;Zutat6
+Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Sex on the Beach, Orangensaft;Tequila;Grenadine;Coca-Cola;Gin;Rum, 10;10;10;10;10;10
+Planters Punch, Wodka;Orangensaft;Soda;Zitronensaft;Maracujasaft;Rum, 10;10;10;10;10;10
+Bahama Mama, Coca-Cola;Wodka;Rum;Maracujasaft;Grenadine;Soda, 10;10;10;10;10;10
+Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
+Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;10;10;10;10;10
