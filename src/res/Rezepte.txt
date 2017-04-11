@@ -1,0 +1,6 @@
+Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum
+Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum
+Tequila Sunrise, Rum;Tequila;Wodka;Gin;Soda;Zitronensaft
+Sex on the Beach, Orangensaft;Tequila;Grenadine;Coca-Cola;Gin;Rum
+Planters Punch, Wodka;Orangensaft;Soda;Zitronensaft;Maracujasaft;Rum
+Bahama Mama, Coca-Cola;Wodka;Rum;Maracujasaft;Grenadine;Soda
