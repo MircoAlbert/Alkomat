@@ -57,6 +57,7 @@ public class MainFrame {
 	JPanel panel3 = new JPanel();
 	JPanel panel4 = new JPanel();
 	JPanel panelWait = new JPanel();
+	JPanel aktPanel;
 	JButton n1 = ZahlButton("1");
 	JButton n2 = ZahlButton("2");
 	JButton n3 = ZahlButton("3");
@@ -95,8 +96,7 @@ public class MainFrame {
 	JComboBox comboBox_4 = new JComboBox(model4);
 	JComboBox comboBox_5 = new JComboBox(model5);
 	JComboBox comboBox_6 = new JComboBox(model6);
-	Icon loadingGif = new ImageIcon(
-			Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
+	Icon loadingGif = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
 	JLabel loadingLabel = new JLabel(loadingGif);
 
 	File zutaten;
@@ -113,8 +113,8 @@ public class MainFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				menue.setVisible(false);
+				aktPanel.setVisible(false);
 				panel3.setVisible(true);
-				panel2.setVisible(false);
 			}
 		};
 		cb.addActionListener(al);
@@ -139,27 +139,24 @@ public class MainFrame {
 					panel3.setVisible(false);
 					cpanels.get(0).setVisible(true);
 					menue.setVisible(true);
-
+					aktPanel=cpanels.get(0);
 				}
 				if (auswahl.equals("Reinigungsmodus")) {
 
 					// bar1.setValue(serialcomm.comm()[0]);
 				}
-				if (auswahl.equals("Menue")) {
-					panel3.setVisible(true);
-					panel2.setVisible(false);
-					panel4.setVisible(false);
-				}
+				
 				if (auswahl.equals("Zutaten aendern")) {
 					panel4.setVisible(true);
 					panel3.setVisible(false);
 					menue.setVisible(true);
-
+					aktPanel=panel4;
 				}
 				if (auswahl.equals("Speichern")) {
 					panel4.setVisible(false);
 					panel3.setVisible(true);
 					menue.setVisible(false);
+					aktPanel=panel3;
 					auswahl_zutat_akt = auswahl_zutat.clone();
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
@@ -170,14 +167,17 @@ public class MainFrame {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					for(int i =0; i<cocktailsmoeglich.length; i++){
-					cocktailsmoeglichString[i] = cocktailsmoeglich[i].getName();
+					cocktailsmoeglichList.removeAll(cocktailsmoeglichList);
+					for (int i = 0; i < cocktailsmoeglich.length; i++) {
+						cocktailsmoeglichList.add(cocktailsmoeglich[i].getName());
 					}
+					cocktailsmoeglichString = cocktailsmoeglichList.toArray(new String[0]);
 					for (String s : cocktailsmoeglichString)
 						System.out.println(s);
 
 					try {
-						FileUtils.writeStringToFile(zutaten, StringUtils.join(auswahl_zutat_akt, ","));
+						String x = null;
+						FileUtils.writeStringToFile(zutaten, StringUtils.join(auswahl_zutat_akt, ","), x);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -190,6 +190,7 @@ public class MainFrame {
 					panel4.setVisible(false);
 					panel3.setVisible(true);
 					menue.setVisible(false);
+					aktPanel=panel3;
 				}
 
 			}
@@ -198,7 +199,7 @@ public class MainFrame {
 		return cb;
 
 	}
-
+	
 	void CocktailButtonProperties(String[] cocktails) {
 		int anzahlButtons = cocktails.length;
 		int buttoncounter = 1, seitencounter = 0;
@@ -206,11 +207,15 @@ public class MainFrame {
 		int breite = 864 / 3, höhe = 460 / 2, zwischenraum = 1;
 		int odd = 0, even = 0;
 		int i = 0;
+		cpanels.get(0).removeAll();
+		cpanels.get(0).revalidate();
+		cpanels.get(0).repaint();
+		
 		System.out.println(anzahlButtons);
 		while (i <= anzahlButtons) {
-			
+
 			if ((buttoncounter % 2 == 1) && (buttoncounter <= anzahlButtons)) {
-				System.out.println(buttoncounter+ "%2=1");
+				System.out.println(buttoncounter + "%2=1");
 				cpanels.get(seitencounter).add(CocktailButton(cocktails[buttoncounter - 1],
 						(startcoordsX + breite + zwischenraum) * odd + 40, startcoordsY, breite, höhe));
 				buttoncounter++;
@@ -233,22 +238,19 @@ public class MainFrame {
 					cpanels.get(seitencounter).setVisible(false);
 					cpanels.get(seitencounter).setLayout(null);
 					f.add(cpanels.get(seitencounter));
-					cpanels.get(seitencounter).add(vorherigeSeiteButton(seitencounter-1,seitencounter));
-					cpanels.get(seitencounter-1).add(naechsteSeiteButton(seitencounter,seitencounter-1));					
-					
+					cpanels.get(seitencounter).add(vorherigeSeiteButton(seitencounter - 1, seitencounter));
+					cpanels.get(seitencounter - 1).add(naechsteSeiteButton(seitencounter, seitencounter - 1));
+
 					System.out.println("Neue Seite");
 				}
 				buttoncounter++;
-				
+
 			}
 			i++;
 		}
 	}
 
-	JButton CocktailButton(String a, int x, int y, int b, int h) // zur
-																	// Erzeugung
-																	// der
-																	// Cocktail-Buttons
+	JButton CocktailButton(String a, int x, int y, int b, int h) // zur Erzeugung der Cocktail-Buttons
 	{
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
@@ -315,7 +317,7 @@ public class MainFrame {
 		return b;
 	}
 
-	JButton naechsteSeiteButton(final int next, final int akt) // MenüButton
+	JButton naechsteSeiteButton(final int next, final int akt)
 	{
 		JButton cb = new JButton("V");
 		cb.setBounds(904, 0, 40, 460);
@@ -324,14 +326,15 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				cpanels.get(next).setVisible(true);
 				cpanels.get(akt).setVisible(false);
+				aktPanel=cpanels.get(next);
 			}
 		};
 		cb.addActionListener(al);
 		return cb;
 
 	}
-	
-	JButton vorherigeSeiteButton(final int last, final int akt) // MenüButton
+
+	JButton vorherigeSeiteButton(final int last, final int akt)
 	{
 		JButton cb = new JButton("Z");
 		cb.setBounds(0, 0, 40, 460);
@@ -340,14 +343,17 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				cpanels.get(last).setVisible(true);
 				cpanels.get(akt).setVisible(false);
+				aktPanel=cpanels.get(last);
 			}
 		};
 		cb.addActionListener(al);
 		return cb;
 
 	}
-	
+
 	MainFrame() {
+		
+		
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
 		close.setBounds(852, h, b, h);
 		f.getContentPane().add(close);
@@ -540,7 +546,7 @@ public class MainFrame {
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
 		GUI.cocktailsmoeglich = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
-		for(int i = 0;i<GUI.cocktailsmoeglich.length;i++){
+		for (int i = 0; i < GUI.cocktailsmoeglich.length; i++) {
 			GUI.cocktailsmoeglichList.add(GUI.cocktailsmoeglich[i].getName());
 		}
 		GUI.cocktailsmoeglichString = GUI.cocktailsmoeglichList.toArray(new String[0]);
