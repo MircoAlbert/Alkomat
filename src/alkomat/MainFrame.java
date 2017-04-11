@@ -7,13 +7,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,11 +24,12 @@ import javax.swing.JProgressBar;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import org.apache.commons.io.*;
-import org.apache.commons.lang3.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class MainFrame {
 	JFrame f = new JFrame("Alkomat");
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	String stern = "*";
 	int x = 0, y = 0, b = 165, h = 40, lab = 1;
@@ -90,12 +88,12 @@ public class MainFrame {
 	SortedComboBoxModel<String> model4 = new SortedComboBoxModel<String>(zutatenliste);
 	SortedComboBoxModel<String> model5 = new SortedComboBoxModel<String>(zutatenliste);
 	SortedComboBoxModel<String> model6 = new SortedComboBoxModel<String>(zutatenliste);
-	JComboBox comboBox_1 = new JComboBox(model1);
-	JComboBox comboBox_2 = new JComboBox(model2);
-	JComboBox comboBox_3 = new JComboBox(model3);
-	JComboBox comboBox_4 = new JComboBox(model4);
-	JComboBox comboBox_5 = new JComboBox(model5);
-	JComboBox comboBox_6 = new JComboBox(model6);
+	JComboBox<String> comboBox_1 = new JComboBox<String>(model1);
+	JComboBox<String> comboBox_2 = new JComboBox<String>(model2);
+	JComboBox<String> comboBox_3 = new JComboBox<String>(model3);
+	JComboBox<String> comboBox_4 = new JComboBox<String>(model4);
+	JComboBox<String> comboBox_5 = new JComboBox<String>(model5);
+	JComboBox<String> comboBox_6 = new JComboBox<String>(model6);
 	Icon loadingGif = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
 	JLabel loadingLabel = new JLabel(loadingGif);
 
