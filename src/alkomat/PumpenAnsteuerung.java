@@ -17,7 +17,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	private JPanel panelList;
 	private JPanel panelWait;
 
-	PumpenAnsteuerung(String a, JPanel panelList, JPanel panelWait) throws InterruptedException {
+	PumpenAnsteuerung(Integer[] mengenGeordnet, JPanel panelList, JPanel panelWait) throws InterruptedException {
 
 		final GpioController gpio = GpioFactory.getInstance();
 		final GpioPinDigitalOutput pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH);
@@ -73,8 +73,28 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 			}
 
 		}
+		
+		Timer timer = new Timer();
+		pin1.low();
+		pin2.low();
+		pin3.low();
+		pin4.low();
+		pin5.low();
+		pin6.low();
+		panelList.setVisible(false);
+		panelWait.setVisible(true);
+		timer.schedule(new setHigh(pin1), mengenGeordnet[0]);
+		timer.schedule(new setHigh(pin2), mengenGeordnet[1]);
+		timer.schedule(new setHigh(pin3), mengenGeordnet[2]);
+		timer.schedule(new setHigh(pin4), mengenGeordnet[3]);
+		timer.schedule(new setHigh(pin5), mengenGeordnet[4]);
+		timer.schedule(new setHigh(pin6), mengenGeordnet[5]);
+		timer.schedule(new panelRemove(panelWait, panelList), 12000);
+		gpio.shutdown();
+		
+		
 
-		if (a.equals("Touchdown")) {
+		/*if (a.equals("Touchdown")) {
 
 			Timer timer = new Timer();
 			pin1.low();
@@ -162,6 +182,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 			gpio.unprovisionPin(pin5);
 			gpio.unprovisionPin(pin6);
 		}
+		*/
 
 		// Wichtig
 		// Wenn ihr die GPIOs nicht mehr braucht dann solltet ihr diese auch

@@ -174,7 +174,7 @@ public class MainFrame {
 					for (String s : cocktailsmoeglichString)
 						System.out.println(s);
 					
-					CocktailButtonProperties(cocktailsmoeglichString);
+					CocktailButtonProperties(cocktailsmoeglich);
 					}
 					else{
 						System.out.println("keine Zutaten");
@@ -204,7 +204,7 @@ public class MainFrame {
 
 	}
 	
-	void CocktailButtonProperties(String[] cocktails) {
+	void CocktailButtonProperties(Cocktail[] cocktails) {
 		int anzahlButtons = cocktails.length;
 		int buttoncounter = 1, seitencounter = 0;
 		int startcoordsX = 0, startcoordsY = 0;
@@ -254,21 +254,19 @@ public class MainFrame {
 		}
 	}
 
-	JButton CocktailButton(String a, int x, int y, int b, int h) // zur Erzeugung der Cocktail-Buttons
+	JButton CocktailButton(final Cocktail a, int x, int y, int b, int h) // zur Erzeugung der Cocktail-Buttons
 	{
-		JButton cb = new JButton(a);
+		JButton cb = new JButton(a.getName());
 		cb.setBounds(x, y, b, h);
-		final String[] c = { "" };
-		c[0] = a;
-
+				
+		
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
-				cocktail = c[0];
-
+				Integer[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt, a.getMengen());
+				
 				try {
-					new PumpenAnsteuerung(cocktail, panel2, panelWait);
+					new PumpenAnsteuerung(mengenGeordnet, aktPanel, panelWait);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -558,7 +556,7 @@ public class MainFrame {
 		GUI.cocktailsmoeglichString = GUI.cocktailsmoeglichList.toArray(new String[0]);
 		for (String s : GUI.cocktailsmoeglichString)
 			System.out.println(s);
-		GUI.CocktailButtonProperties(GUI.cocktailsmoeglichString);
+		GUI.CocktailButtonProperties(GUI.cocktailsmoeglich);
 		}
 		else{
 			System.out.println("keine Zutaten");
