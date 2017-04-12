@@ -21,18 +21,8 @@ class ZutatenLesen {
 			reader=new BufferedReader(new FileReader(zutatentxt));
 			info = reader.readLine();
 			zutaten = info.split(",");
-			
-			
-			
-			/*Scanner input = new Scanner(getClass().getResourceAsStream("./Zutaten.txt"));
-			String info = input.nextLine();
-			zutaten = info.split(",");
-			//for (String s : zutaten)
-			//	System.out.println(s);
-			input.close();
-			*/
-			
-		} catch (Exception ex) {
+						
+			} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			
 		}

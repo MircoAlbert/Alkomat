@@ -74,7 +74,7 @@ public class MainFrame {
 	String cocktail = "";
 	String auswahl = "";
 
-	String[] zutatenliste = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
+	String[] zutatenliste = { " ", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
 			"Zitronensaft", "Gin", "Soda" };
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
@@ -166,13 +166,19 @@ public class MainFrame {
 						e2.printStackTrace();
 					}
 					cocktailsmoeglichList.removeAll(cocktailsmoeglichList);
+					if(!(cocktailsmoeglich==null)){
 					for (int i = 0; i < cocktailsmoeglich.length; i++) {
 						cocktailsmoeglichList.add(cocktailsmoeglich[i].getName());
 					}
 					cocktailsmoeglichString = cocktailsmoeglichList.toArray(new String[0]);
 					for (String s : cocktailsmoeglichString)
 						System.out.println(s);
-
+					
+					CocktailButtonProperties(cocktailsmoeglichString);
+					}
+					else{
+						System.out.println("keine Zutaten");
+					}
 					try {
 						String x = null;
 						FileUtils.writeStringToFile(zutaten, StringUtils.join(auswahl_zutat_akt, ","), x);
@@ -180,7 +186,7 @@ public class MainFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					CocktailButtonProperties(cocktailsmoeglichString);
+					
 				}
 				if (auswahl.equals("Abbrechen")) {
 					for (String s : auswahl_zutat_akt)
@@ -544,12 +550,18 @@ public class MainFrame {
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
 		GUI.cocktailsmoeglich = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
-		for (int i = 0; i < GUI.cocktailsmoeglich.length; i++) {
-			GUI.cocktailsmoeglichList.add(GUI.cocktailsmoeglich[i].getName());
-		}
+		if(!(GUI.cocktailsmoeglich==null)){
+			for (int i = 0; i < GUI.cocktailsmoeglich.length; i++) {
+				GUI.cocktailsmoeglichList.add(GUI.cocktailsmoeglich[i].getName());
+			}
+		
 		GUI.cocktailsmoeglichString = GUI.cocktailsmoeglichList.toArray(new String[0]);
 		for (String s : GUI.cocktailsmoeglichString)
 			System.out.println(s);
 		GUI.CocktailButtonProperties(GUI.cocktailsmoeglichString);
+		}
+		else{
+			System.out.println("keine Zutaten");
+		}
 	}
 }

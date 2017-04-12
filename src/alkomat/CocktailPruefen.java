@@ -27,22 +27,24 @@ public class CocktailPruefen {
 		int ZutatenCount = 0;
 		int VorhandenCount = 0;
 
-		for (int i = 0; i < 6; i++) {
-			if (!ImRezept[i].equals("0"))
+		for (int i = 0; i < ImRezept.length; i++) {
+			if (!ImRezept[i].equals(""))
 				ZutatenCount++;
 		}
-
-		for (int f = 0; f < 6; f++) {
-			for (int u = 0; u < 6; u++) {
-				if (Vorhanden[f].equals(ImRezept[u]))
+		for (int f = 0; f < Vorhanden.length; f++) {
+			for (int u = 0; u < ImRezept.length; u++) {
+				if(!(Vorhanden[f]==null))
+					if (Vorhanden[f].equals(ImRezept[u]))
 					VorhandenCount++;
 			}
+		
 		}
 
 		if (VorhandenCount == ZutatenCount) {
 			// System.out.println("Cocktail moeglich");
 			return true;
-		} else {
+		}
+		else {
 			// System.out.println("Nicht genug Zutaten");
 			return false;
 		}
@@ -87,10 +89,13 @@ public class CocktailPruefen {
 			} else {
 				// System.out.print(Cocktails[i].getName());
 				// System.out.println(" ist nicht möglich");
+				
 			}
-
+		
 		}
-
+		if(CocktailsList.isEmpty())
+			return null;
+		
 		return CocktailsList.toArray(new Cocktail[0]);
 
 	}
