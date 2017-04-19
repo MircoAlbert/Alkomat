@@ -50,7 +50,7 @@ public class CocktailPruefen {
 		}
 	}
 
-	public Cocktail[] loadCocktail(String[] zutaten) throws IOException {
+	public List<Cocktail> loadCocktail(String[] zutaten) throws IOException {
 		int zeilenzähler=-1;
 		zeilen=new BufferedReader(new FileReader(rezepte));
 		while(zeilen.readLine() != null){
@@ -96,7 +96,7 @@ public class CocktailPruefen {
 		if(CocktailsList.isEmpty())
 			return null;
 		
-		return CocktailsList.toArray(new Cocktail[0]);
+		return CocktailsList;
 
 	}
 

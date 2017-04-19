@@ -30,7 +30,7 @@ class MyItemListener implements ItemListener {
 
 	// This method is called only if a new item has been selected.
 	public void itemStateChanged(ItemEvent evt) {
-		JComboBox cb = (JComboBox) evt.getSource();
+		JComboBox<String> cb = (JComboBox<String>) evt.getSource();
 
 		String item = (String) evt.getItem();
 

@@ -74,13 +74,13 @@ public class MainFrame {
 	String cocktail = "";
 	String auswahl = "";
 
-	String[] zutatenliste = { " ", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
+	String[] zutatenliste = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
 			"Zitronensaft", "Gin", "Soda" };
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
 	Cocktail[] cocktailsmoeglich;
 	String[] cocktailsmoeglichString;
-	List<String> cocktailsmoeglichList = new ArrayList<String>();
+	List<Cocktail> cocktailsmoeglichList = new ArrayList<Cocktail>();
 	int[] index = new int[6];
 	SortedComboBoxModel<String> model1 = new SortedComboBoxModel<String>(zutatenliste);
 	SortedComboBoxModel<String> model2 = new SortedComboBoxModel<String>(zutatenliste);
@@ -94,7 +94,8 @@ public class MainFrame {
 	JComboBox<String> comboBox_4 = new JComboBox<String>(model4);
 	JComboBox<String> comboBox_5 = new JComboBox<String>(model5);
 	JComboBox<String> comboBox_6 = new JComboBox<String>(model6);
-	Icon loadingGif = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
+	Icon loadingGif = new ImageIcon(
+			Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
 	JLabel loadingLabel = new JLabel(loadingGif);
 
 	File zutaten;
@@ -137,47 +138,46 @@ public class MainFrame {
 					panel3.setVisible(false);
 					cpanels.get(0).setVisible(true);
 					menue.setVisible(true);
-					aktPanel=cpanels.get(0);
+					aktPanel = cpanels.get(0);
 				}
 				if (auswahl.equals("Reinigungsmodus")) {
 
 					// bar1.setValue(serialcomm.comm()[0]);
 				}
-				
+
 				if (auswahl.equals("Zutaten aendern")) {
 					panel4.setVisible(true);
 					panel3.setVisible(false);
 					menue.setVisible(true);
-					aktPanel=panel4;
+					aktPanel = panel4;
 				}
 				if (auswahl.equals("Speichern")) {
 					panel4.setVisible(false);
 					panel3.setVisible(true);
 					menue.setVisible(false);
-					aktPanel=panel3;
+					aktPanel = panel3;
 					auswahl_zutat_akt = auswahl_zutat.clone();
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
 
 					try {
-						cocktailsmoeglich = (new CocktailPruefen()).loadCocktail(auswahl_zutat_akt);
+						cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(auswahl_zutat_akt);
 					} catch (IOException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					cocktailsmoeglichList.removeAll(cocktailsmoeglichList);
-					if(!(cocktailsmoeglich==null)){
-					for (int i = 0; i < cocktailsmoeglich.length; i++) {
-						cocktailsmoeglichList.add(cocktailsmoeglich[i].getName());
-					}
-					cocktailsmoeglichString = cocktailsmoeglichList.toArray(new String[0]);
-					for (String s : cocktailsmoeglichString)
-						System.out.println(s);
-					
-					CocktailButtonProperties(cocktailsmoeglich);
-					}
-					else{
-						System.out.println("keine Zutaten");
+
+					if (!(cocktailsmoeglichList==null)) {
+						cocktailsmoeglichString = new String[cocktailsmoeglichList.size()];
+						for (int i = 0; i < cocktailsmoeglichList.size(); i++)
+							cocktailsmoeglichString[i] = cocktailsmoeglichList.get(i).getName();
+						for (String s : cocktailsmoeglichString)
+							System.out.println(s);
+
+						CocktailButtonProperties(
+								cocktailsmoeglichList.toArray(new Cocktail[0]));
+					} else {
+						System.out.println("keine Cocktails möglich!");
 					}
 					try {
 						String x = null;
@@ -186,7 +186,7 @@ public class MainFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
+
 				}
 				if (auswahl.equals("Abbrechen")) {
 					for (String s : auswahl_zutat_akt)
@@ -194,7 +194,7 @@ public class MainFrame {
 					panel4.setVisible(false);
 					panel3.setVisible(true);
 					menue.setVisible(false);
-					aktPanel=panel3;
+					aktPanel = panel3;
 				}
 
 			}
@@ -203,7 +203,7 @@ public class MainFrame {
 		return cb;
 
 	}
-	
+
 	void CocktailButtonProperties(Cocktail[] cocktails) {
 		int anzahlButtons = cocktails.length;
 		int buttoncounter = 1, seitencounter = 0;
@@ -214,7 +214,7 @@ public class MainFrame {
 		cpanels.get(0).removeAll();
 		cpanels.get(0).revalidate();
 		cpanels.get(0).repaint();
-		
+
 		System.out.println(anzahlButtons);
 		while (i <= anzahlButtons) {
 
@@ -254,17 +254,20 @@ public class MainFrame {
 		}
 	}
 
-	JButton CocktailButton(final Cocktail a, int x, int y, int b, int h) // zur Erzeugung der Cocktail-Buttons
+	JButton CocktailButton(final Cocktail a, int x, int y, int b, int h) // zur
+																			// Erzeugung
+																			// der
+																			// Cocktail-Buttons
 	{
 		JButton cb = new JButton(a.getName());
 		cb.setBounds(x, y, b, h);
-				
-		
+
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Integer[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt, a.getMengen());
-				
+				Integer[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
+						a.getMengen());
+
 				try {
 					new PumpenAnsteuerung(mengenGeordnet, aktPanel, panelWait);
 				} catch (InterruptedException e1) {
@@ -319,8 +322,7 @@ public class MainFrame {
 		return b;
 	}
 
-	JButton naechsteSeiteButton(final int next, final int akt)
-	{
+	JButton naechsteSeiteButton(final int next, final int akt) {
 		JButton cb = new JButton("V");
 		cb.setBounds(904, 0, 40, 460);
 		ActionListener al = new ActionListener() {
@@ -328,7 +330,7 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				cpanels.get(next).setVisible(true);
 				cpanels.get(akt).setVisible(false);
-				aktPanel=cpanels.get(next);
+				aktPanel = cpanels.get(next);
 			}
 		};
 		cb.addActionListener(al);
@@ -336,8 +338,7 @@ public class MainFrame {
 
 	}
 
-	JButton vorherigeSeiteButton(final int last, final int akt)
-	{
+	JButton vorherigeSeiteButton(final int last, final int akt) {
 		JButton cb = new JButton("Z");
 		cb.setBounds(0, 0, 40, 460);
 		ActionListener al = new ActionListener() {
@@ -345,7 +346,7 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				cpanels.get(last).setVisible(true);
 				cpanels.get(akt).setVisible(false);
-				aktPanel=cpanels.get(last);
+				aktPanel = cpanels.get(last);
 			}
 		};
 		cb.addActionListener(al);
@@ -354,8 +355,7 @@ public class MainFrame {
 	}
 
 	MainFrame() {
-		
-		
+
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
 		close.setBounds(852, h, b, h);
 		f.getContentPane().add(close);
@@ -547,19 +547,18 @@ public class MainFrame {
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
-		GUI.cocktailsmoeglich = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
-		if(!(GUI.cocktailsmoeglich==null)){
-			for (int i = 0; i < GUI.cocktailsmoeglich.length; i++) {
-				GUI.cocktailsmoeglichList.add(GUI.cocktailsmoeglich[i].getName());
-			}
+		GUI.cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
 		
-		GUI.cocktailsmoeglichString = GUI.cocktailsmoeglichList.toArray(new String[0]);
-		for (String s : GUI.cocktailsmoeglichString)
-			System.out.println(s);
-		GUI.CocktailButtonProperties(GUI.cocktailsmoeglich);
-		}
-		else{
-			System.out.println("keine Zutaten");
+		if (!(GUI.cocktailsmoeglichList==null)) {
+			System.out.println(GUI.cocktailsmoeglichList.size());
+			GUI.cocktailsmoeglichString = new String[GUI.cocktailsmoeglichList.size()];
+			for (int i = 0; i < GUI.cocktailsmoeglichList.size(); i++)
+				GUI.cocktailsmoeglichString[i] = GUI.cocktailsmoeglichList.get(i).getName();
+			for (String s : GUI.cocktailsmoeglichString)
+				System.out.println(s);
+			GUI.CocktailButtonProperties(GUI.cocktailsmoeglichList.toArray(new Cocktail[0]));
+		} else {
+			System.out.println("keine Cocktails möglich!");
 		}
 	}
 }
