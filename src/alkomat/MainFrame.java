@@ -269,12 +269,12 @@ public class MainFrame {
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
 
-				/*try {
+				try {
 					new PumpenAnsteuerung(mengenGeordnet, aktPanel, panelWait);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}*/
+				}
 
 			}
 

@@ -16,9 +16,11 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 
 	private JPanel panelList;
 	private JPanel panelWait;
+	private int maxMenge = 0;
 
 	PumpenAnsteuerung(Integer[] mengenGeordnet, JPanel panelList, JPanel panelWait) throws InterruptedException {
 
+		
 		final GpioController gpio = GpioFactory.getInstance();
 		final GpioPinDigitalOutput pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH);
 		final GpioPinDigitalOutput pin2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 2", PinState.HIGH);
@@ -26,6 +28,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		final GpioPinDigitalOutput pin4 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 4", PinState.HIGH);
 		final GpioPinDigitalOutput pin5 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 5", PinState.HIGH);
 		final GpioPinDigitalOutput pin6 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 6", PinState.HIGH);
+		
 		
 		this.panelList = panelList;
 		this.panelWait = panelWait;
@@ -74,6 +77,14 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 
 		}
 		
+		for(int i=0;i<mengenGeordnet.length;i++){
+			mengenGeordnet[i]=mengenGeordnet[i]*200;
+			if(mengenGeordnet[i]>maxMenge)
+				maxMenge=mengenGeordnet[i];
+		}
+		System.out.println(maxMenge);
+		
+		/*
 		Timer timer = new Timer();
 		pin1.low();
 		pin2.low();
@@ -89,9 +100,9 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		timer.schedule(new setHigh(pin4), mengenGeordnet[3]);
 		timer.schedule(new setHigh(pin5), mengenGeordnet[4]);
 		timer.schedule(new setHigh(pin6), mengenGeordnet[5]);
-		timer.schedule(new panelRemove(panelWait, panelList), 12000);
+		timer.schedule(new panelRemove(panelWait, panelList), maxMenge);
 		gpio.shutdown();
-		
+		*/
 		
 
 		/*if (a.equals("Touchdown")) {
