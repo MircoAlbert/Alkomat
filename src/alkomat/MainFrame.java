@@ -174,8 +174,7 @@ public class MainFrame {
 						for (String s : cocktailsmoeglichString)
 							System.out.println(s);
 
-						CocktailButtonProperties(
-								cocktailsmoeglichList.toArray(new Cocktail[0]));
+						CocktailButtonProperties(cocktailsmoeglichList.toArray(new Cocktail[0]));
 					} else {
 						System.out.println("keine Cocktails möglich!");
 					}
@@ -267,13 +266,15 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				Integer[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
 						a.getMengen());
+				for(int i=0; i<mengenGeordnet.length;i++)
+				System.out.println(mengenGeordnet[i].toString());
 
-				try {
+				/*try {
 					new PumpenAnsteuerung(mengenGeordnet, aktPanel, panelWait);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}*/
 
 			}
 
@@ -557,6 +558,7 @@ public class MainFrame {
 			for (String s : GUI.cocktailsmoeglichString)
 				System.out.println(s);
 			GUI.CocktailButtonProperties(GUI.cocktailsmoeglichList.toArray(new Cocktail[0]));
+			
 		} else {
 			System.out.println("keine Cocktails möglich!");
 		}

@@ -30,7 +30,9 @@ public class Cocktail {
 	   public String[] getRezept(){
 		   return Zutaten;
 	   }
+	   
 	   public Integer[] getMengen(){
+		   MengenInt=new Integer[Mengen.length];
 		   for(int i=0; i<Mengen.length; i++)
 			   MengenInt[i]=Integer.parseInt(Mengen[i]);
 		   return MengenInt;
