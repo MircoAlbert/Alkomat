@@ -68,6 +68,7 @@ public class MainFrame {
 	JButton cocktails = new JButton("Cocktails");
 	JButton reinigung = new JButton("Reinigungsprogramm");
 	JButton menue = MenueButton("Menue", 345, h, b, h);
+	JButton cancel = CancelButton("Cancel", 514, h, b, h);
 	JPasswordField pass = new JPasswordField(4);
 	// JButton[] zahlfeld = new JButton[10];
 	String PIN = "";
@@ -102,6 +103,8 @@ public class MainFrame {
 	FileWriter writer;
 
 	List<JPanel> cpanels = new ArrayList<JPanel>();
+	
+	PumpenAnsteuerung pumpenAnsteuerung = new PumpenAnsteuerung();
 
 	JButton MenueButton(String a, int x, int y, int b, int h) // MenüButton
 	{
@@ -114,6 +117,24 @@ public class MainFrame {
 				menue.setVisible(false);
 				aktPanel.setVisible(false);
 				panel3.setVisible(true);
+			}
+		};
+		cb.addActionListener(al);
+		return cb;
+
+	}
+	
+	JButton CancelButton(String a, int x, int y, int b, int h) // MenüButton
+	{
+		JButton cb = new JButton(a);
+		cb.setBounds(x, y, b, h);
+
+		ActionListener al = new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				cancel.setVisible(false);
+				pumpenAnsteuerung.cancelTimer(aktPanel, panelWait);
+				
 			}
 		};
 		cb.addActionListener(al);
@@ -203,6 +224,14 @@ public class MainFrame {
 
 	}
 
+	void CancelButtonProperties(){
+		if(panelWait.isVisible()==true){
+			cancel.setVisible(true);
+		}
+		else
+			cancel.setVisible(false);
+	}
+	
 	void CocktailButtonProperties(Cocktail[] cocktails) {
 		int anzahlButtons = cocktails.length;
 		int buttoncounter = 1, seitencounter = 0;
@@ -268,14 +297,10 @@ public class MainFrame {
 						a.getMengen());
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
-
-				try {
-					new PumpenAnsteuerung(mengenGeordnet, aktPanel, panelWait);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				
+				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel);
+						
+				CancelButtonProperties();
 			}
 
 		};
@@ -356,7 +381,8 @@ public class MainFrame {
 	}
 
 	MainFrame() {
-
+		
+			
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
 		close.setBounds(852, h, b, h);
 		f.getContentPane().add(close);
@@ -415,7 +441,10 @@ public class MainFrame {
 
 		f.getContentPane().add(menue);
 		menue.setVisible(false);
-
+		
+		f.getContentPane().add(cancel);
+		cancel.setVisible(false);
+		
 		panel3.setBounds(40, 80, 1024 - 80, 460);
 		panel3.setBackground(new Color(255, 149, 14));
 		panel3.setVisible(false);
