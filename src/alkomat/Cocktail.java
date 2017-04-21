@@ -5,7 +5,7 @@ public class Cocktail {
 	   private String Name;
 	   private String[] Zutaten;
 	   private String[] Mengen;
-	   private Integer[] MengenInt;
+	   private Double[] MengenDouble;
 
 	   public Cocktail(String InputName, String[] InputZutaten, String[] InputMengen)
 	   {
@@ -31,11 +31,11 @@ public class Cocktail {
 		   return Zutaten;
 	   }
 	   
-	   public Integer[] getMengen(){
-		   MengenInt=new Integer[Mengen.length];
+	   public Double[] getMengen(){
+		   MengenDouble=new Double[Mengen.length];
 		   for(int i=0; i<Mengen.length; i++)
-			   MengenInt[i]=Integer.parseInt(Mengen[i]);
-		   return MengenInt;
+			   MengenDouble[i]=Double.parseDouble(Mengen[i]);
+		   return MengenDouble;
 	   }
 }
 

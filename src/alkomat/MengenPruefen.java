@@ -4,9 +4,9 @@ import java.util.*;
 
 public class MengenPruefen {
 
-	private List<Integer> mengenGeordnet = new ArrayList<Integer>();
+	private List<Double> mengenGeordnet = new ArrayList<Double>();
 	
-	public Integer[] mengenOrdnen(String[] zutatenCocktail, String[] zutatenBehälter, Integer[] mengen){
+	public Double[] mengenOrdnen(String[] zutatenCocktail, String[] zutatenBehälter, Double[] mengen){
 		for(int i = 0; i<zutatenBehälter.length; i++)
 			for(int j = 0 ; j<zutatenCocktail.length; j++)
 				if(zutatenBehälter[i].equals(zutatenCocktail[j]))
@@ -16,6 +16,6 @@ public class MengenPruefen {
 			System.out.println("mengen liste leer");
 		
 			
-		return mengenGeordnet.toArray(new Integer[0]);
+		return mengenGeordnet.toArray(new Double[0]);
 	}
 }

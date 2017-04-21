@@ -44,12 +44,12 @@ public class MainFrame {
 	JLabel behaelter5 = new JLabel("Behaelter 5:", JLabel.CENTER);
 	JLabel behaelter6 = new JLabel("Behaelter 6:", JLabel.CENTER);
 	Border border = LineBorder.createGrayLineBorder();
-	static JProgressBar bar1 = new JProgressBar(0, 100);
-	static JProgressBar bar2 = new JProgressBar(0, 100);
-	static JProgressBar bar3 = new JProgressBar(0, 100);
-	static JProgressBar bar4 = new JProgressBar(0, 100);
-	static JProgressBar bar5 = new JProgressBar(0, 100);
-	static JProgressBar bar6 = new JProgressBar(0, 100);
+	JProgressBar bar1 = new JProgressBar(0, 100);
+	JProgressBar bar2 = new JProgressBar(0, 100);
+	JProgressBar bar3 = new JProgressBar(0, 100);
+	JProgressBar bar4 = new JProgressBar(0, 100);
+	JProgressBar bar5 = new JProgressBar(0, 100);
+	JProgressBar bar6 = new JProgressBar(0, 100);
 	JPanel panel1 = new JPanel();
 	JPanel panel2 = new JPanel();
 	JPanel panel3 = new JPanel();
@@ -293,7 +293,7 @@ public class MainFrame {
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Integer[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
+				Double[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
 						a.getMengen());
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
@@ -572,7 +572,7 @@ public class MainFrame {
 
 	public static void main(String[] args) throws IOException {
 		MainFrame GUI = new MainFrame();
-		// new Fuellstand(bar1, bar2, bar3, bar4, bar5, bar6);
+		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
 		for (String s : GUI.auswahl_zutat_akt)

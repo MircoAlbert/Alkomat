@@ -18,8 +18,8 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	
 	private JPanel panelList;
 	private JPanel panelWait;
-	private int maxMenge = 0;
-	private Integer[] mengenGeordnet = new Integer[0];
+	private Double maxMenge = 0.0;
+	private Integer[] mengenDouble;
 	private JButton cancel;
 	
 	private Timer timer;
@@ -134,7 +134,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		
 	}
 	
-	public void start(Integer[] mengenGeordnet, JPanel panelList, JPanel panelWait, JButton cancel){
+	public void start(Double[] mengenGeordnet, JPanel panelList, JPanel panelWait, JButton cancel){
 		this.panelWait = panelWait;
 		this.panelList = panelList;
 		this.cancel = cancel;
@@ -146,14 +146,15 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.pin4 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 4", PinState.HIGH);
 		this.pin5 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 5", PinState.HIGH);
 		this.pin6 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 6", PinState.HIGH);
+		this.mengenDouble = new Integer[mengenGeordnet.length];
 		
 		Timer timer = new Timer();
 		for(int i=0;i<mengenGeordnet.length;i++){
-			mengenGeordnet[i]=mengenGeordnet[i]*200;
+			mengenGeordnet[i]=((mengenGeordnet[i]*200)/8*10);
 			if(mengenGeordnet[i]>maxMenge)
 				maxMenge=mengenGeordnet[i];
 		}
-		System.out.println(mengenGeordnet[0]+", " +mengenGeordnet[1]+", " +mengenGeordnet[2]+", " +mengenGeordnet[3]+", " +mengenGeordnet[4]+", " +mengenGeordnet[5]+", " +maxMenge);
+		System.out.println(mengenGeordnet[0]+", " +mengenGeordnet[1].intValue()+", " +mengenGeordnet[2]+", " +mengenGeordnet[3]+", " +mengenGeordnet[4]+", " +mengenGeordnet[5]+", " +maxMenge);
 		taskPin1 = new setHigh(pin1);
 		taskPin2 = new setHigh(pin2);
 		taskPin3 = new setHigh(pin3);
@@ -175,14 +176,14 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		pin6.low();
 		panelList.setVisible(false);
 		panelWait.setVisible(true);
-		timer.schedule(taskPin1, mengenGeordnet[0]);
-		timer.schedule(taskPin2, mengenGeordnet[1]);
-		timer.schedule(taskPin3, mengenGeordnet[2]);
-		timer.schedule(taskPin4, mengenGeordnet[3]);
-		timer.schedule(taskPin5, mengenGeordnet[4]);
-		timer.schedule(taskPin6, mengenGeordnet[5]);
-		timer.schedule(panelRemove, maxMenge);
-		timer.schedule(unprovision, maxMenge);
+		timer.schedule(taskPin1, mengenGeordnet[0].intValue());
+		timer.schedule(taskPin2, mengenGeordnet[1].intValue());
+		timer.schedule(taskPin3, mengenGeordnet[2].intValue());
+		timer.schedule(taskPin4, mengenGeordnet[3].intValue());
+		timer.schedule(taskPin5, mengenGeordnet[4].intValue());
+		timer.schedule(taskPin6, mengenGeordnet[5].intValue());
+		timer.schedule(panelRemove, maxMenge.intValue());
+		timer.schedule(unprovision, maxMenge.intValue());
 				
 	}
 	
