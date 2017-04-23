@@ -1,9 +1,7 @@
 package alkomat;
 
-import java.awt.Toolkit;
 import java.io.*;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 class ZutatenLesen {
 

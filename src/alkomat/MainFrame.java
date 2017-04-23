@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import javax.swing.border.LineBorder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class MainFrame {
+public class MainFrame{
 	JFrame f = new JFrame("Alkomat");
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
@@ -36,7 +37,8 @@ public class MainFrame {
 	JButton close = alkomat.closeButton.button("Close");
 	JLabel wartenOben = new JLabel("Bitte Warten!");
 	JLabel wartenUnten = new JLabel("Cocktail wird gemixt!");
-	JLabel passwordField = new JLabel("");
+	JLabel passwordField = new JLabel("", JLabel.CENTER);
+	JLabel pwChangeLabel = new JLabel("", JLabel.CENTER);
 	JLabel behaelter1 = new JLabel("Behaelter 1:", JLabel.CENTER);
 	JLabel behaelter2 = new JLabel("Behaelter 2:", JLabel.CENTER);
 	JLabel behaelter3 = new JLabel("Behaelter 3:", JLabel.CENTER);
@@ -50,11 +52,11 @@ public class MainFrame {
 	JProgressBar bar4 = new JProgressBar(0, 100);
 	JProgressBar bar5 = new JProgressBar(0, 100);
 	JProgressBar bar6 = new JProgressBar(0, 100);
-	JPanel panel1 = new JPanel();
-	JPanel panel2 = new JPanel();
-	JPanel panel3 = new JPanel();
-	JPanel panel4 = new JPanel();
+	JPanel panelPW = new JPanel();
+	JPanel panelMenue = new JPanel();
+	JPanel panelZutatenAuswahl = new JPanel();
 	JPanel panelWait = new JPanel();
+	JPanel panelChangePW = new JPanel();
 	JPanel aktPanel;
 	JButton n1 = ZahlButton("1");
 	JButton n2 = ZahlButton("2");
@@ -74,6 +76,7 @@ public class MainFrame {
 	String PIN = "";
 	String cocktail = "";
 	String auswahl = "";
+	String pwChange = "";
 
 	String[] zutatenliste = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
 			"Zitronensaft", "Gin", "Soda" };
@@ -100,9 +103,12 @@ public class MainFrame {
 	JLabel loadingLabel = new JLabel(loadingGif);
 
 	File zutaten;
+	File hash = new File("./hash.txt");
 	FileWriter writer;
 
 	List<JPanel> cpanels = new ArrayList<JPanel>();
+	
+	PwCheck pwcheck = new PwCheck();
 	
 	PumpenAnsteuerung pumpenAnsteuerung = new PumpenAnsteuerung();
 
@@ -116,7 +122,7 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				menue.setVisible(false);
 				aktPanel.setVisible(false);
-				panel3.setVisible(true);
+				panelMenue.setVisible(true);
 			}
 		};
 		cb.addActionListener(al);
@@ -156,7 +162,7 @@ public class MainFrame {
 				auswahl = ca[0];
 
 				if (auswahl.equals("Cocktails")) {
-					panel3.setVisible(false);
+					panelMenue.setVisible(false);
 					cpanels.get(0).setVisible(true);
 					menue.setVisible(true);
 					aktPanel = cpanels.get(0);
@@ -167,16 +173,15 @@ public class MainFrame {
 				}
 
 				if (auswahl.equals("Zutaten aendern")) {
-					panel4.setVisible(true);
-					panel3.setVisible(false);
-					menue.setVisible(true);
-					aktPanel = panel4;
+					panelZutatenAuswahl.setVisible(true);
+					panelMenue.setVisible(false);
+					aktPanel = panelZutatenAuswahl;
 				}
 				if (auswahl.equals("Speichern")) {
-					panel4.setVisible(false);
-					panel3.setVisible(true);
+					panelZutatenAuswahl.setVisible(false);
+					panelMenue.setVisible(true);
 					menue.setVisible(false);
-					aktPanel = panel3;
+					aktPanel = panelMenue;
 					auswahl_zutat_akt = auswahl_zutat.clone();
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
@@ -211,10 +216,35 @@ public class MainFrame {
 				if (auswahl.equals("Abbrechen")) {
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
-					panel4.setVisible(false);
-					panel3.setVisible(true);
+					panelZutatenAuswahl.setVisible(false);
+					panelMenue.setVisible(true);
 					menue.setVisible(false);
-					aktPanel = panel3;
+					aktPanel = panelMenue;
+				}
+				
+				if(auswahl.equals("Passwort aendern")){
+					panelMenue.setVisible(false);
+					panelChangePW.setVisible(true);
+					aktPanel = panelChangePW;
+				}
+				
+				if(auswahl.equals(" Speichern ")){
+					panelChangePW.setVisible(false);
+					panelMenue.setVisible(true);
+					aktPanel = panelMenue;
+					try {
+						pwcheck.changePW(pwChange);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					pwChange="";
+				}
+				if(auswahl.equals(" Abbrechen ")){
+					panelChangePW.setVisible(false);
+					panelMenue.setVisible(true);
+					aktPanel = panelMenue;
+					pwChange="";
 				}
 
 			}
@@ -322,23 +352,29 @@ public class MainFrame {
 				PIN = PIN + c[0];
 				passwordField.setText(stern);
 
-				if (PIN.equals("1234")) // temp definiert die SperrPIN
-				{
-					panel1.setVisible(false);
-					panel3.setVisible(true);
+				try {
+					if (pwcheck.checkPW(PIN)) 
+					{
+						panelPW.setVisible(false);
+						panelMenue.setVisible(true);
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
-				if (PIN.length() == 4) {
-					passwordField.setText("");
+				try {
+					if (pwcheck.checkLength(PIN)) {
+						passwordField.setText("");
+						PIN="";
+						stern="";
 
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				if (PIN.length() > 4) {
-					passwordField.setText("*");
-					PIN = c[0];
-					stern = "*";
-
-				}
-
+				
 				stern = stern + "*";
 
 			}
@@ -380,7 +416,26 @@ public class MainFrame {
 
 	}
 
-	MainFrame() {
+	JButton pwChangeButton(String a, int x, int y, int b, int h){
+		JButton cb = new JButton(a);
+		cb.setBounds(x, y, b, h);
+		final String[] c = { "" };
+		c[0] = a;
+		
+		ActionListener al = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				pwChange = pwChange+c[0];
+				pwChangeLabel.setText(pwChange);
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+	}
+	
+	MainFrame()  throws UnsupportedEncodingException, IOException {
 		
 			
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
@@ -430,14 +485,9 @@ public class MainFrame {
 		bar6.setBounds(852, y, 165, h);
 		bar6.setString("Behaelter 6");
 
-		panel1.setLayout(null);
-		panel1.setBounds(40, 80, 1024 - 80, 460);
-		panel1.setBackground(new Color(255, 149, 14));
-
-		/*
-		 * for(int i=1; i<10;i++) { zahlfeld[i]=
-		 * ZahlButton(Integer.toString(i)); panel1.add(zahlfeld[i]); }
-		 */
+		panelPW.setLayout(null);
+		panelPW.setBounds(40, 80, 1024 - 80, 460);
+		panelPW.setBackground(new Color(255, 149, 14));
 
 		f.getContentPane().add(menue);
 		menue.setVisible(false);
@@ -445,23 +495,23 @@ public class MainFrame {
 		f.getContentPane().add(cancel);
 		cancel.setVisible(false);
 		
-		panel3.setBounds(40, 80, 1024 - 80, 460);
-		panel3.setBackground(new Color(255, 149, 14));
-		panel3.setVisible(false);
-		panel3.setLayout(null);
-		f.getContentPane().add(panel3);
+		panelMenue.setBounds(40, 80, 1024 - 80, 460);
+		panelMenue.setBackground(new Color(255, 149, 14));
+		panelMenue.setVisible(false);
+		panelMenue.setLayout(null);
+		f.getContentPane().add(panelMenue);
 
-		panel2.setBounds(40, 80, 1024 - 80, 460);
-		panel2.setBackground(new Color(255, 149, 14));
-		panel2.setVisible(false);
-		panel2.setLayout(null);
-		f.getContentPane().add(panel2);
-
-		panel4.setBounds(40, 80, 1024 - 80, 460);
-		panel4.setBackground(new Color(255, 149, 14));
-		panel4.setVisible(false);
-		panel4.setLayout(null);
-		f.getContentPane().add(panel4);
+		panelZutatenAuswahl.setBounds(40, 80, 1024 - 80, 460);
+		panelZutatenAuswahl.setBackground(new Color(255, 149, 14));
+		panelZutatenAuswahl.setVisible(false);
+		panelZutatenAuswahl.setLayout(null);
+		f.getContentPane().add(panelZutatenAuswahl);
+		
+		panelChangePW.setBounds(40, 80, 1024 - 80, 460);
+		panelChangePW.setBackground(new Color(255, 149, 14));
+		panelChangePW.setVisible(false);
+		panelChangePW.setLayout(null);
+		f.getContentPane().add(panelChangePW);
 
 		panelWait.setBounds(40, 80, 1024 - 80, 460);
 		panelWait.setBackground(new Color(255, 149, 14));
@@ -489,33 +539,22 @@ public class MainFrame {
 		n9.setBounds(160 + 352, 160 + 220, 80, 80);
 		passwordField.setBounds(352, 180, 240, 40);
 
-		panel1.add(n1);
-		panel1.add(n2);
-		panel1.add(n3);
-		panel1.add(n4);
-		panel1.add(n5);
-		panel1.add(n6);
-		panel1.add(n7);
-		panel1.add(n8);
-		panel1.add(n9);
-		panel1.add(passwordField);
-
-		// panel2.add(CocktailButton("Touchdown", 0, 0, 944 / 3, 460 / 2));
-		// panel2.add(CocktailButton("Tequila Sunrise", 0, 460 / 2 + 1, 944 / 3,
-		// 460 / 2 - 1));
-		// panel2.add(CocktailButton("Zombie", 944 / 3 + 1, 0, 944 / 3, 460 /
-		// 2));
-		// panel2.add(CocktailButton("Planters Punch", 944 / 3 + 1, 460 / 2 + 1,
-		// 944 / 3, 460 / 2 - 1));
-		// panel2.add(CocktailButton("Sex on the Beach", 2 * 944 / 3 + 1, 0, 944
-		// / 3, 460 / 2));
-		// panel2.add(CocktailButton("Bahama Mama", 2 * 944 / 3 + 1, 460 / 2 +
-		// 1, 944 / 3, 460 / 2 - 1));
-
-		panel3.setLayout(null);
-		panel3.add(AuswahlButton("Cocktails", 315, 50, 157, 175));
-		panel3.add(AuswahlButton("Zutaten aendern", 472, 50, 157, 175));
-		panel3.add(AuswahlButton("Reinigungsmodus", 315, 225, 314, 175));
+		panelPW.add(n1);
+		panelPW.add(n2);
+		panelPW.add(n3);
+		panelPW.add(n4);
+		panelPW.add(n5);
+		panelPW.add(n6);
+		panelPW.add(n7);
+		panelPW.add(n8);
+		panelPW.add(n9);
+		panelPW.add(passwordField);
+		
+		panelMenue.setLayout(null);
+		panelMenue.add(AuswahlButton("Cocktails", 315, 50, 157, 175));
+		panelMenue.add(AuswahlButton("Zutaten aendern", 472, 50, 157, 175));
+		panelMenue.add(AuswahlButton("Reinigungsmodus", 315, 225, 157, 175));
+		panelMenue.add(AuswahlButton("Passwort aendern", 472,225,157,175));
 
 		comboBox_1.addItemListener(new MyItemListener(model2, model3, model4, model5, model6, 0, auswahl_zutat));
 		comboBox_2.addItemListener(new MyItemListener(model1, model3, model4, model5, model6, 1, auswahl_zutat));
@@ -529,6 +568,7 @@ public class MainFrame {
 		comboBox_4.setBounds(20, 250, 288, 66);
 		comboBox_5.setBounds(328, 250, 288, 66);
 		comboBox_6.setBounds(636, 250, 288, 66);
+		
 		behaelter1.setBounds(20, 50, 288, 66);
 		behaelter2.setBounds(328, 50, 288, 66);
 		behaelter3.setBounds(636, 50, 288, 66);
@@ -541,28 +581,43 @@ public class MainFrame {
 		behaelter4.setFont(new Font(null, Font.BOLD, 30));
 		behaelter5.setFont(new Font(null, Font.BOLD, 30));
 		behaelter6.setFont(new Font(null, Font.BOLD, 30));
-		panel4.add(AuswahlButton("Speichern", 312, 380, 160, 80));
-		panel4.add(AuswahlButton("Abbrechen", 472, 380, 160, 80));
-		panel4.add(behaelter1);
-		panel4.add(behaelter2);
-		panel4.add(behaelter3);
-		panel4.add(behaelter4);
-		panel4.add(behaelter5);
-		panel4.add(behaelter6);
-		panel4.add(comboBox_1);
-		panel4.add(comboBox_2);
-		panel4.add(comboBox_3);
-		panel4.add(comboBox_4);
-		panel4.add(comboBox_5);
-		panel4.add(comboBox_6);
-
-		f.getContentPane().add(panel1);
+		
+		panelZutatenAuswahl.add(AuswahlButton("Speichern", 312, 380, 160, 80));
+		panelZutatenAuswahl.add(AuswahlButton("Abbrechen", 472, 380, 160, 80));
+		panelZutatenAuswahl.add(behaelter1);
+		panelZutatenAuswahl.add(behaelter2);
+		panelZutatenAuswahl.add(behaelter3);
+		panelZutatenAuswahl.add(behaelter4);
+		panelZutatenAuswahl.add(behaelter5);
+		panelZutatenAuswahl.add(behaelter6);
+		panelZutatenAuswahl.add(comboBox_1);
+		panelZutatenAuswahl.add(comboBox_2);
+		panelZutatenAuswahl.add(comboBox_3);
+		panelZutatenAuswahl.add(comboBox_4);
+		panelZutatenAuswahl.add(comboBox_5);
+		panelZutatenAuswahl.add(comboBox_6);
+		
+		panelChangePW.add(AuswahlButton(" Speichern ", 312,380,160,80));
+		panelChangePW.add(AuswahlButton(" Abbrechen ", 472, 380, 160, 80));
+		panelChangePW.add(pwChangeButton("1",352,140,80,80));
+		panelChangePW.add(pwChangeButton("2",432,140,80,80));
+		panelChangePW.add(pwChangeButton("3",512,140,80,80));
+		panelChangePW.add(pwChangeButton("4",352,220,80,80));
+		panelChangePW.add(pwChangeButton("5",432,220,80,80));
+		panelChangePW.add(pwChangeButton("6",512,220,80,80));
+		panelChangePW.add(pwChangeButton("7",352,300,80,80));
+		panelChangePW.add(pwChangeButton("8",432,300,80,80));
+		panelChangePW.add(pwChangeButton("9",512,300,80,80));
+		pwChangeLabel.setBounds(352, 100, 240, 40);
+		panelChangePW.add(pwChangeLabel);
+		
+		f.getContentPane().add(panelPW);
 
 		// f.setExtendedState(JFrame.MAXIMIZED_BOTH); //funktioniert nicht in
 		// Kombination mit setResizeable(false)
 		f.getContentPane().setLayout(null);
 		f.setResizable(false);
-		// f.setUndecorated(true); //entfernt Programmleiste, für echtes
+		//f.setUndecorated(true); //entfernt Programmleiste, für echtes
 		// Vollbild
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		f.setSize(1024, 600);
@@ -574,6 +629,14 @@ public class MainFrame {
 		MainFrame GUI = new MainFrame();
 		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
 		GUI.zutaten = new File("./Zutaten.txt");
+		GUI.hash = new File("./hash.txt");
+		if(!GUI.hash.exists()){
+			List<String> hashcodes = new ArrayList<String>();
+			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword("1234", "alkomat"));
+			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword(String.valueOf("4"), "alkomat"));
+			FileUtils.writeLines(GUI.hash, hashcodes);
+			System.out.println("Standard-Passwort gesetzt");
+		}
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
