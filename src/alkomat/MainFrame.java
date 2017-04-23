@@ -172,7 +172,7 @@ public class MainFrame{
 					// bar1.setValue(serialcomm.comm()[0]);
 				}
 
-				if (auswahl.equals("Zutaten aendern")) {
+				if (auswahl.equals("<html><center>Zutaten<br>aendern</center></html>")) {
 					panelZutatenAuswahl.setVisible(true);
 					panelMenue.setVisible(false);
 					aktPanel = panelZutatenAuswahl;
@@ -222,7 +222,7 @@ public class MainFrame{
 					aktPanel = panelMenue;
 				}
 				
-				if(auswahl.equals("Passwort aendern")){
+				if(auswahl.equals("<html><center>Passwort<br>aendern</center></html>")){
 					panelMenue.setVisible(false);
 					panelChangePW.setVisible(true);
 					aktPanel = panelChangePW;
@@ -328,8 +328,8 @@ public class MainFrame{
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
 				
-				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel);
-						
+				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel, menue);
+				menue.setVisible(false);		
 				CancelButtonProperties();
 			}
 
@@ -552,9 +552,9 @@ public class MainFrame{
 		
 		panelMenue.setLayout(null);
 		panelMenue.add(AuswahlButton("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(AuswahlButton("Zutaten aendern", 472, 50, 157, 175));
+		panelMenue.add(AuswahlButton("<html><center>Zutaten<br>aendern</center></html>", 472, 50, 157, 175));
 		panelMenue.add(AuswahlButton("Reinigungsmodus", 315, 225, 157, 175));
-		panelMenue.add(AuswahlButton("Passwort aendern", 472,225,157,175));
+		panelMenue.add(AuswahlButton("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
 
 		comboBox_1.addItemListener(new MyItemListener(model2, model3, model4, model5, model6, 0, auswahl_zutat));
 		comboBox_2.addItemListener(new MyItemListener(model1, model3, model4, model5, model6, 1, auswahl_zutat));
