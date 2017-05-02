@@ -32,6 +32,7 @@ public class MainFrame{
 	JFrame f = new JFrame("Alkomat");
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
+	private boolean pwchanger = false;
 	String stern = "*";
 	int x = 0, y = 0, b = 165, h = 40, lab = 1;
 	JButton close = alkomat.closeButton.button("Close");
@@ -224,8 +225,9 @@ public class MainFrame{
 				
 				if(auswahl.equals("<html><center>Passwort<br>aendern</center></html>")){
 					panelMenue.setVisible(false);
-					panelChangePW.setVisible(true);
-					aktPanel = panelChangePW;
+					panelPW.setVisible(true);
+					aktPanel = panelPW;
+					pwchanger=true;
 				}
 				
 				if(auswahl.equals(" Speichern ")){
@@ -239,12 +241,16 @@ public class MainFrame{
 						e1.printStackTrace();
 					}
 					pwChange="";
+					pwchanger=false;
+					pwChangeLabel.setText("");
 				}
 				if(auswahl.equals(" Abbrechen ")){
 					panelChangePW.setVisible(false);
 					panelMenue.setVisible(true);
 					aktPanel = panelMenue;
 					pwChange="";
+					pwchanger=false;
+					pwChangeLabel.setText("");
 				}
 
 			}
@@ -355,8 +361,14 @@ public class MainFrame{
 				try {
 					if (pwcheck.checkPW(PIN)) 
 					{
+						if(pwchanger){
+							panelPW.setVisible(false);
+							panelChangePW.setVisible(true);
+						}
+						else{
 						panelPW.setVisible(false);
 						panelMenue.setVisible(true);
+						}
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
