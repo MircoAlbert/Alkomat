@@ -22,6 +22,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	private Integer[] mengenDouble;
 	private JButton cancel;
 	private JButton menue;
+	private JButton sperren;
 	
 	private Timer timer;
 	private boolean cancelled = false;
@@ -81,6 +82,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 			panelWait.setVisible(false);
 			panelList.setVisible(true);
 			cancel.setVisible(false);
+			sperren.setVisible(true);
 			menue.setVisible(true);
 			}
 		}
@@ -136,11 +138,12 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		
 	}
 	
-	public void start(Double[] mengenGeordnet, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue){
+	public void start(Double[] mengenGeordnet, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
 		this.panelWait = panelWait;
 		this.panelList = panelList;
 		this.cancel = cancel;
 		this.menue = menue;
+		this.sperren = sperren;
 		cancelled = false;
 		this.gpio = GpioFactory.getInstance();
 		this.pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH);

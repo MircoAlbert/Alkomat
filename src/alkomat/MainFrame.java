@@ -72,6 +72,7 @@ public class MainFrame{
 	JButton reinigung = new JButton("Reinigungsprogramm");
 	JButton menue = MenueButton("Menue", 345, h, b, h);
 	JButton cancel = CancelButton("Cancel", 514, h, b, h);
+	JButton sperren = sperrButton("Sperren",176,y+h,165,h);
 	JPasswordField pass = new JPasswordField(4);
 	// JButton[] zahlfeld = new JButton[10];
 	String PIN = "";
@@ -334,8 +335,9 @@ public class MainFrame{
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
 				
-				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel, menue);
-				menue.setVisible(false);		
+				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel, menue, sperren);
+				menue.setVisible(false);
+				sperren.setVisible(false);
 				CancelButtonProperties();
 			}
 
@@ -364,10 +366,12 @@ public class MainFrame{
 						if(pwchanger){
 							panelPW.setVisible(false);
 							panelChangePW.setVisible(true);
+							aktPanel=panelChangePW;
 						}
 						else{
 						panelPW.setVisible(false);
 						panelMenue.setVisible(true);
+						aktPanel=panelMenue;
 						}
 					}
 				} catch (IOException e1) {
@@ -447,13 +451,29 @@ public class MainFrame{
 		return cb;
 	}
 	
+	JButton sperrButton(String a, int x, int y, int b, int h){
+		JButton cb = new JButton(a);
+		cb.setBounds(x, y, b, h);
+		ActionListener al =new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				aktPanel.setVisible(false);
+				panelPW.setVisible(true);
+				aktPanel=panelPW;
+				menue.setVisible(false);
+			}
+		};
+		cb.addActionListener(al);
+		return cb;
+	}
+	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
 		
 			
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
 		close.setBounds(852, h, b, h);
 		f.getContentPane().add(close);
-
+		f.getContentPane().add(sperren);
+		
 		cpanels.add(new JPanel());
 		cpanels.get(0).setBounds(40, 80, 1024 - 80, 460);
 		cpanels.get(0).setBackground(new Color(255, 149, 14));
