@@ -46,6 +46,9 @@ public class MainFrame{
 	JLabel behaelter4 = new JLabel("Behaelter 4:", JLabel.CENTER);
 	JLabel behaelter5 = new JLabel("Behaelter 5:", JLabel.CENTER);
 	JLabel behaelter6 = new JLabel("Behaelter 6:", JLabel.CENTER);
+	JLabel altesPW = new JLabel("<html><center>Bitte alte PIN<br>eingeben!</center></html>", JLabel.CENTER);
+	JLabel neuesPW = new JLabel("<html><center>Bitte neue PIN<br>eingeben!</center></html>", JLabel.CENTER);
+	JLabel fuellmengenEingabe = new JLabel("<html><center>Bitte Füllmenge<br>auswählen<br>(in ml):</center></html>", JLabel.CENTER);
 	Border border = LineBorder.createGrayLineBorder();
 	JProgressBar bar1 = new JProgressBar(0, 100);
 	JProgressBar bar2 = new JProgressBar(0, 100);
@@ -100,10 +103,15 @@ public class MainFrame{
 	JComboBox<String> comboBox_4 = new JComboBox<String>(model4);
 	JComboBox<String> comboBox_5 = new JComboBox<String>(model5);
 	JComboBox<String> comboBox_6 = new JComboBox<String>(model6);
+	JComboBox<Integer> fuellmenge = new JComboBox<Integer>();
+	
+	
 	Icon loadingGif = new ImageIcon(
 			Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
 	JLabel loadingLabel = new JLabel(loadingGif);
-
+	Icon naechsteSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/vorwaerts1.png")));
+	Icon vorherigeSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/zurueck1.png")));
+	
 	File zutaten;
 	File hash = new File("./hash.txt");
 	FileWriter writer;
@@ -229,12 +237,15 @@ public class MainFrame{
 					panelPW.setVisible(true);
 					aktPanel = panelPW;
 					pwchanger=true;
+					altesPW.setVisible(true);
+					sperren.setVisible(false);
 				}
 				
 				if(auswahl.equals(" Speichern ")){
 					panelChangePW.setVisible(false);
 					panelMenue.setVisible(true);
 					aktPanel = panelMenue;
+					
 					try {
 						pwcheck.changePW(pwChange);
 					} catch (IOException e1) {
@@ -244,6 +255,7 @@ public class MainFrame{
 					pwChange="";
 					pwchanger=false;
 					pwChangeLabel.setText("");
+					sperren.setVisible(true);
 				}
 				if(auswahl.equals(" Abbrechen ")){
 					panelChangePW.setVisible(false);
@@ -252,6 +264,7 @@ public class MainFrame{
 					pwChange="";
 					pwchanger=false;
 					pwChangeLabel.setText("");
+					sperren.setVisible(true);
 				}
 
 			}
@@ -335,7 +348,7 @@ public class MainFrame{
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
 				
-				pumpenAnsteuerung.start(mengenGeordnet, aktPanel, panelWait, cancel, menue, sperren);
+				pumpenAnsteuerung.start(mengenGeordnet,(Integer) fuellmenge.getSelectedItem(), aktPanel, panelWait, cancel, menue, sperren);
 				menue.setVisible(false);
 				sperren.setVisible(false);
 				CancelButtonProperties();
@@ -366,12 +379,14 @@ public class MainFrame{
 						if(pwchanger){
 							panelPW.setVisible(false);
 							panelChangePW.setVisible(true);
+							altesPW.setVisible(false);
 							aktPanel=panelChangePW;
 						}
 						else{
 						panelPW.setVisible(false);
 						panelMenue.setVisible(true);
 						aktPanel=panelMenue;
+						sperren.setVisible(true);
 						}
 					}
 				} catch (IOException e1) {
@@ -401,7 +416,7 @@ public class MainFrame{
 	}
 
 	JButton naechsteSeiteButton(final int next, final int akt) {
-		JButton cb = new JButton("V");
+		JButton cb = new JButton(naechsteSeite);
 		cb.setBounds(904, 0, 40, 460);
 		ActionListener al = new ActionListener() {
 
@@ -417,7 +432,7 @@ public class MainFrame{
 	}
 
 	JButton vorherigeSeiteButton(final int last, final int akt) {
-		JButton cb = new JButton("Z");
+		JButton cb = new JButton(vorherigeSeite);
 		cb.setBounds(0, 0, 40, 460);
 		ActionListener al = new ActionListener() {
 
@@ -460,6 +475,8 @@ public class MainFrame{
 				panelPW.setVisible(true);
 				aktPanel=panelPW;
 				menue.setVisible(false);
+				altesPW.setVisible(false);
+				sperren.setVisible(false);
 			}
 		};
 		cb.addActionListener(al);
@@ -467,12 +484,19 @@ public class MainFrame{
 	}
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
+		fuellmenge.addItem(150);
+		fuellmenge.addItem(200);
+		fuellmenge.addItem(250);
+		fuellmenge.addItem(300);
+		fuellmenge.setBounds(120,200,160,50);
+		fuellmengenEingabe.setBounds(120,120,160,80);
 		
-			
+					
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
 		close.setBounds(852, h, b, h);
 		f.getContentPane().add(close);
 		f.getContentPane().add(sperren);
+		sperren.setVisible(false);
 		
 		cpanels.add(new JPanel());
 		cpanels.get(0).setBounds(40, 80, 1024 - 80, 460);
@@ -570,7 +594,9 @@ public class MainFrame{
 		n8.setBounds(80 + 352, 160 + 220, 80, 80);
 		n9.setBounds(160 + 352, 160 + 220, 80, 80);
 		passwordField.setBounds(352, 180, 240, 40);
-
+		altesPW.setBounds(352,140,240,40);
+		altesPW.setVisible(false);
+		
 		panelPW.add(n1);
 		panelPW.add(n2);
 		panelPW.add(n3);
@@ -581,12 +607,15 @@ public class MainFrame{
 		panelPW.add(n8);
 		panelPW.add(n9);
 		panelPW.add(passwordField);
+		panelPW.add(altesPW);
 		
 		panelMenue.setLayout(null);
 		panelMenue.add(AuswahlButton("Cocktails", 315, 50, 157, 175));
 		panelMenue.add(AuswahlButton("<html><center>Zutaten<br>aendern</center></html>", 472, 50, 157, 175));
 		panelMenue.add(AuswahlButton("Reinigungsmodus", 315, 225, 157, 175));
 		panelMenue.add(AuswahlButton("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
+		panelMenue.add(fuellmenge);
+		panelMenue.add(fuellmengenEingabe);
 
 		comboBox_1.addItemListener(new MyItemListener(model2, model3, model4, model5, model6, 0, auswahl_zutat));
 		comboBox_2.addItemListener(new MyItemListener(model1, model3, model4, model5, model6, 1, auswahl_zutat));
@@ -641,7 +670,9 @@ public class MainFrame{
 		panelChangePW.add(pwChangeButton("8",432,300,80,80));
 		panelChangePW.add(pwChangeButton("9",512,300,80,80));
 		pwChangeLabel.setBounds(352, 100, 240, 40);
+		neuesPW.setBounds(352,60,240,40);
 		panelChangePW.add(pwChangeLabel);
+		panelChangePW.add(neuesPW);
 		
 		f.getContentPane().add(panelPW);
 

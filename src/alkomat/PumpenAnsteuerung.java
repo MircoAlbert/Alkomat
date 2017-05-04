@@ -138,7 +138,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		
 	}
 	
-	public void start(Double[] mengenGeordnet, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
+	public void start(Double[] mengenGeordnet,Integer fuellmenge, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
 		this.panelWait = panelWait;
 		this.panelList = panelList;
 		this.cancel = cancel;
@@ -156,7 +156,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		
 		Timer timer = new Timer();
 		for(int i=0;i<mengenGeordnet.length;i++){
-			mengenGeordnet[i]=((mengenGeordnet[i]*200)/8*10);
+			mengenGeordnet[i]=((mengenGeordnet[i]*fuellmenge)/8*10);
 			if(mengenGeordnet[i]>maxMenge)
 				maxMenge=mengenGeordnet[i];
 		}
