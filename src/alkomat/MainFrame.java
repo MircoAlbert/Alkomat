@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -484,6 +485,9 @@ public class MainFrame{
 	}
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
+		
+		
+		
 		fuellmenge.addItem(150);
 		fuellmenge.addItem(200);
 		fuellmenge.addItem(250);
@@ -689,6 +693,10 @@ public class MainFrame{
 	}
 
 	public static void main(String[] args) throws IOException {
+		try { 
+			  UIManager.setLookAndFeel( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+			} catch( Exception e ) { e.printStackTrace(); }
+		
 		MainFrame GUI = new MainFrame();
 		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
 		GUI.zutaten = new File("./Zutaten.txt");
