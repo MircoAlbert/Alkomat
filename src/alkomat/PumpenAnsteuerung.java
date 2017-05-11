@@ -34,6 +34,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	private GpioPinDigitalOutput pin4;
 	private GpioPinDigitalOutput pin5;
 	private GpioPinDigitalOutput pin6;
+	private GpioPinDigitalOutput pin7;
 	
 	private setHigh taskPin1;
 	private setHigh taskPin2; 
@@ -41,11 +42,29 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	private setHigh taskPin4;
 	private setHigh taskPin5;
 	private setHigh taskPin6;
+	private setHigh taskPin7;
 	
 	private panelRemove panelRemove;
 	
 	private Unprovision unprovision;
-	 
+	
+	private Unprovision7 unprovision7;
+	
+	public PumpenAnsteuerung(){
+		this.gpio = GpioFactory.getInstance();
+	}
+	
+	public void bildschirmOn(){
+		this.pin7 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07, "Bildschirm", PinState.HIGH);
+		taskPin7 = new setHigh(pin7);
+		pin7.low();
+		Timer timer = new Timer();
+		unprovision7 = new Unprovision7();
+		timer.schedule(taskPin7, 10);
+		timer.schedule(unprovision7, 10);
+		
+	}
+	
 	public void cancelTimer(JPanel panelList, JPanel panelWait){
 		cancelled=true;
 		pin1.high();
@@ -137,6 +156,20 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		}
 		
 	}
+	class Unprovision7 extends TimerTask{
+		
+		Unprovision7(){
+			
+		};
+		
+		public void run(){
+			if(cancelled==false){
+			gpio.shutdown();
+			gpio.unprovisionPin(pin7);
+			}
+		}
+		
+	}
 	
 	public void start(Double[] mengenGeordnet,Integer fuellmenge, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
 		this.panelWait = panelWait;
@@ -145,7 +178,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.menue = menue;
 		this.sperren = sperren;
 		cancelled = false;
-		this.gpio = GpioFactory.getInstance();
+		
 		this.pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH);
 		this.pin2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 2", PinState.HIGH);
 		this.pin3 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 3", PinState.HIGH);
@@ -193,105 +226,5 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 				
 	}
 	
-	PumpenAnsteuerung(){
-		
-			
-
-		/*if (a.equals("Touchdown")) {
-
-			Timer timer = new Timer();
-			pin1.low();
-			pin2.low();
-			pin3.low();
-			pin4.low();
-			pin5.low();
-			pin6.low();
-			panelList.setVisible(false);
-			panelWait.setVisible(true);
-			timer.schedule(new setHigh(pin1), 2000);
-			timer.schedule(new setHigh(pin2), 4000);
-			timer.schedule(new setHigh(pin3), 6000);
-			timer.schedule(new setHigh(pin4), 8000);
-			timer.schedule(new setHigh(pin5), 10000);
-			timer.schedule(new setHigh(pin6), 12000);
-			timer.schedule(new panelRemove(panelWait, panelList), 12000);
-			gpio.shutdown();
-
-		}
-		if (a.equals("Zombie")) {
-			Timer timer = new Timer();
-			pin1.low();
-			pin2.low();
-			timer.schedule(new setHigh(pin1), 2000);
-			timer.schedule(new setHigh(pin2), 1000);
-
-			gpio.shutdown();
-		}
-		if (a.equals("Tequila Sunrise")) {
-			Timer timer = new Timer();
-			pin1.low();
-			timer.schedule(new setHigh(pin1), 2000);
-			timer.schedule(new setLow(pin2), 2000);
-			timer.schedule(new setHigh(pin2), 4000);
-
-			gpio.shutdown();
-		}
-		if (a.equals("Sex on the Beach")) {
-			int count = 5;
-			while (count > 0) {
-				pin1.low();
-				Thread.sleep(1000);
-				pin1.high();
-				Thread.sleep(1000);
-
-				count--;
-			}
-			gpio.shutdown();
-			gpio.unprovisionPin(pin1);
-			gpio.unprovisionPin(pin2);
-			gpio.unprovisionPin(pin3);
-			gpio.unprovisionPin(pin4);
-			gpio.unprovisionPin(pin5);
-			gpio.unprovisionPin(pin6);
-		}
-		if (a.equals("Planters Punch")) {
-			int count = 6;
-			while (count > 0) {
-				pin1.low();
-				Thread.sleep(1000);
-				pin1.high();
-				Thread.sleep(1000);
-
-				count--;
-			}
-			gpio.shutdown();
-			gpio.unprovisionPin(pin1);
-			gpio.unprovisionPin(pin2);
-			gpio.unprovisionPin(pin3);
-			gpio.unprovisionPin(pin4);
-			gpio.unprovisionPin(pin5);
-			gpio.unprovisionPin(pin6);
-		}
-		if (a.equals("Bahama Mama")) {
-			Timer timer = new Timer();
-			panelList.setVisible(false);
-			panelWait.setVisible(true);
-			timer.schedule(new panelRemove(panelWait, panelList), 5000);
-			gpio.shutdown();
-			gpio.unprovisionPin(pin1);
-			gpio.unprovisionPin(pin2);
-			gpio.unprovisionPin(pin3);
-			gpio.unprovisionPin(pin4);
-			gpio.unprovisionPin(pin5);
-			gpio.unprovisionPin(pin6);
-		}
-		*/
-
-		// Wichtig
-		// Wenn ihr die GPIOs nicht mehr braucht dann solltet ihr diese auch
-		// schliessen... Oeffnen koennt ihr wieder mit dem
-		// GpioFactory.getInstance() welches
-		// euch ein neuen GpioController zur verfuegung stellt
-
-	}
+	
 }

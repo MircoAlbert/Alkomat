@@ -134,6 +134,7 @@ public class MainFrame{
 				menue.setVisible(false);
 				aktPanel.setVisible(false);
 				panelMenue.setVisible(true);
+				aktPanel=panelMenue;
 			}
 		};
 		cb.addActionListener(al);
@@ -486,8 +487,6 @@ public class MainFrame{
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
 		
-		
-		
 		fuellmenge.addItem(150);
 		fuellmenge.addItem(200);
 		fuellmenge.addItem(250);
@@ -699,6 +698,7 @@ public class MainFrame{
 		
 		MainFrame GUI = new MainFrame();
 		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
+		//GUI.pumpenAnsteuerung.bildschirmOn();
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");
 		if(!GUI.hash.exists()){
