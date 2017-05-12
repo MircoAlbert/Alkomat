@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
@@ -215,6 +216,7 @@ public class MainFrame{
 						CocktailButtonProperties(cocktailsmoeglichList.toArray(new Cocktail[0]));
 					} else {
 						System.out.println("keine Cocktails möglich!");
+						JOptionPane.showMessageDialog(f, "Keine Cocktails möglich!","Keine Cocktails möglich", JOptionPane.WARNING_MESSAGE);
 					}
 					try {
 						String x = null;
@@ -692,10 +694,10 @@ public class MainFrame{
 	}
 
 	public static void main(String[] args) throws IOException {
-		try { 
+		/*try { 
 			  UIManager.setLookAndFeel( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
 			} catch( Exception e ) { e.printStackTrace(); }
-		
+		*/
 		MainFrame GUI = new MainFrame();
 		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
 		//GUI.pumpenAnsteuerung.bildschirmOn();
@@ -707,6 +709,7 @@ public class MainFrame{
 			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword(String.valueOf("4"), "alkomat"));
 			FileUtils.writeLines(GUI.hash, hashcodes);
 			System.out.println("Standard-Passwort gesetzt");
+			JOptionPane.showMessageDialog(GUI.f, "Standard-Passwort gesetzt!","Standard-Passwort gesetzt!", JOptionPane.WARNING_MESSAGE);
 		}
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
 		for (String s : GUI.auswahl_zutat_akt)
@@ -724,6 +727,7 @@ public class MainFrame{
 			
 		} else {
 			System.out.println("keine Cocktails möglich!");
+			JOptionPane.showMessageDialog(GUI.f, "Keine Cocktails möglich!","Keine Cocktails möglich", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 }
