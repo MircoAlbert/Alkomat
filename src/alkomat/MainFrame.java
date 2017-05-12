@@ -64,19 +64,19 @@ public class MainFrame{
 	JPanel panelWait = new JPanel();
 	JPanel panelChangePW = new JPanel();
 	JPanel aktPanel;
-	JButton n1 = ZahlButton("1");
-	JButton n2 = ZahlButton("2");
-	JButton n3 = ZahlButton("3");
-	JButton n4 = ZahlButton("4");
-	JButton n5 = ZahlButton("5");
-	JButton n6 = ZahlButton("6");
-	JButton n7 = ZahlButton("7");
-	JButton n8 = ZahlButton("8");
-	JButton n9 = ZahlButton("9");
+	JButton n1 = zahlButton("1");
+	JButton n2 = zahlButton("2");
+	JButton n3 = zahlButton("3");
+	JButton n4 = zahlButton("4");
+	JButton n5 = zahlButton("5");
+	JButton n6 = zahlButton("6");
+	JButton n7 = zahlButton("7");
+	JButton n8 = zahlButton("8");
+	JButton n9 = zahlButton("9");
 	JButton cocktails = new JButton("Cocktails");
 	JButton reinigung = new JButton("Reinigungsprogramm");
-	JButton menue = MenueButton("Menue", 345, h, b, h);
-	JButton cancel = CancelButton("Cancel", 514, h, b, h);
+	JButton menue = menueButton("Menue", 345, h, b, h);
+	JButton cancel = cancelButton("Cancel", 514, h, b, h);
 	JButton sperren = sperrButton("Sperren",176,y+h,165,h);
 	JPasswordField pass = new JPasswordField(4);
 	// JButton[] zahlfeld = new JButton[10];
@@ -128,7 +128,7 @@ public class MainFrame{
 	
 	PumpenAnsteuerung pumpenAnsteuerung = new PumpenAnsteuerung();
 
-	JButton MenueButton(String a, int x, int y, int b, int h) // MenüButton
+	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
@@ -147,7 +147,7 @@ public class MainFrame{
 
 	}
 	
-	JButton CancelButton(String a, int x, int y, int b, int h) // MenüButton
+	JButton cancelButton(String a, int x, int y, int b, int h) // CancelButton zum abbrechen eines Mixvorgangs
 	{
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
@@ -165,32 +165,93 @@ public class MainFrame{
 
 	}
 
-	JButton AuswahlButton(String a, int x, int y, int b, int h) //
+	JButton menueButtonCocktails(String a, int x, int y, int b, int h) // Button um das Cocktail-Menü aufzurufen
+	{
+		
+		JButton cb = new JButton(a, cocktailsIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
+		cb.setBounds(x, y, b, h);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				panelMenue.setVisible(false);
+				cpanels.get(0).setVisible(true);
+				menue.setVisible(true);
+				aktPanel = cpanels.get(0);
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+		
+	}
+	
+	JButton menueButtonZutaten(String a, int x, int y, int b, int h){
+		
+		JButton cb = new JButton(a, zutatenIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
+		cb.setBounds(x, y, b, h);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				panelZutatenAuswahl.setVisible(true);
+				panelMenue.setVisible(false);
+				aktPanel = panelZutatenAuswahl;
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+		
+	}
+
+	JButton menueButtonReinigung(String a, int x, int y, int b, int h){
+		
+		JButton cb = new JButton(a, reinigungsIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
+		cb.setBounds(x, y, b, h);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+		
+	}
+	
+	JButton menueButtonPasswortAendern(String a, int x, int y, int b, int h){
+		
+		JButton cb = new JButton(a, passwortIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
+		cb.setBounds(x, y, b, h);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				panelMenue.setVisible(false);
+				panelPW.setVisible(true);
+				aktPanel = panelPW;
+				pwchanger=true;
+				altesPW.setVisible(true);
+				sperren.setVisible(false);
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+		
+	}
+	
+	JButton auswahlButton(String a, int x, int y, int b, int h) //
 	{
 		JButton cb;
-		if(a=="Cocktails"){
-			cb = new JButton(a,cocktailsIcon);
-			cb.setHorizontalTextPosition(JButton.CENTER);
-			cb.setVerticalTextPosition(JButton.CENTER);
-		}
-		if(a=="<html><center>Zutaten<br>aendern</center></html>"){
-			cb = new JButton(a,zutatenIcon);
-			cb.setHorizontalTextPosition(JButton.CENTER);
-			cb.setVerticalTextPosition(JButton.CENTER);
-		}
-		if(a=="<html><center>Passwort<br>aendern</center></html>"){
-			cb = new JButton(a,passwortIcon);
-			cb.setHorizontalTextPosition(JButton.CENTER);
-			cb.setVerticalTextPosition(JButton.CENTER);
-		}
-		if(a=="Reinigungsmodus"){
-			cb = new JButton(a,reinigungsIcon);
-			cb.setHorizontalTextPosition(JButton.CENTER);
-			cb.setVerticalTextPosition(JButton.CENTER);
-		}
-		else{
-			cb = new JButton(a);
-		}
+		cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
 		final String[] ca = { "" };
 		ca[0] = a;
@@ -201,22 +262,6 @@ public class MainFrame{
 
 				auswahl = ca[0];
 
-				if (auswahl.equals("Cocktails")) {
-					panelMenue.setVisible(false);
-					cpanels.get(0).setVisible(true);
-					menue.setVisible(true);
-					aktPanel = cpanels.get(0);
-				}
-				if (auswahl.equals("Reinigungsmodus")) {
-
-					// bar1.setValue(serialcomm.comm()[0]);
-				}
-
-				if (auswahl.equals("<html><center>Zutaten<br>aendern</center></html>")) {
-					panelZutatenAuswahl.setVisible(true);
-					panelMenue.setVisible(false);
-					aktPanel = panelZutatenAuswahl;
-				}
 				if (auswahl.equals("Speichern")) {
 					panelZutatenAuswahl.setVisible(false);
 					panelMenue.setVisible(true);
@@ -262,16 +307,7 @@ public class MainFrame{
 					menue.setVisible(false);
 					aktPanel = panelMenue;
 				}
-				
-				if(auswahl.equals("<html><center>Passwort<br>aendern</center></html>")){
-					panelMenue.setVisible(false);
-					panelPW.setVisible(true);
-					aktPanel = panelPW;
-					pwchanger=true;
-					altesPW.setVisible(true);
-					sperren.setVisible(false);
-				}
-				
+								
 				if(auswahl.equals(" Speichern ")){
 					panelChangePW.setVisible(false);
 					panelMenue.setVisible(true);
@@ -329,7 +365,7 @@ public class MainFrame{
 
 			if ((buttoncounter % 2 == 1) && (buttoncounter <= anzahlButtons)) {
 				System.out.println(buttoncounter + "%2=1");
-				cpanels.get(seitencounter).add(CocktailButton(cocktails[buttoncounter - 1],
+				cpanels.get(seitencounter).add(cocktailButton(cocktails[buttoncounter - 1],
 						(startcoordsX + breite + zwischenraum) * odd + 40, startcoordsY, breite, höhe));
 				buttoncounter++;
 				odd++;
@@ -337,7 +373,7 @@ public class MainFrame{
 			if ((buttoncounter % 2 == 0) && (buttoncounter <= anzahlButtons)) {
 				System.out.println(buttoncounter);
 				cpanels.get(seitencounter)
-						.add(CocktailButton(cocktails[buttoncounter - 1],
+						.add(cocktailButton(cocktails[buttoncounter - 1],
 								(startcoordsX + breite + zwischenraum) * even + 40, startcoordsY + höhe + zwischenraum,
 								breite, höhe));
 				even++;
@@ -363,7 +399,7 @@ public class MainFrame{
 		}
 	}
 
-	JButton CocktailButton(final Cocktail a, int x, int y, int b, int h) // zur
+	JButton cocktailButton(final Cocktail a, int x, int y, int b, int h) // zur
 																			// Erzeugung
 																			// der
 																			// Cocktail-Buttons
@@ -391,7 +427,7 @@ public class MainFrame{
 		return cb;
 	}
 
-	JButton ZahlButton(String a) // zur Erzeugung der PIN-Abfrage-Buttons
+	JButton zahlButton(String a) // zur Erzeugung der PIN-Abfrage-Buttons
 	{
 		JButton b = new JButton(a);
 		final String[] c = { "" };
@@ -642,10 +678,10 @@ public class MainFrame{
 		panelPW.add(altesPW);
 		
 		panelMenue.setLayout(null);
-		panelMenue.add(AuswahlButton("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(AuswahlButton("<html><center>Zutaten<br>aendern</center></html>", 472, 50, 157, 175));
-		panelMenue.add(AuswahlButton("Reinigungsmodus", 315, 225, 157, 175));
-		panelMenue.add(AuswahlButton("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
+		panelMenue.add(menueButtonCocktails("Cocktails", 315, 50, 157, 175));
+		panelMenue.add(menueButtonZutaten("<html><center>Zutaten<br>aendern</center></html>", 472, 50, 157, 175));
+		panelMenue.add(menueButtonReinigung("Reinigungsmodus", 315, 225, 157, 175));
+		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
 		panelMenue.add(fuellmenge);
 		panelMenue.add(fuellmengenEingabe);
 
@@ -675,8 +711,8 @@ public class MainFrame{
 		behaelter5.setFont(new Font(null, Font.BOLD, 30));
 		behaelter6.setFont(new Font(null, Font.BOLD, 30));
 		
-		panelZutatenAuswahl.add(AuswahlButton("Speichern", 312, 380, 160, 80));
-		panelZutatenAuswahl.add(AuswahlButton("Abbrechen", 472, 380, 160, 80));
+		panelZutatenAuswahl.add(auswahlButton("Speichern", 312, 380, 160, 80));
+		panelZutatenAuswahl.add(auswahlButton("Abbrechen", 472, 380, 160, 80));
 		panelZutatenAuswahl.add(behaelter1);
 		panelZutatenAuswahl.add(behaelter2);
 		panelZutatenAuswahl.add(behaelter3);
@@ -690,8 +726,8 @@ public class MainFrame{
 		panelZutatenAuswahl.add(comboBox_5);
 		panelZutatenAuswahl.add(comboBox_6);
 		
-		panelChangePW.add(AuswahlButton(" Speichern ", 312,380,160,80));
-		panelChangePW.add(AuswahlButton(" Abbrechen ", 472, 380, 160, 80));
+		panelChangePW.add(auswahlButton(" Speichern ", 312,380,160,80));
+		panelChangePW.add(auswahlButton(" Abbrechen ", 472, 380, 160, 80));
 		panelChangePW.add(pwChangeButton("1",352,140,80,80));
 		panelChangePW.add(pwChangeButton("2",432,140,80,80));
 		panelChangePW.add(pwChangeButton("3",512,140,80,80));
