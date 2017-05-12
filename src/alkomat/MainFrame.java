@@ -113,6 +113,10 @@ public class MainFrame{
 	JLabel loadingLabel = new JLabel(loadingGif);
 	Icon naechsteSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/vorwaerts1.png")));
 	Icon vorherigeSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/zurueck1.png")));
+	Icon cocktailsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/cocktails.jpg")));
+	Icon zutatenIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/zutaten.jpg")));
+	Icon reinigungsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/reinigung.jpg")));
+	Icon passwortIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/passwort1.jpg")));
 	
 	File zutaten;
 	File hash = new File("./hash.txt");
@@ -163,7 +167,30 @@ public class MainFrame{
 
 	JButton AuswahlButton(String a, int x, int y, int b, int h) //
 	{
-		JButton cb = new JButton(a);
+		JButton cb;
+		if(a=="Cocktails"){
+			cb = new JButton(a,cocktailsIcon);
+			cb.setHorizontalTextPosition(JButton.CENTER);
+			cb.setVerticalTextPosition(JButton.CENTER);
+		}
+		if(a=="<html><center>Zutaten<br>aendern</center></html>"){
+			cb = new JButton(a,zutatenIcon);
+			cb.setHorizontalTextPosition(JButton.CENTER);
+			cb.setVerticalTextPosition(JButton.CENTER);
+		}
+		if(a=="<html><center>Passwort<br>aendern</center></html>"){
+			cb = new JButton(a,passwortIcon);
+			cb.setHorizontalTextPosition(JButton.CENTER);
+			cb.setVerticalTextPosition(JButton.CENTER);
+		}
+		if(a=="Reinigungsmodus"){
+			cb = new JButton(a,reinigungsIcon);
+			cb.setHorizontalTextPosition(JButton.CENTER);
+			cb.setVerticalTextPosition(JButton.CENTER);
+		}
+		else{
+			cb = new JButton(a);
+		}
 		cb.setBounds(x, y, b, h);
 		final String[] ca = { "" };
 		ca[0] = a;
