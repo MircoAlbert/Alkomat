@@ -86,10 +86,10 @@ public class MainFrame{
 	String auswahl = "";
 	String pwChange = "";
 
-	String[] zutatenliste = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine",
-			"Zitronensaft", "Gin", "Soda" };
+	String[] zutatenliste= ((new ZutatenListeLesen()).leseZutatenListe()).toArray(new String[0]);;// = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine", "Zitronensaft", "Gin", "Soda" };
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
+		
 	Cocktail[] cocktailsmoeglich;
 	String[] cocktailsmoeglichString;
 	List<Cocktail> cocktailsmoeglichList = new ArrayList<Cocktail>();
@@ -125,6 +125,7 @@ public class MainFrame{
 		
 	File zutaten;
 	File hash = new File("./hash.txt");
+	File zutatenList;
 	FileWriter writer;
 
 	List<JPanel> cpanels = new ArrayList<JPanel>();
@@ -830,6 +831,8 @@ public class MainFrame{
 		//GUI.pumpenAnsteuerung.bildschirmOn();
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");
+		GUI.zutatenList = new File("./ZutatenListe.txt");
+		
 		if(!GUI.hash.exists()){
 			List<String> hashcodes = new ArrayList<String>();
 			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword("1234", "alkomat"));
