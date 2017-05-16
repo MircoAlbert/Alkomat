@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -118,6 +119,10 @@ public class MainFrame{
 	Icon reinigungsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/reinigung.jpg")));
 	Icon passwortIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/passwort1.jpg")));
 	
+	Icon backgroundIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/background.jpg")));
+	
+	JLabel background = new JLabel();
+		
 	File zutaten;
 	File hash = new File("./hash.txt");
 	FileWriter writer;
@@ -132,6 +137,10 @@ public class MainFrame{
 	{
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		ActionListener al = new ActionListener() {
 
@@ -151,6 +160,10 @@ public class MainFrame{
 	{
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		ActionListener al = new ActionListener() {
 
@@ -253,6 +266,10 @@ public class MainFrame{
 		JButton cb;
 		cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		final String[] ca = { "" };
 		ca[0] = a;
 
@@ -383,7 +400,8 @@ public class MainFrame{
 					seitencounter++;
 					cpanels.add(new JPanel());
 					cpanels.get(seitencounter).setBounds(40, 80, 1024 - 80, 460);
-					cpanels.get(seitencounter).setBackground(new Color(255, 149, 14));
+					cpanels.get(seitencounter).setOpaque(false);
+					//cpanels.get(seitencounter).setBackground(new Color(255, 149, 14));
 					cpanels.get(seitencounter).setVisible(false);
 					cpanels.get(seitencounter).setLayout(null);
 					f.add(cpanels.get(seitencounter));
@@ -406,6 +424,10 @@ public class MainFrame{
 	{
 		JButton cb = new JButton(a.getName());
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		ActionListener al = new ActionListener() {
 
@@ -430,6 +452,10 @@ public class MainFrame{
 	JButton zahlButton(String a) // zur Erzeugung der PIN-Abfrage-Buttons
 	{
 		JButton b = new JButton(a);
+		b.setOpaque(false);
+		b.setContentAreaFilled(false);
+		b.setBorderPainted(true);
+		b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		final String[] c = { "" };
 		c[0] = a;
 
@@ -485,6 +511,9 @@ public class MainFrame{
 	JButton naechsteSeiteButton(final int next, final int akt) {
 		JButton cb = new JButton(naechsteSeite);
 		cb.setBounds(904, 0, 40, 460);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -501,6 +530,9 @@ public class MainFrame{
 	JButton vorherigeSeiteButton(final int last, final int akt) {
 		JButton cb = new JButton(vorherigeSeite);
 		cb.setBounds(0, 0, 40, 460);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -517,6 +549,10 @@ public class MainFrame{
 	JButton pwChangeButton(String a, int x, int y, int b, int h){
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		final String[] c = { "" };
 		c[0] = a;
 		
@@ -536,6 +572,10 @@ public class MainFrame{
 	JButton sperrButton(String a, int x, int y, int b, int h){
 		JButton cb = new JButton(a);
 		cb.setBounds(x, y, b, h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		ActionListener al =new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				aktPanel.setVisible(false);
@@ -551,12 +591,17 @@ public class MainFrame{
 	}
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
+		background.setIcon(backgroundIcon);
+		background.setLayout(new BorderLayout());
+		f.setContentPane(background);
 		
 		fuellmenge.addItem(150);
 		fuellmenge.addItem(200);
 		fuellmenge.addItem(250);
 		fuellmenge.addItem(300);
 		fuellmenge.setBounds(120,200,160,50);
+		fuellmenge.setOpaque(false);
+		fuellmenge.setFont(new Font(null, Font.PLAIN,20));
 		fuellmengenEingabe.setBounds(120,120,160,80);
 		
 					
@@ -568,7 +613,8 @@ public class MainFrame{
 		
 		cpanels.add(new JPanel());
 		cpanels.get(0).setBounds(40, 80, 1024 - 80, 460);
-		cpanels.get(0).setBackground(new Color(255, 149, 14));
+		cpanels.get(0).setOpaque(false);
+		//cpanels.get(0).setBackground(new Color(255, 149, 14));
 		cpanels.get(0).setVisible(false);
 		cpanels.get(0).setLayout(null);
 		f.getContentPane().add(cpanels.get(0));
@@ -578,40 +624,47 @@ public class MainFrame{
 		f.getContentPane().add(bar1);
 		bar1.setBounds(7, y, 165, h);
 		bar1.setString("Behaelter 1");
+		bar1.setOpaque(false);
 
 		bar2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar2.setStringPainted(true);
 		f.getContentPane().add(bar2);
 		bar2.setBounds(176, y, 165, h);
 		bar2.setString("Behaelter 2");
+		bar2.setOpaque(false);
 
 		bar3.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar3.setStringPainted(true);
 		f.getContentPane().add(bar3);
 		bar3.setBounds(345, y, 165, h);
 		bar3.setString("Behaelter 3");
+		bar3.setOpaque(false);
 
 		bar4.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar4.setStringPainted(true);
 		f.getContentPane().add(bar4);
 		bar4.setBounds(514, y, 165, h);
 		bar4.setString("Behaelter 4");
+		bar4.setOpaque(false);
 
 		bar5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar5.setStringPainted(true);
 		f.getContentPane().add(bar5);
 		bar5.setBounds(683, y, 165, h);
 		bar5.setString("Behaelter 5");
+		bar5.setOpaque(false);
 
 		bar6.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar6.setStringPainted(true);
 		f.getContentPane().add(bar6);
 		bar6.setBounds(852, y, 165, h);
 		bar6.setString("Behaelter 6");
+		bar6.setOpaque(false);
 
 		panelPW.setLayout(null);
 		panelPW.setBounds(40, 80, 1024 - 80, 460);
-		panelPW.setBackground(new Color(255, 149, 14));
+		panelPW.setOpaque(false);
+		//panelPW.setBackground(new Color(255, 149, 14));
 
 		f.getContentPane().add(menue);
 		menue.setVisible(false);
@@ -620,25 +673,29 @@ public class MainFrame{
 		cancel.setVisible(false);
 		
 		panelMenue.setBounds(40, 80, 1024 - 80, 460);
-		panelMenue.setBackground(new Color(255, 149, 14));
+		panelMenue.setOpaque(false);
+		//panelMenue.setBackground(new Color(255, 149, 14));
 		panelMenue.setVisible(false);
 		panelMenue.setLayout(null);
 		f.getContentPane().add(panelMenue);
 
 		panelZutatenAuswahl.setBounds(40, 80, 1024 - 80, 460);
-		panelZutatenAuswahl.setBackground(new Color(255, 149, 14));
+		panelZutatenAuswahl.setOpaque(false);
+		//panelZutatenAuswahl.setBackground(new Color(255, 149, 14));
 		panelZutatenAuswahl.setVisible(false);
 		panelZutatenAuswahl.setLayout(null);
 		f.getContentPane().add(panelZutatenAuswahl);
 		
 		panelChangePW.setBounds(40, 80, 1024 - 80, 460);
-		panelChangePW.setBackground(new Color(255, 149, 14));
+		panelChangePW.setOpaque(false);
+		//panelChangePW.setBackground(new Color(255, 149, 14));
 		panelChangePW.setVisible(false);
 		panelChangePW.setLayout(null);
 		f.getContentPane().add(panelChangePW);
 
 		panelWait.setBounds(40, 80, 1024 - 80, 460);
-		panelWait.setBackground(new Color(255, 149, 14));
+		panelWait.setOpaque(false);
+		//panelWait.setBackground(new Color(255, 149, 14));
 		panelWait.setVisible(false);
 		wartenOben.setHorizontalAlignment(JLabel.CENTER);
 		wartenOben.setVerticalAlignment(JLabel.CENTER);
@@ -650,7 +707,7 @@ public class MainFrame{
 		panelWait.add(wartenOben, BorderLayout.PAGE_START);
 		panelWait.add(wartenUnten, BorderLayout.PAGE_END);
 		panelWait.add(loadingLabel, BorderLayout.CENTER);
-		f.add(panelWait);
+		f.getContentPane().add(panelWait);
 
 		n1.setBounds(0 + 352, 0 + 220, 80, 80);
 		n2.setBounds(80 + 352, 0 + 220, 80, 80);
@@ -679,7 +736,7 @@ public class MainFrame{
 		
 		panelMenue.setLayout(null);
 		panelMenue.add(menueButtonCocktails("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(menueButtonZutaten("<html><center>Zutaten<br>aendern</center></html>", 472, 50, 157, 175));
+		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>aendern</html>", 472, 50, 157, 175));
 		panelMenue.add(menueButtonReinigung("Reinigungsmodus", 315, 225, 157, 175));
 		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
 		panelMenue.add(fuellmenge);
@@ -697,6 +754,13 @@ public class MainFrame{
 		comboBox_4.setBounds(20, 250, 288, 66);
 		comboBox_5.setBounds(328, 250, 288, 66);
 		comboBox_6.setBounds(636, 250, 288, 66);
+		comboBox_1.setFont(new Font(null, Font.PLAIN,25));
+		comboBox_2.setFont(new Font(null, Font.PLAIN,25));
+		comboBox_3.setFont(new Font(null, Font.PLAIN,25));
+		comboBox_4.setFont(new Font(null, Font.PLAIN,25));
+		comboBox_5.setFont(new Font(null, Font.PLAIN,25));
+		comboBox_6.setFont(new Font(null, Font.PLAIN,25));
+		
 		
 		behaelter1.setBounds(20, 50, 288, 66);
 		behaelter2.setBounds(328, 50, 288, 66);
@@ -744,11 +808,11 @@ public class MainFrame{
 		
 		f.getContentPane().add(panelPW);
 
-		// f.setExtendedState(JFrame.MAXIMIZED_BOTH); //funktioniert nicht in
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH); //funktioniert nicht in
 		// Kombination mit setResizeable(false)
 		f.getContentPane().setLayout(null);
 		f.setResizable(false);
-		//f.setUndecorated(true); //entfernt Programmleiste, für echtes
+		f.setUndecorated(true); //entfernt Programmleiste, für echtes
 		// Vollbild
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		f.setSize(1024, 600);
