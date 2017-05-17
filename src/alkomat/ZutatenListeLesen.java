@@ -2,25 +2,30 @@ package alkomat;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class ZutatenListeLesen {
-	
-	ZutatenListeLesen() throws FileNotFoundException{
-		
+
+	ZutatenListeLesen() {
+
 	}
-	public List<String> leseZutatenListe() throws IOException{
-	List<String> zutatenList = new ArrayList<String>();
-	BufferedReader reader;
-	File zutatenListe = new File("./ZutatenListe.txt");
-	zutatenList.add("");
-	reader=new BufferedReader(new FileReader(zutatenListe));
-	String info;
-	while((info = reader.readLine()) != null){
-	zutatenList.add(info);	
+
+
+	public List<String> zutatenAusCocktailListe() throws IOException {
+		Cocktail[] cocktails = (new CocktailPruefen()).getAllCocktails();
+		List<String> zutaten = new ArrayList<String>();
+		Set<String> zutatenTemp = new HashSet<String>();
+		zutaten.add("");
+		for (int i = 0; i < cocktails.length; i++){
+			for (int j = 0; j < cocktails[i].getRezept().length; j++){
+				zutatenTemp.add(cocktails[i].getRezept()[j]);
+			}
+		}	
+		zutaten.addAll(zutatenTemp);	
+		return zutaten;
 	}
-	reader.close();
-	return zutatenList;
-	};	
 
 }

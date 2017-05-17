@@ -10,7 +10,7 @@ public class CocktailPruefen {
 	BufferedReader zeilen;
 	BufferedReader reader;
 	File rezepte = new File("./Rezepte.txt");
-
+	Cocktail[] Cocktails;
 	// public static void main(String[] args) {
 	// new CocktailPruefen();
 	// }
@@ -57,7 +57,7 @@ public class CocktailPruefen {
 			zeilenzähler++;
 		}
 			
-		Cocktail Cocktails[] = new Cocktail[zeilenzähler];// Anzahl der Zeilen
+		Cocktails = new Cocktail[zeilenzähler];// Anzahl der Zeilen
 		List<Cocktail> CocktailsList = new ArrayList<Cocktail>();
 		// angeben!!!
 
@@ -98,6 +98,12 @@ public class CocktailPruefen {
 		
 		return CocktailsList;
 
+	}
+	
+	public Cocktail[] getAllCocktails() throws IOException{
+		String[] a = {"","","","","",""};
+		loadCocktail(a);
+		return Cocktails;
 	}
 
 }

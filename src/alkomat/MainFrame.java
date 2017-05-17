@@ -86,7 +86,7 @@ public class MainFrame{
 	String auswahl = "";
 	String pwChange = "";
 
-	String[] zutatenliste= ((new ZutatenListeLesen()).leseZutatenListe()).toArray(new String[0]);;// = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine", "Zitronensaft", "Gin", "Soda" };
+	String[] zutatenliste= ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);;// = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine", "Zitronensaft", "Gin", "Soda" };
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
 		
