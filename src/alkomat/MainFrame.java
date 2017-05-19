@@ -3,6 +3,7 @@ package alkomat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -38,17 +40,18 @@ public class MainFrame{
 	private boolean pwchanger = false;
 	String stern = "*";
 	int x = 0, y = 0, b = 165, h = 40, lab = 1;
+	int fuellmengeGlas = 150;
 	JButton close = alkomat.closeButton.button("Close");
 	JLabel wartenOben = new JLabel("Bitte Warten!");
 	JLabel wartenUnten = new JLabel("Cocktail wird gemixt!");
 	JLabel passwordField = new JLabel("", JLabel.CENTER);
 	JLabel pwChangeLabel = new JLabel("", JLabel.CENTER);
-	JLabel behaelter1 = new JLabel("Behaelter 1:", JLabel.CENTER);
-	JLabel behaelter2 = new JLabel("Behaelter 2:", JLabel.CENTER);
-	JLabel behaelter3 = new JLabel("Behaelter 3:", JLabel.CENTER);
-	JLabel behaelter4 = new JLabel("Behaelter 4:", JLabel.CENTER);
-	JLabel behaelter5 = new JLabel("Behaelter 5:", JLabel.CENTER);
-	JLabel behaelter6 = new JLabel("Behaelter 6:", JLabel.CENTER);
+	JLabel behaelter1 = new JLabel("Behälter 1:", JLabel.CENTER);
+	JLabel behaelter2 = new JLabel("Behälter 2:", JLabel.CENTER);
+	JLabel behaelter3 = new JLabel("Behälter 3:", JLabel.CENTER);
+	JLabel behaelter4 = new JLabel("Behälter 4:", JLabel.CENTER);
+	JLabel behaelter5 = new JLabel("Behälter 5:", JLabel.CENTER);
+	JLabel behaelter6 = new JLabel("Behälter 6:", JLabel.CENTER);
 	JLabel altesPW = new JLabel("<html><center>Bitte alte PIN<br>eingeben!</center></html>", JLabel.CENTER);
 	JLabel neuesPW = new JLabel("<html><center>Bitte neue PIN<br>eingeben!</center></html>", JLabel.CENTER);
 	JLabel fuellmengenEingabe = new JLabel("<html><center>Bitte Füllmenge<br>auswählen<br>(in ml):</center></html>", JLabel.CENTER);
@@ -76,9 +79,13 @@ public class MainFrame{
 	JButton n9 = zahlButton("9");
 	JButton cocktails = new JButton("Cocktails");
 	JButton reinigung = new JButton("Reinigungsprogramm");
-	JButton menue = menueButton("Menue", 345, h, b, h);
+	JButton menue = menueButton("Menü", 345, h, b, h);
 	JButton cancel = cancelButton("Cancel", 514, h, b, h);
 	JButton sperren = sperrButton("Sperren",176,y+h,165,h);
+	JButton fuellmenge150;// = fuellmenge150("150",120,120,40,60);
+	JButton fuellmenge200;// = fuellmenge150("150",160,120,40,60);
+	JButton fuellmenge250;// = fuellmenge150("150",200,120,40,60);
+	JButton fuellmenge300;// = fuellmenge150("150",240,120,40,60);
 	JPasswordField pass = new JPasswordField(4);
 	// JButton[] zahlfeld = new JButton[10];
 	String PIN = "";
@@ -120,6 +127,18 @@ public class MainFrame{
 	Icon passwortIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/passwort1.jpg")));
 	
 	Icon backgroundIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/background.jpg")));
+	ImageIcon glasVoll = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasvoll.png")));
+	ImageIcon glasLeer = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasleer.png")));
+	
+	Icon fuellmenge150IconVoll = new ImageIcon(glasVoll.getImage().getScaledInstance(45, 68,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge150IconLeer = new ImageIcon(glasLeer.getImage().getScaledInstance(45, 68,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge200IconVoll = new ImageIcon(glasVoll.getImage().getScaledInstance(50, 76,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge200IconLeer = new ImageIcon(glasLeer.getImage().getScaledInstance(50, 76,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge250IconVoll = new ImageIcon(glasVoll.getImage().getScaledInstance(55, 84,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge250IconLeer = new ImageIcon(glasLeer.getImage().getScaledInstance(55, 84,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge300IconVoll = new ImageIcon(glasVoll.getImage().getScaledInstance(60, 91,java.awt.Image.SCALE_SMOOTH));
+	Icon fuellmenge300IconLeer = new ImageIcon(glasLeer.getImage().getScaledInstance(60, 91,java.awt.Image.SCALE_SMOOTH));
+	
 	
 	JLabel background = new JLabel();
 		
@@ -133,6 +152,8 @@ public class MainFrame{
 	PwCheck pwcheck = new PwCheck();
 	
 	PumpenAnsteuerung pumpenAnsteuerung = new PumpenAnsteuerung();
+	
+	MyBorder buttonBorder = new MyBorder();
 
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
@@ -141,7 +162,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		cb.setBorder(buttonBorder);
 
 		ActionListener al = new ActionListener() {
 
@@ -149,6 +170,7 @@ public class MainFrame{
 				menue.setVisible(false);
 				aktPanel.setVisible(false);
 				panelMenue.setVisible(true);
+				PIN="";
 				aktPanel=panelMenue;
 			}
 		};
@@ -164,7 +186,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		cb.setBorder(buttonBorder);
 
 		ActionListener al = new ActionListener() {
 
@@ -250,10 +272,10 @@ public class MainFrame{
 			public void actionPerformed(ActionEvent e){
 				panelMenue.setVisible(false);
 				panelPW.setVisible(true);
+				menue.setVisible(true);
 				aktPanel = panelPW;
 				pwchanger=true;
 				altesPW.setVisible(true);
-				sperren.setVisible(false);
 			}
 			
 		};
@@ -270,7 +292,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		
 		final String[] ca = { "" };
 		ca[0] = a;
 
@@ -428,8 +450,9 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-
+		cb.setFocusPainted(false);
+		cb.setBorder(buttonBorder);
+		
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -438,7 +461,7 @@ public class MainFrame{
 				for(int i=0; i<mengenGeordnet.length;i++)
 				System.out.println(mengenGeordnet[i].toString());
 				
-				pumpenAnsteuerung.start(mengenGeordnet,(Integer) fuellmenge.getSelectedItem(), aktPanel, panelWait, cancel, menue, sperren);
+				pumpenAnsteuerung.start(mengenGeordnet,(Integer) fuellmengeGlas, aktPanel, panelWait, cancel, menue, sperren);
 				menue.setVisible(false);
 				sperren.setVisible(false);
 				CancelButtonProperties();
@@ -456,7 +479,7 @@ public class MainFrame{
 		b.setOpaque(false);
 		b.setContentAreaFilled(false);
 		b.setBorderPainted(true);
-		b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		
 		final String[] c = { "" };
 		c[0] = a;
 
@@ -474,6 +497,8 @@ public class MainFrame{
 							panelPW.setVisible(false);
 							panelChangePW.setVisible(true);
 							altesPW.setVisible(false);
+							menue.setVisible(false);
+							sperren.setVisible(false);
 							aktPanel=panelChangePW;
 						}
 						else{
@@ -483,6 +508,7 @@ public class MainFrame{
 						sperren.setVisible(true);
 						}
 					}
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -490,10 +516,12 @@ public class MainFrame{
 
 				try {
 					if (pwcheck.checkLength(PIN)) {
+						if(!pwcheck.checkPW(PIN))
+							JOptionPane.showMessageDialog(f, "Falsche PIN!","Falsche PIN eingegeben!", JOptionPane.WARNING_MESSAGE);
 						passwordField.setText("");
 						PIN="";
 						stern="";
-
+						
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -515,6 +543,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
+		
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -553,7 +582,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		
 		final String[] c = { "" };
 		c[0] = a;
 		
@@ -576,7 +605,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	
 		ActionListener al =new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				aktPanel.setVisible(false);
@@ -591,7 +620,103 @@ public class MainFrame{
 		return cb;
 	}
 	
+	void fuellmenge150(String a, int x, int y, int b, int h){
+		fuellmenge150 = new JButton(a,fuellmenge150IconLeer);
+		fuellmenge150.setBounds(x, y, b, h);
+		fuellmenge150.setOpaque(false);
+		fuellmenge150.setContentAreaFilled(false);
+		fuellmenge150.setBorderPainted(false);
+		fuellmenge150.setVerticalAlignment(SwingConstants.BOTTOM);
+		fuellmenge150.setHorizontalTextPosition(JButton.CENTER);
+		fuellmenge150.setVerticalTextPosition(JButton.CENTER);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				fuellmengeGlas=150;
+				fuellmenge150.setIcon(fuellmenge150IconVoll);
+				fuellmenge200.setIcon(fuellmenge200IconLeer);
+				fuellmenge250.setIcon(fuellmenge250IconLeer);
+				fuellmenge300.setIcon(fuellmenge300IconLeer);
+			}
+		};
+		fuellmenge150.addActionListener(al);
+	
+	}
+	
+	void fuellmenge200(String a, int x, int y, int b, int h){
+		fuellmenge200 = new JButton(a,fuellmenge200IconLeer);
+		fuellmenge200.setBounds(x, y, b, h);
+		fuellmenge200.setOpaque(false);
+		fuellmenge200.setContentAreaFilled(false);
+		fuellmenge200.setBorderPainted(false);
+		fuellmenge200.setVerticalAlignment(SwingConstants.BOTTOM);
+		fuellmenge200.setHorizontalTextPosition(JButton.CENTER);
+		fuellmenge200.setVerticalTextPosition(JButton.CENTER);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				fuellmengeGlas=200;
+				fuellmenge150.setIcon(fuellmenge150IconLeer);
+				fuellmenge200.setIcon(fuellmenge200IconVoll);
+				fuellmenge250.setIcon(fuellmenge250IconLeer);
+				fuellmenge300.setIcon(fuellmenge300IconLeer);
+			}
+		};
+		fuellmenge200.addActionListener(al);
+	
+	}
+	
+	void fuellmenge250(String a, int x, int y, int b, int h){
+		fuellmenge250 = new JButton(a,fuellmenge250IconLeer);
+		fuellmenge250.setBounds(x, y, b, h);
+		fuellmenge250.setOpaque(false);
+		fuellmenge250.setContentAreaFilled(false);
+		fuellmenge250.setBorderPainted(false);
+		fuellmenge250.setVerticalAlignment(SwingConstants.BOTTOM);
+		fuellmenge250.setHorizontalTextPosition(JButton.CENTER);
+		fuellmenge250.setVerticalTextPosition(JButton.CENTER);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				fuellmengeGlas=250;
+				fuellmenge150.setIcon(fuellmenge150IconLeer);
+				fuellmenge200.setIcon(fuellmenge200IconLeer);
+				fuellmenge250.setIcon(fuellmenge250IconVoll);
+				fuellmenge300.setIcon(fuellmenge300IconLeer);
+			}
+		};
+		fuellmenge250.addActionListener(al);
+	
+	}
+	
+	void fuellmenge300(String a, int x, int y, int b, int h){
+		fuellmenge300 = new JButton(a,fuellmenge300IconLeer);
+		fuellmenge300.setBounds(x, y, b, h);
+		fuellmenge300.setOpaque(false);
+		fuellmenge300.setContentAreaFilled(false);
+		fuellmenge300.setBorderPainted(false);
+		fuellmenge300.setVerticalAlignment(SwingConstants.BOTTOM);
+		fuellmenge300.setHorizontalTextPosition(JButton.CENTER);
+		fuellmenge300.setVerticalTextPosition(JButton.CENTER);
+		
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				fuellmengeGlas=300;
+				fuellmenge150.setIcon(fuellmenge150IconLeer);
+				fuellmenge200.setIcon(fuellmenge200IconLeer);
+				fuellmenge250.setIcon(fuellmenge250IconLeer);
+				fuellmenge300.setIcon(fuellmenge300IconVoll);
+			}
+		};
+		fuellmenge300.addActionListener(al);
+	
+	}
+	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
+		fuellmenge150("<html><center>150<br>ml</center></html>",40,175,60,95);
+		fuellmenge200("<html><center>200<br>ml</center></html>",100,175,60,95);
+		fuellmenge250("<html><center>250<br>ml</center></html>",160,175,60,95);
+		fuellmenge300("<html><center>300<br>ml</center></html>",220,175,60,95);
 		background.setIcon(backgroundIcon);
 		background.setLayout(new BorderLayout());
 		f.setContentPane(background);
@@ -654,14 +779,14 @@ public class MainFrame{
 		bar5.setBounds(683, y, 165, h);
 		bar5.setString("Behaelter 5");
 		bar5.setOpaque(false);
-
+		
 		bar6.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		bar6.setStringPainted(true);
 		f.getContentPane().add(bar6);
 		bar6.setBounds(852, y, 165, h);
 		bar6.setString("Behaelter 6");
 		bar6.setOpaque(false);
-
+		
 		panelPW.setLayout(null);
 		panelPW.setBounds(40, 80, 1024 - 80, 460);
 		panelPW.setOpaque(false);
@@ -737,11 +862,15 @@ public class MainFrame{
 		
 		panelMenue.setLayout(null);
 		panelMenue.add(menueButtonCocktails("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>aendern</html>", 472, 50, 157, 175));
+		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>aädern</html>", 472, 50, 157, 175));
 		panelMenue.add(menueButtonReinigung("Reinigungsmodus", 315, 225, 157, 175));
-		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>aendern</center></html>", 472,225,157,175));
-		panelMenue.add(fuellmenge);
-		panelMenue.add(fuellmengenEingabe);
+		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>ändern</center></html>", 472,225,157,175));
+		panelMenue.add(fuellmenge150);
+		panelMenue.add(fuellmenge200);
+		panelMenue.add(fuellmenge250);
+		panelMenue.add(fuellmenge300);
+		//panelMenue.add(fuellmenge);
+		//panelMenue.add(fuellmengenEingabe);
 
 		comboBox_1.addItemListener(new MyItemListener(model2, model3, model4, model5, model6, 0, auswahl_zutat));
 		comboBox_2.addItemListener(new MyItemListener(model1, model3, model4, model5, model6, 1, auswahl_zutat));
@@ -818,7 +947,7 @@ public class MainFrame{
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		f.setSize(1024, 600);
 		f.setVisible(true);
-
+		
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -827,7 +956,8 @@ public class MainFrame{
 			} catch( Exception e ) { e.printStackTrace(); }
 		*/
 		MainFrame GUI = new MainFrame();
-		// new Fuellstand(GUI.bar1, GUI.bar2, GUI.bar3, GUI.bar4, GUI.bar5, GUI.bar6);
+		//Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
+		//fuellstand.execute();
 		//GUI.pumpenAnsteuerung.bildschirmOn();
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");
@@ -842,6 +972,12 @@ public class MainFrame{
 			JOptionPane.showMessageDialog(GUI.f, "Standard-Passwort gesetzt!","Standard-Passwort gesetzt!", JOptionPane.WARNING_MESSAGE);
 		}
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
+		GUI.bar1.setString("1 - "+GUI.auswahl_zutat_akt[0]);
+		GUI.bar2.setString("2 - "+GUI.auswahl_zutat_akt[1]);
+		GUI.bar3.setString("3 - "+GUI.auswahl_zutat_akt[2]);
+		GUI.bar4.setString("4 - "+GUI.auswahl_zutat_akt[3]);
+		GUI.bar5.setString("5 - "+GUI.auswahl_zutat_akt[4]);
+		GUI.bar6.setString("6 - "+GUI.auswahl_zutat_akt[5]);
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
 		GUI.cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
