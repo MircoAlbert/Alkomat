@@ -337,6 +337,12 @@ public class MainFrame{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					bar1.setString("1 - "+auswahl_zutat_akt[0]);
+					bar2.setString("2 - "+auswahl_zutat_akt[1]);
+					bar3.setString("3 - "+auswahl_zutat_akt[2]);
+					bar4.setString("4 - "+auswahl_zutat_akt[3]);
+					bar5.setString("5 - "+auswahl_zutat_akt[4]);
+					bar6.setString("6 - "+auswahl_zutat_akt[5]);
 
 				}
 				if (auswahl.equals("Abbrechen")) {
@@ -956,8 +962,8 @@ public class MainFrame{
 			} catch( Exception e ) { e.printStackTrace(); }
 		*/
 		MainFrame GUI = new MainFrame();
-		//Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
-		//fuellstand.execute();
+		Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
+		fuellstand.execute();
 		//GUI.pumpenAnsteuerung.bildschirmOn();
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");

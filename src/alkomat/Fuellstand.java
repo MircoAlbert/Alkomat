@@ -39,7 +39,7 @@ class Fuellstand extends SwingWorker<Void, String> {
 			
 			String line = data.nextLine();
 			publish(line);
-			System.out.println(line);
+			//System.out.println(line);
 			
 			
 		}
