@@ -30,6 +30,7 @@ class MyItemListener implements ItemListener {
 
 	// This method is called only if a new item has been selected.
 	public void itemStateChanged(ItemEvent evt) {
+		@SuppressWarnings({ "unchecked", "unused" })
 		JComboBox<String> cb = (JComboBox<String>) evt.getSource();
 
 		String item = (String) evt.getItem();

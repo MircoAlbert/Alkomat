@@ -1,9 +1,7 @@
 package alkomat;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -968,7 +964,7 @@ public class MainFrame{
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");
 		GUI.zutatenList = new File("./ZutatenListe.txt");
-		
+		GUI.fuellmenge150.setIcon(GUI.fuellmenge150IconVoll);
 		if(!GUI.hash.exists()){
 			List<String> hashcodes = new ArrayList<String>();
 			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword("1234", "alkomat"));

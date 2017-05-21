@@ -19,12 +19,12 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	private JPanel panelList;
 	private JPanel panelWait;
 	private Double maxMenge = 0.0;
-	private Integer[] mengenDouble;
+	
 	private JButton cancel;
 	private JButton menue;
 	private JButton sperren;
 	
-	private Timer timer;
+	
 	private boolean cancelled = false;
 	
 	private GpioController gpio;
@@ -185,7 +185,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.pin4 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 4", PinState.HIGH);
 		this.pin5 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 5", PinState.HIGH);
 		this.pin6 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 6", PinState.HIGH);
-		this.mengenDouble = new Integer[mengenGeordnet.length];
+		//this.mengenDouble = new Integer[mengenGeordnet.length];
 		
 		Timer timer = new Timer();
 		for(int i=0;i<mengenGeordnet.length;i++){
