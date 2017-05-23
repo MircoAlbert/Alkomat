@@ -327,6 +327,9 @@ public class MainFrame{
 
 						CocktailButtonProperties(cocktailsmoeglichList.toArray(new Cocktail[0]));
 					} else {
+						cpanels.get(0).removeAll();
+						cpanels.get(0).revalidate();
+						cpanels.get(0).repaint();
 						System.out.println("keine Cocktails möglich!");
 						JOptionPane.showMessageDialog(f, "Keine Cocktails möglich!","Keine Cocktails möglich", JOptionPane.WARNING_MESSAGE);
 					}
