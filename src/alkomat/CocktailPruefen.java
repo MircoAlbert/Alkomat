@@ -1,6 +1,10 @@
 package alkomat;
 
+import java.awt.Toolkit;
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +13,31 @@ public class CocktailPruefen {
 	String[] zutaten;
 	BufferedReader zeilen;
 	BufferedReader reader;
-	File rezepte = new File("./Rezepte.txt");
+	File rezepte = new File("./res/Rezepte.txt");
 	Cocktail[] Cocktails;
+	InputStream standardRezepte = this.getClass().getClassLoader().getResourceAsStream("res/Rezepte.txt");
+	
 	// public static void main(String[] args) {
 	// new CocktailPruefen();
 	// }
 
-	/*
-	 * public CocktailPruefen(String[] zutaten) { // this.zutaten=zutaten;
-	 * 
-	 * try { loadCocktail(zutaten); } catch (FileNotFoundException ex) {
-	 * ex.printStackTrace(); } }
-	 */
+	public CocktailPruefen() throws IOException {
+		System.out.println(URLDecoder.decode(this.getClass().getClassLoader().getResource("res/Rezepte.txt").getFile(), "UTF-8"));
+		if (!rezepte.exists()) {
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(standardRezepte));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(rezepte, true));
+			String info;
+			while ((info = reader.readLine()) != null) {
+				writer.write(info);
+				writer.newLine();
+
+			}
+			reader.close();
+			writer.close();
+		}
+
+	}
 
 	public boolean vergleichZutaten(String[] Vorhanden, String[] ImRezept) {
 
@@ -33,30 +50,29 @@ public class CocktailPruefen {
 		}
 		for (int f = 0; f < Vorhanden.length; f++) {
 			for (int u = 0; u < ImRezept.length; u++) {
-				if(!(Vorhanden[f]==null))
+				if (!(Vorhanden[f] == null))
 					if (Vorhanden[f].equals(ImRezept[u]))
-					VorhandenCount++;
+						VorhandenCount++;
 			}
-		
+
 		}
 
 		if (VorhandenCount == ZutatenCount) {
 			// System.out.println("Cocktail moeglich");
 			return true;
-		}
-		else {
+		} else {
 			// System.out.println("Nicht genug Zutaten");
 			return false;
 		}
 	}
 
 	public List<Cocktail> loadCocktail(String[] zutaten) throws IOException {
-		int zeilenzähler=-1;
-		zeilen=new BufferedReader(new FileReader(rezepte));
-		while(zeilen.readLine() != null){
+		int zeilenzähler = -1;
+		zeilen = new BufferedReader(new FileReader(rezepte));
+		while (zeilen.readLine() != null) {
 			zeilenzähler++;
 		}
-			
+
 		Cocktails = new Cocktail[zeilenzähler];// Anzahl der Zeilen
 		List<Cocktail> CocktailsList = new ArrayList<Cocktail>();
 		// angeben!!!
@@ -83,25 +99,25 @@ public class CocktailPruefen {
 
 		for (int i = 0; i < Cocktails.length; i++) {
 			if (vergleichZutaten(ImBehalter, Cocktails[i].getRezept()) == true) {
-				//System.out.println(Cocktails[i].getName());
+				// System.out.println(Cocktails[i].getName());
 				// System.out.println(" ist möglich");
 				CocktailsList.add(Cocktails[i]);
 			} else {
 				// System.out.print(Cocktails[i].getName());
 				// System.out.println(" ist nicht möglich");
-				
+
 			}
-		
+
 		}
-		if(CocktailsList.isEmpty())
+		if (CocktailsList.isEmpty())
 			return null;
-		
+
 		return CocktailsList;
 
 	}
-	
-	public Cocktail[] getAllCocktails() throws IOException{
-		String[] a = {"","","","","",""};
+
+	public Cocktail[] getAllCocktails() throws IOException {
+		String[] a = { "", "", "", "", "", "" };
 		loadCocktail(a);
 		return Cocktails;
 	}

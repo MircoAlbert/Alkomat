@@ -140,9 +140,8 @@ public class MainFrame{
 	
 	JLabel background = new JLabel();
 		
-	File zutaten;
-	File hash = new File("./hash.txt");
-	File zutatenList;
+	File zutaten = new File("./res/Zutaten.txt");
+	File hash = new File("./res/hash.txt");
 	FileWriter writer;
 
 	List<JPanel> cpanels = new ArrayList<JPanel>();
@@ -152,7 +151,9 @@ public class MainFrame{
 	PumpenAnsteuerung pumpenAnsteuerung = new PumpenAnsteuerung();
 	
 	MyBorder buttonBorder = new MyBorder();
-
+	
+	CocktailPruefen cocktailPruefen = new CocktailPruefen();
+	
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
 		JButton cb = new JButton(a);
@@ -313,7 +314,7 @@ public class MainFrame{
 						System.out.println(s);
 
 					try {
-						cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(auswahl_zutat_akt);
+						cocktailsmoeglichList = cocktailPruefen.loadCocktail(auswahl_zutat_akt);
 					} catch (IOException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -741,6 +742,8 @@ public class MainFrame{
 	}
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
+		System.out.println(getClass().getClassLoader().getResource("res/background.jpg"));
+		
 		fuellmenge150("<html><center>150<br>ml</center></html>",40,175,60,95);
 		fuellmenge200("<html><center>200<br>ml</center></html>",100,175,60,95);
 		fuellmenge250("<html><center>250<br>ml</center></html>",160,175,60,95);
@@ -997,13 +1000,15 @@ public class MainFrame{
 			  UIManager.setLookAndFeel( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
 			} catch( Exception e ) { e.printStackTrace(); }
 		*/
+		File dir = new File("./res");
+		if(!dir.exists())
+			dir.mkdir();
 		MainFrame GUI = new MainFrame();
 		Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
 		fuellstand.execute();
 		//GUI.pumpenAnsteuerung.bildschirmOn();
-		GUI.zutaten = new File("./Zutaten.txt");
-		GUI.hash = new File("./hash.txt");
-		GUI.zutatenList = new File("./ZutatenListe.txt");
+		GUI.zutaten = new File("./res/Zutaten.txt");
+		GUI.hash = new File("./res/hash.txt");
 		GUI.fuellmenge150.setIcon(GUI.fuellmenge150IconVoll);
 		if(!GUI.hash.exists()){
 			List<String> hashcodes = new ArrayList<String>();
@@ -1022,12 +1027,9 @@ public class MainFrame{
 		GUI.bar6.setString("6 - "+GUI.auswahl_zutat_akt[5]);
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
-		try {
-			GUI.cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
-		} catch (FileNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
 		
+		GUI.cocktailsmoeglichList = (GUI.cocktailPruefen).loadCocktail(GUI.auswahl_zutat_akt);
+				
 		if (!(GUI.cocktailsmoeglichList==null)) {
 			System.out.println(GUI.cocktailsmoeglichList.size());
 			GUI.cocktailsmoeglichString = new String[GUI.cocktailsmoeglichList.size()];

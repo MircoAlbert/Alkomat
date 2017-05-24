@@ -12,7 +12,7 @@ class ZutatenLesen {
 	String[] leseZutaten(){
 		String zutaten[] = new String[6];
 		BufferedReader reader;
-		File zutatentxt = new File("./Zutaten.txt");
+		File zutatentxt = new File("./res/Zutaten.txt");
 		try{
 			String info;
 			System.out.println("Reading...");
