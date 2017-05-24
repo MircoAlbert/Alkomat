@@ -58,38 +58,51 @@ class Fuellstand extends SwingWorker<Void, String> {
 	
 		if(DataLineInt[0]<=30)
 			bar1.setForeground(Color.RED);
-		if(DataLineInt[1]<=30)
-			bar2.setForeground(Color.RED);
-		if(DataLineInt[2]<=30)
-			bar3.setForeground(Color.RED);
-		if(DataLineInt[3]<=30)
-			bar4.setForeground(Color.RED);
-		if(DataLineInt[4]<=30)
-			bar5.setForeground(Color.RED);
-		if(DataLineInt[5]<=30)
-			bar6.setForeground(Color.RED);
-		
 		else if((30<DataLineInt[0])&&(DataLineInt[0]<=50))
 			bar1.setForeground(Color.ORANGE);
+		else 
+			bar1.setForeground(Color.GREEN);
+		
+		
+		if(DataLineInt[1]<=30)
+			bar2.setForeground(Color.RED);
 		else if((30<DataLineInt[1])&&(DataLineInt[1]<=50))
 			bar2.setForeground(Color.ORANGE);
+		else
+			bar2.setForeground(Color.GREEN);
+		
+		
+		if(DataLineInt[2]<=30)
+			bar3.setForeground(Color.RED);
 		else if((30<DataLineInt[2])&&(DataLineInt[2]<=50))
 			bar3.setForeground(Color.ORANGE);
+		else
+			bar3.setForeground(Color.GREEN);
+		
+		
+		if(DataLineInt[3]<=30)
+			bar4.setForeground(Color.RED);
 		else if((30<DataLineInt[3])&&(DataLineInt[3]<=50))
 			bar4.setForeground(Color.ORANGE);
+		else
+			bar4.setForeground(Color.GREEN);
+		
+		
+		if(DataLineInt[4]<=30)
+			bar5.setForeground(Color.RED);
 		else if((30<DataLineInt[4])&&(DataLineInt[4]<=50))
 			bar5.setForeground(Color.ORANGE);
+		else
+			bar5.setForeground(Color.GREEN);
+		
+		
+		if(DataLineInt[5]<=30)
+			bar6.setForeground(Color.RED);
 		else if((30<DataLineInt[5])&&(DataLineInt[5]<=50))
 			bar6.setForeground(Color.ORANGE);
-		
-		else{
-			bar1.setForeground(Color.GREEN);
-			bar2.setForeground(Color.GREEN);
-			bar3.setForeground(Color.GREEN);
-			bar4.setForeground(Color.GREEN);
-			bar5.setForeground(Color.GREEN);
+		else
 			bar6.setForeground(Color.GREEN);
-		}
+		
 		bar1.setValue(DataLineInt[0]);
 		bar2.setValue(DataLineInt[1]);
 		bar3.setValue(DataLineInt[2]);

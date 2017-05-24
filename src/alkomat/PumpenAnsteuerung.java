@@ -1,5 +1,7 @@
 package alkomat;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,6 +13,8 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+
+import alkomat.PumpenAnsteuerung.setHigh;
 
 class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 {
@@ -50,8 +54,13 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	
 	private Unprovision7 unprovision7;
 	
+	private Map<Integer, setHigh> pinTasks = new HashMap<Integer, setHigh>();
+	private Map<Integer, GpioPinDigitalOutput> pins = new HashMap<Integer, GpioPinDigitalOutput>();
+	
+	
 	public PumpenAnsteuerung(){
 		this.gpio = GpioFactory.getInstance();
+			
 	}
 	
 	public void bildschirmOn(){
@@ -224,6 +233,33 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		timer.schedule(panelRemove, maxMenge.intValue());
 		timer.schedule(unprovision, maxMenge.intValue());
 				
+	}
+	
+	public void reinigung(int i){
+		this.pins.put(1,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH));
+		this.pins.put(2,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 2", PinState.HIGH));
+		this.pins.put(3,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 3", PinState.HIGH));
+		this.pins.put(4,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 4", PinState.HIGH));
+		this.pins.put(5,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 5", PinState.HIGH));
+		this.pins.put(6,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 6", PinState.HIGH));
+		
+		this.pinTasks.put(1, new setHigh(pin1));
+		this.pinTasks.put(2, new setHigh(pin2));
+		this.pinTasks.put(3, new setHigh(pin3));
+		this.pinTasks.put(4, new setHigh(pin4));
+		this.pinTasks.put(5, new setHigh(pin5));
+		this.pinTasks.put(6, new setHigh(pin6));
+		
+		Timer timer = new Timer();
+		
+		panelRemove = new panelRemove();
+		
+		unprovision = new Unprovision();
+		
+		pins.get(i).low();
+		timer.schedule(pinTasks.get(i), 100*1000/8*10);
+		
+		
 	}
 	
 	

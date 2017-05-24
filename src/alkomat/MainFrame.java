@@ -68,6 +68,7 @@ public class MainFrame{
 	JPanel panelWait = new JPanel();
 	JPanel panelChangePW = new JPanel();
 	JPanel aktPanel;
+	JPanel reinigungsPanel = new JPanel();
 	JButton n1 = zahlButton("1");
 	JButton n2 = zahlButton("2");
 	JButton n3 = zahlButton("3");
@@ -252,7 +253,9 @@ public class MainFrame{
 		
 		ActionListener al = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				panelMenue.setVisible(false);
+				reinigungsPanel.setVisible(true);
+				aktPanel=reinigungsPanel;
 			}
 			
 		};
@@ -629,6 +632,24 @@ public class MainFrame{
 		return cb;
 	}
 	
+	JButton behälterReinigungsButton(String a, int x,int y, int b, int h, int behälter){
+		JButton cb = new JButton(a);
+		cb.setBounds(x,y,b,h);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(true);
+		
+		final int[] be = {0};
+		be[0]=behälter;
+		ActionListener al = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				pumpenAnsteuerung.reinigung(be[0]);
+			}
+		};
+		cb.addActionListener(al);
+		return cb;
+	}
+	
 	void fuellmenge150(String a, int x, int y, int b, int h){
 		fuellmenge150 = new JButton(a,fuellmenge150IconLeer);
 		fuellmenge150.setBounds(x, y, b, h);
@@ -819,6 +840,7 @@ public class MainFrame{
 		//panelZutatenAuswahl.setBackground(new Color(255, 149, 14));
 		panelZutatenAuswahl.setVisible(false);
 		panelZutatenAuswahl.setLayout(null);
+		
 		f.getContentPane().add(panelZutatenAuswahl);
 		
 		panelChangePW.setBounds(40, 80, 1024 - 80, 460);
@@ -945,6 +967,16 @@ public class MainFrame{
 		panelChangePW.add(pwChangeLabel);
 		panelChangePW.add(neuesPW);
 		
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 1",0,0,864/3,230,1 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 2",864/3,0,864/3,230,2 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 3",2*(864/3),0,864/3,230,3 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 4",0,0,864/3,230,4 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 5",864/3,230,864/3,230,5 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 6",2*(864/3),230,864/3,230,6 ));
+		reinigungsPanel.setVisible(false);
+		reinigungsPanel.setOpaque(false);
+		reinigungsPanel.setLayout(null);
+		
 		f.getContentPane().add(panelPW);
 
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH); //funktioniert nicht in
@@ -971,6 +1003,7 @@ public class MainFrame{
 		GUI.zutaten = new File("./Zutaten.txt");
 		GUI.hash = new File("./hash.txt");
 		GUI.zutatenList = new File("./ZutatenListe.txt");
+		GUI.fuellmenge150.setIcon(GUI.fuellmenge150IconVoll);
 		
 		if(!GUI.hash.exists()){
 			List<String> hashcodes = new ArrayList<String>();
