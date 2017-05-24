@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -159,7 +160,7 @@ public class MainFrame{
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
-		cb.setBorder(buttonBorder);
+		
 
 		ActionListener al = new ActionListener() {
 
@@ -251,6 +252,7 @@ public class MainFrame{
 			public void actionPerformed(ActionEvent e){
 				panelMenue.setVisible(false);
 				reinigungsPanel.setVisible(true);
+				menue.setVisible(true);
 				aktPanel=reinigungsPanel;
 			}
 			
@@ -963,15 +965,18 @@ public class MainFrame{
 		panelChangePW.add(pwChangeLabel);
 		panelChangePW.add(neuesPW);
 		
+		reinigungsPanel.setBounds(40, 80, 1024 - 80, 460);
 		reinigungsPanel.add(behälterReinigungsButton("Behälter 1",0,0,864/3,230,1 ));
 		reinigungsPanel.add(behälterReinigungsButton("Behälter 2",864/3,0,864/3,230,2 ));
 		reinigungsPanel.add(behälterReinigungsButton("Behälter 3",2*(864/3),0,864/3,230,3 ));
-		reinigungsPanel.add(behälterReinigungsButton("Behälter 4",0,0,864/3,230,4 ));
+		reinigungsPanel.add(behälterReinigungsButton("Behälter 4",0,230,864/3,230,4 ));
 		reinigungsPanel.add(behälterReinigungsButton("Behälter 5",864/3,230,864/3,230,5 ));
 		reinigungsPanel.add(behälterReinigungsButton("Behälter 6",2*(864/3),230,864/3,230,6 ));
 		reinigungsPanel.setVisible(false);
 		reinigungsPanel.setOpaque(false);
 		reinigungsPanel.setLayout(null);
+		
+		f.getContentPane().add(reinigungsPanel);
 		
 		f.getContentPane().add(panelPW);
 
@@ -987,7 +992,7 @@ public class MainFrame{
 		
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		/*try { 
 			  UIManager.setLookAndFeel( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
 			} catch( Exception e ) { e.printStackTrace(); }
@@ -1017,7 +1022,11 @@ public class MainFrame{
 		GUI.bar6.setString("6 - "+GUI.auswahl_zutat_akt[5]);
 		for (String s : GUI.auswahl_zutat_akt)
 			System.out.println(s);
-		GUI.cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
+		try {
+			GUI.cocktailsmoeglichList = (new CocktailPruefen()).loadCocktail(GUI.auswahl_zutat_akt);
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 		
 		if (!(GUI.cocktailsmoeglichList==null)) {
 			System.out.println(GUI.cocktailsmoeglichList.size());
