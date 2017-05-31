@@ -124,6 +124,7 @@ public class MainFrame{
 	Icon reinigungsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/reinigung.jpg")));
 	Icon passwortIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/passwort1.jpg")));
 	
+	Icon cocktailButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/CocktailButton.jpg")));
 	Icon backgroundIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/background.jpg")));
 	ImageIcon glasVoll = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasvoll.png")));
 	ImageIcon glasLeer = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasleer.png")));
@@ -456,7 +457,9 @@ public class MainFrame{
 																			// der
 																			// Cocktail-Buttons
 	{
-		JButton cb = new JButton(a.getName());
+		JButton cb = new JButton(a.getName(), cocktailButtonIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
