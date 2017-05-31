@@ -465,7 +465,7 @@ public class MainFrame{
 		cb.setContentAreaFilled(false);
 		cb.setBorderPainted(true);
 		cb.setFocusPainted(false);
-		cb.setBorder(buttonBorder);
+		
 		
 		ActionListener al = new ActionListener() {
 
