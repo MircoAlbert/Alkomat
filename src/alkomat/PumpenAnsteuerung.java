@@ -271,12 +271,13 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	}
 	
 	public void reinigung(int i){
-		this.pins.put(1,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 1", PinState.HIGH));
-		this.pins.put(2,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 2", PinState.HIGH));
-		this.pins.put(3,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 3", PinState.HIGH));
-		this.pins.put(4,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 4", PinState.HIGH));
-		this.pins.put(5,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 5", PinState.HIGH));
-		this.pins.put(6,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 6", PinState.HIGH));
+		this.pins.put(1,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Pumpe 1-vorwärts", PinState.HIGH));
+		this.pins.put(2,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 2-vorwärts", PinState.HIGH));
+		this.pins.put(3,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 3-vorwärts", PinState.HIGH));
+		this.pins.put(4,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 4-vorwärts", PinState.HIGH));
+		this.pins.put(5,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 5-vorwärts", PinState.HIGH));
+		this.pins.put(6,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 6-vorwärts", PinState.HIGH));
+		
 		
 		this.pinTasks.put(1, new setHigh(pin1));
 		this.pinTasks.put(2, new setHigh(pin2));
@@ -284,6 +285,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.pinTasks.put(4, new setHigh(pin4));
 		this.pinTasks.put(5, new setHigh(pin5));
 		this.pinTasks.put(6, new setHigh(pin6));
+		
 		
 		Timer timer = new Timer();
 		
@@ -293,8 +295,8 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		
 		pins.get(i).low();
 		timer.schedule(pinTasks.get(i), 100*1000/8*10);
-		
-		
+		timer.schedule(unprovision, 100*1000/8*10);
+		timer.schedule(panelRemove, 100*1000/8*10);
 	}
 	
 	

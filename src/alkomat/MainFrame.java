@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -649,8 +652,10 @@ public class MainFrame{
 		return cb;
 	}
 	
-	JButton behälterReinigungsButton(String a, int x,int y, int b, int h, int behälter){
-		JButton cb = new JButton(a);
+	JToggleButton behälterReinigungsButton(String a, int x,int y, int b, int h, int behälter){
+		JToggleButton cb = new JToggleButton(a, cocktailButtonIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setBounds(x,y,b,h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
@@ -658,12 +663,26 @@ public class MainFrame{
 		
 		final int[] be = {0};
 		be[0]=behälter;
-		ActionListener al = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				pumpenAnsteuerung.reinigung(be[0]);
+		final String[] ai ={""};
+		ai[0]=a;
+		ItemListener il = new ItemListener(){
+			
+				
+			@Override
+			public void itemStateChanged(ItemEvent ev) {
+				JToggleButton jtgb = (JToggleButton)ev.getSource();
+				if(ev.getStateChange()==ItemEvent.SELECTED){
+					pumpenAnsteuerung.reinigung(be[0]);
+					jtgb.setText(ai[0]+"<html><br>Läuft gerade!</html>");
+				} else if(ev.getStateChange()==ItemEvent.DESELECTED){
+					pumpenAnsteuerung.cancelTimer(aktPanel, panelWait);
+					jtgb.setText(ai[0]);
+				}
+				
+				
 			}
 		};
-		cb.addActionListener(al);
+		cb.addItemListener(il);
 		return cb;
 	}
 	
