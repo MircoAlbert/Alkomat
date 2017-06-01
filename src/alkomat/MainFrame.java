@@ -120,8 +120,8 @@ public class MainFrame{
 	Icon loadingGif = new ImageIcon(
 			Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/giphy2.gif")));
 	JLabel loadingLabel = new JLabel(loadingGif);
-	Icon naechsteSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/vorwaerts1.png")));
-	Icon vorherigeSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/zurueck1.png")));
+	Icon naechsteSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/SeitenChangeButtonVorwärts.png")));
+	Icon vorherigeSeite = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/SeitenChangeButtonZurück.png")));
 	Icon cocktailsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/cocktails.jpg")));
 	Icon zutatenIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/zutaten.jpg")));
 	Icon reinigungsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/reinigung.jpg")));
