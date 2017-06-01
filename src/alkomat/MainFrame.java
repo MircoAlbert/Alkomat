@@ -124,7 +124,10 @@ public class MainFrame{
 	Icon reinigungsIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/reinigung.jpg")));
 	Icon passwortIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/passwort1.jpg")));
 	
-	Icon cocktailButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/CocktailButton.jpg")));
+	Icon cocktailButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/CocktailButton.png")));
+	Icon menueButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/MenueButton.png")));
+	Icon auswahlButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/AuswahlButton.png")));
+	Icon zahlButtonIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/ZahlButton.png")));
 	Icon backgroundIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/background.jpg")));
 	ImageIcon glasVoll = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasvoll.png")));
 	ImageIcon glasLeer = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/glasleer.png")));
@@ -157,11 +160,13 @@ public class MainFrame{
 	
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
-		JButton cb = new JButton(a);
+		JButton cb = new JButton(a, menueButtonIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
-		cb.setBorderPainted(true);
+		cb.setBorderPainted(false);
 		
 
 		ActionListener al = new ActionListener() {
@@ -181,12 +186,14 @@ public class MainFrame{
 	
 	JButton cancelButton(String a, int x, int y, int b, int h) // CancelButton zum abbrechen eines Mixvorgangs
 	{
-		JButton cb = new JButton(a);
+		JButton cb = new JButton(a, menueButtonIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
-		cb.setBorderPainted(true);
-		cb.setBorder(buttonBorder);
+		cb.setBorderPainted(false);
+		
 
 		ActionListener al = new ActionListener() {
 
@@ -290,11 +297,13 @@ public class MainFrame{
 	JButton auswahlButton(String a, int x, int y, int b, int h) //
 	{
 		JButton cb;
-		cb = new JButton(a);
+		cb = new JButton(a, auswahlButtonIcon);
 		cb.setBounds(x, y, b, h);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
-		cb.setBorderPainted(true);
+		cb.setBorderPainted(false);
 		
 		final String[] ca = { "" };
 		ca[0] = a;
@@ -489,7 +498,9 @@ public class MainFrame{
 
 	JButton zahlButton(String a) // zur Erzeugung der PIN-Abfrage-Buttons
 	{
-		JButton b = new JButton(a);
+		JButton b = new JButton(a, zahlButtonIcon);
+		b.setHorizontalTextPosition(JButton.CENTER);
+		b.setVerticalTextPosition(JButton.CENTER);
 		b.setOpaque(false);
 		b.setContentAreaFilled(false);
 		b.setBorderPainted(true);
@@ -591,11 +602,13 @@ public class MainFrame{
 	}
 
 	JButton pwChangeButton(String a, int x, int y, int b, int h){
-		JButton cb = new JButton(a);
+		JButton cb = new JButton(a, zahlButtonIcon);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
-		cb.setBorderPainted(true);
+		cb.setBorderPainted(false);
 		
 		final String[] c = { "" };
 		c[0] = a;
@@ -614,11 +627,13 @@ public class MainFrame{
 	}
 	
 	JButton sperrButton(String a, int x, int y, int b, int h){
-		JButton cb = new JButton(a);
+		JButton cb = new JButton(a, menueButtonIcon);
 		cb.setBounds(x, y, b, h);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
-		cb.setBorderPainted(true);
+		cb.setBorderPainted(false);
 	
 		ActionListener al =new ActionListener(){
 			public void actionPerformed(ActionEvent e){

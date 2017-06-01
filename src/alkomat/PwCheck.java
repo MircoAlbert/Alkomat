@@ -17,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 
 
 public class PwCheck {
-	File hashTxt = new File("./hash.txt");
+	File hashTxt = new File("./res/hash.txt");
 		
 	
 	public void  changePW(String pw) throws UnsupportedEncodingException, IOException{
