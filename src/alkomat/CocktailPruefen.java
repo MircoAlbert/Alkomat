@@ -33,6 +33,7 @@ public class CocktailPruefen {
 				writer.newLine();
 
 			}
+			rezepte.setWritable(true, false);
 			reader.close();
 			writer.close();
 		}

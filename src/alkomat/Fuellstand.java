@@ -40,6 +40,12 @@ class Fuellstand extends SwingWorker<Void, String> {
 			String line = data.nextLine();
 			publish(line);
 			//System.out.println(line);
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 		}
@@ -109,6 +115,8 @@ class Fuellstand extends SwingWorker<Void, String> {
 		bar4.setValue(DataLineInt[3]);
 		bar5.setValue(DataLineInt[4]);
 		bar6.setValue(DataLineInt[5]);
+		
+		
 	}
 
 }

@@ -80,9 +80,9 @@ public class MainFrame{
 	JButton n9 = zahlButton("9");
 	JButton cocktails = new JButton("Cocktails");
 	JButton reinigung = new JButton("Reinigungsprogramm");
-	JButton menue = menueButton("Menü", 345, h, b, h);
-	JButton cancel = cancelButton("Cancel", 514, h, b, h);
-	JButton sperren = sperrButton("Sperren",176,y+h,165,h);
+	JButton menue;
+	JButton cancel;
+	JButton sperren;
 	JButton fuellmenge150;// = fuellmenge150("150",120,120,40,60);
 	JButton fuellmenge200;// = fuellmenge150("150",160,120,40,60);
 	JButton fuellmenge250;// = fuellmenge150("150",200,120,40,60);
@@ -166,9 +166,9 @@ public class MainFrame{
 		JButton cb = new JButton(a, menueButtonIcon);
 		cb.setHorizontalTextPosition(JButton.CENTER);
 		cb.setVerticalTextPosition(JButton.CENTER);
-		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
+		cb.setBounds(x, y, b, h);
 		cb.setBorderPainted(false);
 		
 
@@ -192,9 +192,9 @@ public class MainFrame{
 		JButton cb = new JButton(a, menueButtonIcon);
 		cb.setHorizontalTextPosition(JButton.CENTER);
 		cb.setVerticalTextPosition(JButton.CENTER);
-		cb.setBounds(x, y, b, h);
 		cb.setOpaque(false);
 		cb.setContentAreaFilled(false);
+		cb.setBounds(x, y, b, h);
 		cb.setBorderPainted(false);
 		
 
@@ -664,7 +664,7 @@ public class MainFrame{
 		final int[] be = {0};
 		be[0]=behälter;
 		final String[] ai ={""};
-		ai[0]=a;
+		ai[0]="<html><center>"+a;
 		ItemListener il = new ItemListener(){
 			
 				
@@ -672,11 +672,11 @@ public class MainFrame{
 			public void itemStateChanged(ItemEvent ev) {
 				JToggleButton jtgb = (JToggleButton)ev.getSource();
 				if(ev.getStateChange()==ItemEvent.SELECTED){
-					pumpenAnsteuerung.reinigung(be[0]);
-					jtgb.setText(ai[0]+"<html><br>Läuft gerade!</html>");
+					pumpenAnsteuerung.reinigungStart(be[0]);
+					jtgb.setText(ai[0]+"<br>Läuft gerade!</center></html>");
 				} else if(ev.getStateChange()==ItemEvent.DESELECTED){
-					pumpenAnsteuerung.cancelTimer(aktPanel, panelWait);
-					jtgb.setText(ai[0]);
+					pumpenAnsteuerung.reinigungStop(be[0]);
+					jtgb.setText(ai[0]+"</center></html>");
 				}
 				
 				
@@ -780,6 +780,19 @@ public class MainFrame{
 	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
 		System.out.println(getClass().getClassLoader().getResource("res/background.jpg"));
+		
+		menue = menueButton("Menü", 345, h, b, h);
+		cancel = cancelButton("Cancel", 514, h, b, h);
+		sperren = sperrButton("Sperren",176,y+h,165,h);
+		n1 = zahlButton("1");
+		n2 = zahlButton("2");
+		n3 = zahlButton("3");
+		n4 = zahlButton("4");
+		n5 = zahlButton("5");
+		n6 = zahlButton("6");
+		n7 = zahlButton("7");
+		n8 = zahlButton("8");
+		n9 = zahlButton("9");
 		
 		fuellmenge150("<html><center>150<br>ml</center></html>",40,175,60,95);
 		fuellmenge200("<html><center>200<br>ml</center></html>",100,175,60,95);
@@ -1040,6 +1053,7 @@ public class MainFrame{
 		File dir = new File("./res");
 		if(!dir.exists())
 			dir.mkdir();
+		dir.setWritable(true, false);
 		MainFrame GUI = new MainFrame();
 		Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
 		fuellstand.execute();
@@ -1080,5 +1094,6 @@ public class MainFrame{
 			System.out.println("keine Cocktails möglich!");
 			JOptionPane.showMessageDialog(GUI.f, "Keine Cocktails möglich!","Keine Cocktails möglich", JOptionPane.WARNING_MESSAGE);
 		}
-	}
+		GUI.hash.setWritable(true, false);
+		}
 }

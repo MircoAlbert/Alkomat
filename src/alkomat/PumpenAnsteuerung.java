@@ -61,8 +61,6 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	
 	private panelRemove panelRemove;
 	
-	private Unprovision unprovision;
-	
 	
 	
 	private Map<Integer, setHigh> pinTasks = new HashMap<Integer, setHigh>();
@@ -71,7 +69,37 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	
 	public PumpenAnsteuerung(){
 		this.gpio = GpioFactory.getInstance();
-			
+		this.pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Pumpe 1-vorwärts", PinState.HIGH);
+		this.pin2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 2-vorwärts", PinState.HIGH);
+		this.pin3 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 3-vorwärts", PinState.HIGH);
+		this.pin4 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 4-vorwärts", PinState.HIGH);
+		this.pin5 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 5-vorwärts", PinState.HIGH);
+		this.pin6 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 6-vorwärts", PinState.HIGH);
+		this.pin7 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 1-rückwärts", PinState.HIGH);
+		this.pin8 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07, "Pumpe 2-rückwärts", PinState.HIGH);
+		this.pin9 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_08, "Pumpe 3-rückwärts", PinState.HIGH);
+		this.pin10 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_09, "Pumpe 4-rückwärts", PinState.HIGH);
+		this.pin11 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_10, "Pumpe 5-rückwärts", PinState.HIGH);
+		this.pin12 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11, "Pumpe 6-rückwärts", PinState.HIGH);
+		taskPin1 = new setHigh(pin1);
+		taskPin2 = new setHigh(pin2);
+		taskPin3 = new setHigh(pin3);
+		taskPin4 = new setHigh(pin4);
+		taskPin5 = new setHigh(pin5);
+		taskPin6 = new setHigh(pin6);
+		taskPin7 = new setHigh(pin7);
+		taskPin8 = new setHigh(pin8);
+		taskPin9 = new setHigh(pin9);
+		taskPin10 = new setHigh(pin10);
+		taskPin11 = new setHigh(pin11);
+		taskPin12 = new setHigh(pin12);
+		this.pins.put(1,pin1);
+		this.pins.put(2,pin2);
+		this.pins.put(3,pin3);
+		this.pins.put(4,pin4);
+		this.pins.put(5,pin5);
+		this.pins.put(6,pin6);
+					
 	}
 	
 	public void cancelTimer(JPanel panelList, JPanel panelWait){
@@ -88,20 +116,6 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		pin10.high();
 		pin11.high();
 		pin12.high();
-		gpio.shutdown();
-		gpio.unprovisionPin(pin1);
-		gpio.unprovisionPin(pin2);
-		gpio.unprovisionPin(pin3);
-		gpio.unprovisionPin(pin4);
-		gpio.unprovisionPin(pin5);
-		gpio.unprovisionPin(pin6);
-		gpio.unprovisionPin(pin7);
-		gpio.unprovisionPin(pin8);
-		gpio.unprovisionPin(pin9);
-		gpio.unprovisionPin(pin10);
-		gpio.unprovisionPin(pin11);
-		gpio.unprovisionPin(pin12);
-		unprovision.cancel();
 		taskPin1.cancel();
 		taskPin2.cancel();
 		taskPin3.cancel();
@@ -163,34 +177,7 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		}
 		
 	}
-	
-	class Unprovision extends TimerTask{
 		
-		Unprovision(){
-			
-		};
-		
-		public void run(){
-			if(cancelled==false){
-			gpio.shutdown();
-			gpio.unprovisionPin(pin1);
-			gpio.unprovisionPin(pin2);
-			gpio.unprovisionPin(pin3);
-			gpio.unprovisionPin(pin4);
-			gpio.unprovisionPin(pin5);
-			gpio.unprovisionPin(pin6);
-			gpio.unprovisionPin(pin7);
-			gpio.unprovisionPin(pin8);
-			gpio.unprovisionPin(pin9);
-			gpio.unprovisionPin(pin10);
-			gpio.unprovisionPin(pin11);
-			gpio.unprovisionPin(pin12);
-			}
-		}
-		
-	}
-	
-	
 	public void start(Double[] mengenGeordnet,Integer fuellmenge, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
 		this.panelWait = panelWait;
 		this.panelList = panelList;
@@ -199,46 +186,17 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.sperren = sperren;
 		cancelled = false;
 		
-		this.pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Pumpe 1-vorwärts", PinState.HIGH);
-		this.pin2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 2-vorwärts", PinState.HIGH);
-		this.pin3 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 3-vorwärts", PinState.HIGH);
-		this.pin4 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 4-vorwärts", PinState.HIGH);
-		this.pin5 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 5-vorwärts", PinState.HIGH);
-		this.pin6 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 6-vorwärts", PinState.HIGH);
-		this.pin7 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "Pumpe 1-rückwärts", PinState.HIGH);
-		this.pin8 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07, "Pumpe 2-rückwärts", PinState.HIGH);
-		this.pin9 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_08, "Pumpe 3-rückwärts", PinState.HIGH);
-		this.pin10 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_09, "Pumpe 4-rückwärts", PinState.HIGH);
-		this.pin11 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_10, "Pumpe 5-rückwärts", PinState.HIGH);
-		this.pin12 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11, "Pumpe 6-rückwärts", PinState.HIGH);
+		
 		//this.mengenDouble = new Integer[mengenGeordnet.length];
 		
 		Timer timer = new Timer();
 		for(int i=0;i<mengenGeordnet.length;i++){
-			mengenGeordnet[i]=((mengenGeordnet[i]*fuellmenge)/8*10);
+			mengenGeordnet[i]=((mengenGeordnet[i]*fuellmenge)/8*10)+(i*10);
 			if(mengenGeordnet[i]>maxMenge)
 				maxMenge=mengenGeordnet[i];
 		}
 		System.out.println(mengenGeordnet[0]+", " +mengenGeordnet[1].intValue()+", " +mengenGeordnet[2]+", " +mengenGeordnet[3]+", " +mengenGeordnet[4]+", " +mengenGeordnet[5]+", " +maxMenge);
-		taskPin1 = new setHigh(pin1);
-		taskPin2 = new setHigh(pin2);
-		taskPin3 = new setHigh(pin3);
-		taskPin4 = new setHigh(pin4);
-		taskPin5 = new setHigh(pin5);
-		taskPin6 = new setHigh(pin6);
-		taskPin7 = new setHigh(pin7);
-		taskPin8 = new setHigh(pin8);
-		taskPin9 = new setHigh(pin9);
-		taskPin10 = new setHigh(pin10);
-		taskPin11 = new setHigh(pin11);
-		taskPin12 = new setHigh(pin12);
-		
-		panelRemove = new panelRemove();
-		
-		unprovision = new Unprovision();
-		
-		
-		
+				
 		pin1.low();
 		pin2.low();
 		pin3.low();
@@ -247,56 +205,42 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		pin6.low();
 		panelList.setVisible(false);
 		panelWait.setVisible(true);
-		timer.schedule(taskPin1, mengenGeordnet[0].intValue());
-		timer.schedule(taskPin2, mengenGeordnet[1].intValue());
-		timer.schedule(taskPin3, mengenGeordnet[2].intValue());
-		timer.schedule(taskPin4, mengenGeordnet[3].intValue());
-		timer.schedule(taskPin5, mengenGeordnet[4].intValue());
-		timer.schedule(taskPin6, mengenGeordnet[5].intValue());
-		timer.schedule((new setLow(pin7)), mengenGeordnet[0].intValue()+10);
-		timer.schedule((new setLow(pin8)), mengenGeordnet[1].intValue()+10);
-		timer.schedule((new setLow(pin9)), mengenGeordnet[2].intValue()+10);
-		timer.schedule((new setLow(pin10)), mengenGeordnet[3].intValue()+10);
-		timer.schedule((new setLow(pin11)), mengenGeordnet[4].intValue()+10);
-		timer.schedule((new setLow(pin12)), mengenGeordnet[5].intValue()+10);
-		timer.schedule(taskPin7, mengenGeordnet[0].intValue()+4010);
-		timer.schedule(taskPin8, mengenGeordnet[1].intValue()+4010);
-		timer.schedule(taskPin9, mengenGeordnet[2].intValue()+4010);
-		timer.schedule(taskPin10, mengenGeordnet[3].intValue()+4010);
-		timer.schedule(taskPin11, mengenGeordnet[4].intValue()+4010);
-		timer.schedule(taskPin12, mengenGeordnet[5].intValue()+4010);
-		timer.schedule(panelRemove, maxMenge.intValue()+4010);
-		timer.schedule(unprovision, maxMenge.intValue()+4010);
+		panelRemove = new panelRemove();
+		timer.schedule((new setHigh(pin1)), mengenGeordnet[0].intValue());
+		timer.schedule((new setHigh(pin2)), mengenGeordnet[1].intValue());
+		timer.schedule((new setHigh(pin3)), mengenGeordnet[2].intValue());
+		timer.schedule((new setHigh(pin4)), mengenGeordnet[3].intValue());
+		timer.schedule((new setHigh(pin5)), mengenGeordnet[4].intValue());
+		timer.schedule((new setHigh(pin6)), mengenGeordnet[5].intValue());
+		timer.schedule((new setLow(pin7)), mengenGeordnet[0].intValue()+250);
+		timer.schedule((new setLow(pin8)), mengenGeordnet[1].intValue()+250);
+		timer.schedule((new setLow(pin9)), mengenGeordnet[2].intValue()+250);
+		timer.schedule((new setLow(pin10)), mengenGeordnet[3].intValue()+250);
+		timer.schedule((new setLow(pin11)), mengenGeordnet[4].intValue()+250);
+		timer.schedule((new setLow(pin12)), mengenGeordnet[5].intValue()+250);
+		timer.schedule((new setHigh(pin7)), mengenGeordnet[0].intValue()+4250);
+		timer.schedule((new setHigh(pin8)), mengenGeordnet[1].intValue()+4250);
+		timer.schedule((new setHigh(pin9)), mengenGeordnet[2].intValue()+4250);
+		timer.schedule((new setHigh(pin10)), mengenGeordnet[3].intValue()+4250);
+		timer.schedule((new setHigh(pin11)), mengenGeordnet[4].intValue()+4250);
+		timer.schedule((new setHigh(pin12)), mengenGeordnet[5].intValue()+4250);
+		timer.schedule(panelRemove, maxMenge.intValue()+4250);
+		
 				
 	}
 	
-	public void reinigung(int i){
-		this.pins.put(1,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Pumpe 1-vorwärts", PinState.HIGH));
-		this.pins.put(2,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "Pumpe 2-vorwärts", PinState.HIGH));
-		this.pins.put(3,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Pumpe 3-vorwärts", PinState.HIGH));
-		this.pins.put(4,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Pumpe 4-vorwärts", PinState.HIGH));
-		this.pins.put(5,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Pumpe 5-vorwärts", PinState.HIGH));
-		this.pins.put(6,gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Pumpe 6-vorwärts", PinState.HIGH));
-		
-		
-		this.pinTasks.put(1, new setHigh(pin1));
-		this.pinTasks.put(2, new setHigh(pin2));
-		this.pinTasks.put(3, new setHigh(pin3));
-		this.pinTasks.put(4, new setHigh(pin4));
-		this.pinTasks.put(5, new setHigh(pin5));
-		this.pinTasks.put(6, new setHigh(pin6));
-		
-		
-		Timer timer = new Timer();
-		
-		panelRemove = new panelRemove();
-		
-		unprovision = new Unprovision();
-		
+	public void reinigungStart(int i){
+				
 		pins.get(i).low();
-		timer.schedule(pinTasks.get(i), 100*1000/8*10);
-		timer.schedule(unprovision, 100*1000/8*10);
-		timer.schedule(panelRemove, 100*1000/8*10);
+		
+	}
+	
+	public void reinigungStop(int i){
+		
+		
+		pins.get(i).high();
+		
+		
 	}
 	
 	
