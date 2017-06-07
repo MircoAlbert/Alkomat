@@ -32,6 +32,7 @@ import javax.swing.border.LineBorder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import bildschirmtastatur.gui.TastaturPanel;;
 
 public class MainFrame{
 	JFrame f = new JFrame("Alkomat");
@@ -160,6 +161,8 @@ public class MainFrame{
 	MyBorder buttonBorder = new MyBorder();
 	
 	CocktailPruefen cocktailPruefen = new CocktailPruefen();
+	
+	TastaturPanel tastatur = new TastaturPanel();
 	
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
@@ -778,6 +781,23 @@ public class MainFrame{
 	
 	}
 	
+	JButton neuerCocktail(int x, int y, int b, int h){
+		JButton cb = new JButton("<html><center>Neuen Cocktail<br>hinzufügen</center></html>");
+		cb.setBounds(x,y,b,h);
+		ActionListener al = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panelMenue.setVisible(false);
+				tastatur.setVisible(true);
+				aktPanel=tastatur;
+			}
+			
+		};
+		cb.addActionListener(al);
+		return cb;
+	}
+	
 	MainFrame()  throws UnsupportedEncodingException, IOException {
 		System.out.println(getClass().getClassLoader().getResource("res/background.jpg"));
 		
@@ -944,13 +964,14 @@ public class MainFrame{
 		
 		panelMenue.setLayout(null);
 		panelMenue.add(menueButtonCocktails("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>aädern</html>", 472, 50, 157, 175));
+		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>ändern</html>", 472, 50, 157, 175));
 		panelMenue.add(menueButtonReinigung("Reinigungsmodus", 315, 225, 157, 175));
 		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>ändern</center></html>", 472,225,157,175));
 		panelMenue.add(fuellmenge150);
 		panelMenue.add(fuellmenge200);
 		panelMenue.add(fuellmenge250);
 		panelMenue.add(fuellmenge300);
+		panelMenue.add(neuerCocktail(664,185,160,80));
 		//panelMenue.add(fuellmenge);
 		//panelMenue.add(fuellmengenEingabe);
 
@@ -1028,6 +1049,10 @@ public class MainFrame{
 		reinigungsPanel.setVisible(false);
 		reinigungsPanel.setOpaque(false);
 		reinigungsPanel.setLayout(null);
+		
+		tastatur.setBounds(40, 80, 864, 460);
+		f.add(tastatur);
+		tastatur.setVisible(false);
 		
 		f.getContentPane().add(reinigungsPanel);
 		
