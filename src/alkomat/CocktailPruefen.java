@@ -1,9 +1,13 @@
 package alkomat;
 
-import java.awt.Toolkit;
-import java.io.*;
-import java.net.URI;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +55,7 @@ public class CocktailPruefen {
 		}
 		for (int f = 0; f < Vorhanden.length; f++) {
 			for (int u = 0; u < ImRezept.length; u++) {
-				if (!(Vorhanden[f] == null))
+				if (!(Vorhanden[f].equals("")))
 					if (Vorhanden[f].equals(ImRezept[u]))
 						VorhandenCount++;
 			}
@@ -94,7 +98,7 @@ public class CocktailPruefen {
 			Cocktails[countline] = new Cocktail(elements[0], Zutaten, Mengen); // Objekte
 			// herstellen
 			countline++; // Zeilenzähler
-
+			
 		}
 		String[] ImBehalter = zutaten;
 

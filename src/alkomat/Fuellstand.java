@@ -34,21 +34,14 @@ class Fuellstand extends SwingWorker<Void, String> {
 
 	@Override
 	protected Void doInBackground() {
-
-		while (true) {
-			
-			String line = data.nextLine();
+		String line;
+		while ((line = data.nextLine()) != null) {
+						
 			publish(line);
 			//System.out.println(line);
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
+						
 		}
+		return null;
 	}
 
 	@Override

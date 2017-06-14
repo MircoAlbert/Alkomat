@@ -2,13 +2,16 @@ package alkomat;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,12 +22,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -32,7 +37,8 @@ import javax.swing.border.LineBorder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import bildschirmtastatur.gui.TastaturPanel;;
+
+import bildschirmtastatur.gui.PanelVirtualKeyboardReal;
 
 public class MainFrame{
 	JFrame f = new JFrame("Alkomat");
@@ -95,7 +101,7 @@ public class MainFrame{
 	String auswahl = "";
 	String pwChange = "";
 
-	String[] zutatenliste= ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);;// = { "", "Coca-Cola", "Orangensaft", "Wodka", "Rum", "Tequila", "Maracujasaft", "Grenadine", "Zitronensaft", "Gin", "Soda" };
+	String[] zutatenliste= ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);;
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
 		
@@ -162,8 +168,53 @@ public class MainFrame{
 	
 	CocktailPruefen cocktailPruefen = new CocktailPruefen();
 	
-	TastaturPanel tastatur = new TastaturPanel();
+	ActionListener al;
 	
+	JTextField cocktailName =new JTextField("Cocktail-Name");
+	JTextField zutat1 =new JTextField();
+	JTextField zutat2 =new JTextField();
+	JTextField zutat3 =new JTextField();
+	JTextField zutat4 =new JTextField();
+	JTextField zutat5 =new JTextField();
+	JTextField zutat6 =new JTextField();
+	JTextField menge1 =new JTextField("0");
+	JTextField menge2 =new JTextField("0");
+	JTextField menge3 =new JTextField("0");
+	JTextField menge4 =new JTextField("0");
+	JTextField menge5 =new JTextField("0");
+	JTextField menge6 =new JTextField("0");
+	JLabel zutat1l =new JLabel("Zutat 1:");
+	JLabel zutat2l =new JLabel("Zutat 2:");
+	JLabel zutat3l =new JLabel("Zutat 3:");
+	JLabel zutat4l =new JLabel("Zutat 4:");
+	JLabel zutat5l =new JLabel("Zutat 5:");
+	JLabel zutat6l =new JLabel("Zutat 6:");
+	JLabel menge1l =new JLabel("Menge 1 in ml:");
+	JLabel menge2l =new JLabel("Menge 2 in ml:");
+	JLabel menge3l =new JLabel("Menge 3 in ml:");
+	JLabel menge4l =new JLabel("Menge 4 in ml:");
+	JLabel menge5l =new JLabel("Menge 5 in ml:");
+	JLabel menge6l =new JLabel("Menge 6 in ml:");
+	String cocktailNameString;
+	String zutat1String;
+	String zutat2String;
+	String zutat3String;
+	String zutat4String;
+	String zutat5String;
+	String zutat6String;
+	String menge1String;
+	String menge2String;
+	String menge3String;
+	String menge4String;
+	String menge5String;
+	String menge6String;
+	List<JComponent> list = new ArrayList<JComponent>();
+	
+	JPanel labelPanel =new JPanel();
+	JPanel tastatur = new JPanel();		
+	
+	final PanelVirtualKeyboardReal panelKeyboard;
+		
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
 		JButton cb = new JButton(a, menueButtonIcon);
@@ -174,7 +225,6 @@ public class MainFrame{
 		cb.setBounds(x, y, b, h);
 		cb.setBorderPainted(false);
 		
-
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -200,7 +250,6 @@ public class MainFrame{
 		cb.setBounds(x, y, b, h);
 		cb.setBorderPainted(false);
 		
-
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -328,7 +377,9 @@ public class MainFrame{
 					auswahl_zutat_akt = auswahl_zutat.clone();
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
-
+					for(int i=0;i<6;i++)
+						if(auswahl_zutat_akt[i].equals(null))
+							auswahl_zutat_akt[i]="";
 					try {
 						cocktailsmoeglichList = cocktailPruefen.loadCocktail(auswahl_zutat_akt);
 					} catch (IOException e2) {
@@ -467,11 +518,7 @@ public class MainFrame{
 		}
 	}
 
-	JButton cocktailButton(final Cocktail a, int x, int y, int b, int h) // zur
-																			// Erzeugung
-																			// der
-																			// Cocktail-Buttons
-	{
+	JButton cocktailButton(final Cocktail a, int x, int y, int b, int h){
 		JButton cb = new JButton(a.getName(), cocktailButtonIcon);
 		cb.setHorizontalTextPosition(JButton.CENTER);
 		cb.setVerticalTextPosition(JButton.CENTER);
@@ -481,19 +528,20 @@ public class MainFrame{
 		cb.setBorderPainted(true);
 		cb.setFocusPainted(false);
 		
-		
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				if((bar1.getValue()<20)||(bar2.getValue()<20)||(bar3.getValue()<20)||(bar4.getValue()<20)||(bar5.getValue()<20)||(bar6.getValue()<20)){
+					JOptionPane.showMessageDialog(f, "Zutatenmengen überprüfen!","Zutatenmengen überprüfen", JOptionPane.WARNING_MESSAGE);
+				}
+				else{	
 				Double[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
 						a.getMengen());
-				for(int i=0; i<mengenGeordnet.length;i++)
-				System.out.println(mengenGeordnet[i].toString());
-				
 				pumpenAnsteuerung.start(mengenGeordnet,(Integer) fuellmengeGlas, aktPanel, panelWait, cancel, menue, sperren);
 				menue.setVisible(false);
 				sperren.setVisible(false);
 				CancelButtonProperties();
+				}
 			}
 
 		};
@@ -782,8 +830,13 @@ public class MainFrame{
 	}
 	
 	JButton neuerCocktail(int x, int y, int b, int h){
-		JButton cb = new JButton("<html><center>Neuen Cocktail<br>hinzufügen</center></html>");
+		JButton cb = new JButton("<html><center>Neuen Cocktail<br>hinzufügen</center></html>",auswahlButtonIcon);
 		cb.setBounds(x,y,b,h);
+		cb.setHorizontalTextPosition(JButton.CENTER);
+		cb.setVerticalTextPosition(JButton.CENTER);
+		cb.setOpaque(false);
+		cb.setContentAreaFilled(false);
+		cb.setBorderPainted(false);
 		ActionListener al = new ActionListener(){
 
 			@Override
@@ -1050,7 +1103,129 @@ public class MainFrame{
 		reinigungsPanel.setOpaque(false);
 		reinigungsPanel.setLayout(null);
 		
+		//Test
+		tastatur.setLayout(new GridLayout(2,0));
+		labelPanel.setLayout(null);
+		labelPanel.setBounds(0,0,864,230);
+		labelPanel.setOpaque(false);
+		cocktailName.setBounds(293,15,278,40);
+		
+		list.add(cocktailName);
+		list.add(zutat1);
+		list.add(zutat1l);
+		list.add(zutat2);
+		list.add(zutat2l);
+		list.add(zutat3);
+		list.add(zutat3l);
+		list.add(zutat4);
+		list.add(zutat4l);
+		list.add(zutat5);
+		list.add(zutat5l);
+		list.add(zutat6);
+		list.add(zutat6l);
+		list.add(menge1);
+		list.add(menge1l);
+		list.add(menge2);
+		list.add(menge2l);
+		list.add(menge3);
+		list.add(menge3l);
+		list.add(menge4);
+		list.add(menge4l);
+		list.add(menge5);
+		list.add(menge5l);
+		list.add(menge6);
+		list.add(menge6l);
+		
+		al = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				File rezepte = new File("./res/Rezepte.txt");
+				cocktailNameString = cocktailName.getText();
+				zutat1String = zutat1.getText();
+				zutat2String = zutat2.getText();
+				zutat3String = zutat3.getText();
+				zutat4String = zutat4.getText();
+				zutat5String = zutat5.getText();
+				zutat6String = zutat6.getText();
+				Double menge1Double = Double.parseDouble(menge1.getText());
+				Double menge2Double = Double.parseDouble(menge2.getText());
+				Double menge3Double = Double.parseDouble(menge3.getText());
+				Double menge4Double = Double.parseDouble(menge4.getText());
+				Double menge5Double = Double.parseDouble(menge5.getText());
+				Double menge6Double = Double.parseDouble(menge6.getText());
+				Double gesamt = menge1Double+menge2Double+menge3Double+menge4Double+menge5Double+menge6Double;
+				System.out.println(gesamt);
+				menge1String = String.valueOf(Math.round(((menge1Double/gesamt)*100)*100)/100.0);
+				menge2String = String.valueOf(Math.round(((menge2Double/gesamt)*100)*100)/100.0);
+				menge3String = String.valueOf(Math.round(((menge3Double/gesamt)*100)*100)/100.0);
+				menge4String = String.valueOf(Math.round(((menge4Double/gesamt)*100)*100)/100.0);
+				menge5String = String.valueOf(Math.round(((menge5Double/gesamt)*100)*100)/100.0);
+				menge6String = String.valueOf(Math.round(((menge6Double/gesamt)*100)*100)/100.0);
+				String line = cocktailNameString+", "+zutat1String+";"+zutat2String+";"+zutat3String+";"+zutat4String+";"+zutat5String+";"+zutat6String+", "+menge1String+";"+menge2String+";"+menge3String+";"+menge4String+";"+menge5String+";"+menge6String;
+				try {
+					BufferedWriter writer = new BufferedWriter(new FileWriter(rezepte,true));
+					writer.write(line);
+					writer.newLine();
+					writer.close();
+				} catch (IOException e) {}
+				System.out.println(line);
+			}
+			
+		};
+		panelKeyboard = new PanelVirtualKeyboardReal(al);
+		panelKeyboard.setOpaque(false);
+		zutat1.setBounds(5, 95, 134, 40);
+		zutat2.setBounds(149, 95, 134, 40);
+		zutat3.setBounds(293, 95, 134, 40);
+		zutat4.setBounds(437, 95, 134, 40);
+		zutat5.setBounds(581, 95, 134, 40);
+		zutat6.setBounds(725, 95, 134, 40);
+		menge1.setBounds(5, 175, 134, 40);
+		menge2.setBounds(149, 175, 134, 40);
+		menge3.setBounds(293, 175, 134, 40);
+		menge4.setBounds(437, 175, 134, 40);
+		menge5.setBounds(581, 175, 134, 40);
+		menge6.setBounds(725, 175, 134, 40);
+		zutat1l.setBounds(5, 55, 134, 40);
+		zutat2l.setBounds(149, 55, 134, 40);
+		zutat3l.setBounds(293, 55, 134, 40);
+		zutat4l.setBounds(437, 55, 134, 40);
+		zutat5l.setBounds(581, 55, 134, 40);
+		zutat6l.setBounds(725, 55, 134, 40);
+		menge1l.setBounds(5, 135, 134, 40);
+		menge2l.setBounds(149, 135, 134, 40);
+		menge3l.setBounds(293, 135, 134, 40);
+		menge4l.setBounds(437, 135, 134, 40);
+		menge5l.setBounds(581, 135, 134, 40);
+		menge6l.setBounds(725, 135, 134, 40);
+		for(int i=0;i<list.size();i++){
+			labelPanel.add(list.get(i));
+			list.get(i).setFont(new java.awt.Font("Tahoma", 0, 18));
+			if(list.get(i) instanceof JLabel)
+				((JLabel) list.get(i)).setHorizontalAlignment(JLabel.CENTER);
+			if(list.get(i) instanceof JTextField)
+				list.get(i).addFocusListener(new FocusListener(){
+
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						panelKeyboard.setTextComponent((JTextField)arg0.getSource());
+						
+					}
+
+					@Override
+					public void focusLost(FocusEvent arg0) {
+												
+					}
+					
+				});
+		}
+		
+		tastatur.add(labelPanel);
+		tastatur.add(panelKeyboard);
+				
 		tastatur.setBounds(40, 80, 864, 460);
+		tastatur.setOpaque(false);
 		f.add(tastatur);
 		tastatur.setVisible(false);
 		
@@ -1071,10 +1246,6 @@ public class MainFrame{
 	}
 
 	public static void main(String[] args) throws IOException{
-		/*try { 
-			  UIManager.setLookAndFeel( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
-			} catch( Exception e ) { e.printStackTrace(); }
-		*/
 		File dir = new File("./res");
 		if(!dir.exists())
 			dir.mkdir();
@@ -1082,7 +1253,6 @@ public class MainFrame{
 		MainFrame GUI = new MainFrame();
 		Fuellstand fuellstand = new Fuellstand(GUI.bar1,GUI.bar2,GUI.bar3,GUI.bar4,GUI.bar5,GUI.bar6);
 		fuellstand.execute();
-		//GUI.pumpenAnsteuerung.bildschirmOn();
 		GUI.zutaten = new File("./res/Zutaten.txt");
 		GUI.hash = new File("./res/hash.txt");
 		GUI.fuellmenge150.setIcon(GUI.fuellmenge150IconVoll);

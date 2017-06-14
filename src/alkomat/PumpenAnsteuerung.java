@@ -1,7 +1,7 @@
 package alkomat;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,15 +14,13 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
-import alkomat.PumpenAnsteuerung.setHigh;
-
 class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 {
 
 	
 	private JPanel panelList;
 	private JPanel panelWait;
-	private Double maxMenge = 0.0;
+	
 	
 	private JButton cancel;
 	private JButton menue;
@@ -61,10 +59,10 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	
 	private panelRemove panelRemove;
 	
+	private int pumpeMaxMenge;
 	
-	
-	private Map<Integer, setHigh> pinTasks = new HashMap<Integer, setHigh>();
 	private Map<Integer, GpioPinDigitalOutput> pins = new HashMap<Integer, GpioPinDigitalOutput>();
+	private Map<Integer, Integer> rückwärtsDelay = new HashMap<Integer, Integer>();
 	
 	
 	public PumpenAnsteuerung(){
@@ -99,6 +97,12 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		this.pins.put(4,pin4);
 		this.pins.put(5,pin5);
 		this.pins.put(6,pin6);
+		this.rückwärtsDelay.put(0,6200);
+		this.rückwärtsDelay.put(1,6000);
+		this.rückwärtsDelay.put(2,5700);
+		this.rückwärtsDelay.put(3,7000);
+		this.rückwärtsDelay.put(4,5500);
+		this.rückwärtsDelay.put(5,5500);
 					
 	}
 	
@@ -179,52 +183,84 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 	}
 		
 	public void start(Double[] mengenGeordnet,Integer fuellmenge, JPanel panelList, JPanel panelWait, JButton cancel, JButton menue, JButton sperren){
+		Double maxMenge = 0.0;
 		this.panelWait = panelWait;
 		this.panelList = panelList;
 		this.cancel = cancel;
 		this.menue = menue;
 		this.sperren = sperren;
 		cancelled = false;
-		
+		boolean[] pumpenStatus= new boolean[6];
+		for(int i=0;i<mengenGeordnet.length;i++){
+			if(!(mengenGeordnet[i]==0.0))
+				pumpenStatus[i]=true;
+			else
+				pumpenStatus[i]=false;
+		}
 		
 		//this.mengenDouble = new Integer[mengenGeordnet.length];
-		
+					
 		Timer timer = new Timer();
 		for(int i=0;i<mengenGeordnet.length;i++){
-			mengenGeordnet[i]=((mengenGeordnet[i]*fuellmenge)/8*10)+(i*10);
-			if(mengenGeordnet[i]>maxMenge)
+			if(i==0)
+				mengenGeordnet[i]=mengenGeordnet[i]*7.67*1000+5200;
+			if(i==1)
+				mengenGeordnet[i]=mengenGeordnet[i]*6.66*1000+5000;
+			if(i==2)
+				mengenGeordnet[i]=mengenGeordnet[i]*8.33*1000+4700;
+			if(i==3)
+				mengenGeordnet[i]=mengenGeordnet[i]*6.33*1000+6000;
+			if(i==4)
+				mengenGeordnet[i]=mengenGeordnet[i]*7.33*1000+4500;
+			if(i==5)
+				mengenGeordnet[i]=mengenGeordnet[i]*8.00*1000+4500;
+			if(mengenGeordnet[i]>maxMenge){
 				maxMenge=mengenGeordnet[i];
+				pumpeMaxMenge=i;
+			}
 		}
 		System.out.println(mengenGeordnet[0]+", " +mengenGeordnet[1].intValue()+", " +mengenGeordnet[2]+", " +mengenGeordnet[3]+", " +mengenGeordnet[4]+", " +mengenGeordnet[5]+", " +maxMenge);
-				
+		if(pumpenStatus[0]){	
 		pin1.low();
-		pin2.low();
-		pin3.low();
-		pin4.low();
-		pin5.low();
-		pin6.low();
+		timer.schedule((new setHigh(pin1)), mengenGeordnet[0].intValue());
+		timer.schedule((new setLow(pin7)), mengenGeordnet[0].intValue()+250);
+		timer.schedule((new setHigh(pin7)), mengenGeordnet[0].intValue()+6200);
+		}
+		if(pumpenStatus[1]){	
+		timer.schedule((new setLow(pin2)),200);
+		timer.schedule((new setHigh(pin2)), mengenGeordnet[1].intValue());
+		timer.schedule((new setLow(pin8)), mengenGeordnet[1].intValue()+250);
+		timer.schedule((new setHigh(pin8)), mengenGeordnet[1].intValue()+6000);
+		}
+		if(pumpenStatus[2]){
+		timer.schedule((new setLow(pin3)), 400);
+		timer.schedule((new setHigh(pin3)), mengenGeordnet[2].intValue());
+		timer.schedule((new setLow(pin9)), mengenGeordnet[2].intValue()+250);
+		timer.schedule((new setHigh(pin9)), mengenGeordnet[2].intValue()+5700);
+		}
+		if(pumpenStatus[3]){	
+		timer.schedule((new setLow(pin4)),600);
+		timer.schedule((new setHigh(pin4)), mengenGeordnet[3].intValue());
+		timer.schedule((new setLow(pin10)), mengenGeordnet[3].intValue()+250);
+		timer.schedule((new setHigh(pin10)), mengenGeordnet[3].intValue()+7000);
+		}
+		if(pumpenStatus[4]){
+		timer.schedule((new setLow(pin5)), 800);
+		timer.schedule((new setHigh(pin5)), mengenGeordnet[4].intValue());
+		timer.schedule((new setLow(pin11)), mengenGeordnet[4].intValue()+250);
+		timer.schedule((new setHigh(pin11)), mengenGeordnet[4].intValue()+5500);
+		}
+		if(pumpenStatus[5]){	
+		timer.schedule((new setLow(pin6)), 1000);
+		timer.schedule((new setHigh(pin6)), mengenGeordnet[5].intValue());
+		timer.schedule((new setLow(pin12)), mengenGeordnet[5].intValue()+250);
+		timer.schedule((new setHigh(pin12)), mengenGeordnet[5].intValue()+5500);
+		}
 		panelList.setVisible(false);
 		panelWait.setVisible(true);
 		panelRemove = new panelRemove();
-		timer.schedule((new setHigh(pin1)), mengenGeordnet[0].intValue());
-		timer.schedule((new setHigh(pin2)), mengenGeordnet[1].intValue());
-		timer.schedule((new setHigh(pin3)), mengenGeordnet[2].intValue());
-		timer.schedule((new setHigh(pin4)), mengenGeordnet[3].intValue());
-		timer.schedule((new setHigh(pin5)), mengenGeordnet[4].intValue());
-		timer.schedule((new setHigh(pin6)), mengenGeordnet[5].intValue());
-		timer.schedule((new setLow(pin7)), mengenGeordnet[0].intValue()+250);
-		timer.schedule((new setLow(pin8)), mengenGeordnet[1].intValue()+250);
-		timer.schedule((new setLow(pin9)), mengenGeordnet[2].intValue()+250);
-		timer.schedule((new setLow(pin10)), mengenGeordnet[3].intValue()+250);
-		timer.schedule((new setLow(pin11)), mengenGeordnet[4].intValue()+250);
-		timer.schedule((new setLow(pin12)), mengenGeordnet[5].intValue()+250);
-		timer.schedule((new setHigh(pin7)), mengenGeordnet[0].intValue()+4250);
-		timer.schedule((new setHigh(pin8)), mengenGeordnet[1].intValue()+4250);
-		timer.schedule((new setHigh(pin9)), mengenGeordnet[2].intValue()+4250);
-		timer.schedule((new setHigh(pin10)), mengenGeordnet[3].intValue()+4250);
-		timer.schedule((new setHigh(pin11)), mengenGeordnet[4].intValue()+4250);
-		timer.schedule((new setHigh(pin12)), mengenGeordnet[5].intValue()+4250);
-		timer.schedule(panelRemove, maxMenge.intValue()+4250);
+				
+		timer.schedule(panelRemove, maxMenge.intValue()+rückwärtsDelay.get(pumpeMaxMenge));
 		
 				
 	}
