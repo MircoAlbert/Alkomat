@@ -378,7 +378,7 @@ public class MainFrame{
 					for (String s : auswahl_zutat_akt)
 						System.out.println(s);
 					for(int i=0;i<6;i++)
-						if(auswahl_zutat_akt[i].equals(null))
+						if(auswahl_zutat_akt[i]==null)
 							auswahl_zutat_akt[i]="";
 					try {
 						cocktailsmoeglichList = cocktailPruefen.loadCocktail(auswahl_zutat_akt);
