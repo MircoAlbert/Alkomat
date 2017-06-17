@@ -1,12 +1,3 @@
-/*
- * Copyright Vladimir Petrenko. All rights reserved
- * Contact: 
- *   Mitteldamm 48a
- *   32429 Minden
- *   Germany
- *   vladipetrenko@gmx.de 
- * Developer: Vladimir Petrenko
- */
 
 package bildschirmtastatur.gui;
 
@@ -21,12 +12,6 @@ import javax.swing.JButton;
 import javax.swing.text.JTextComponent;
 import bildschirmtastatur.lang.KeyEnums;
 
-/**
- * Keyboard inside this JPanel
- * @author Vladimir Petrenko
- * @version 1.0
- * @since 01.01.2013
- */
 public class PanelVirtualKeyboardReal extends javax.swing.JPanel {
     ResourceBundle keyBundle = null;
     KeyEnums keyEnums = null;
