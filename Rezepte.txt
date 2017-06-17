@@ -1,4 +1,4 @@
-Readme - Diese Zeile NICHT lˆschen - Ein Cocktail pro Zeile - Format f¸r neue Cocktails : Name, Zutat1;Zutat2;Zutat3;Zutat4;Zutat5;Zutat6, Menge1;Menge2;Menge3;Menge4;Menge5;Menge6
+ÔªøReadme - Diese Zeile NICHT l√∂schen - Ein Cocktail pro Zeile - Format f√ºr neue Cocktails : Name, Zutat1;Zutat2;Zutat3;Zutat4;Zutat5;Zutat6, Menge1;Menge2;Menge3;Menge4;Menge5;Menge6
 Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
 Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
 Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
@@ -10,18 +10,18 @@ Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;2
 Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
 Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
 Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
-Cuba Libre, Weiﬂer-Rum;Cola;;;;, 30;70;0;0;0;0
+Cuba Libre, Wei√üer-Rum;Cola;;;;, 30;70;0;0;0;0
 Gin Tonic, Gin; Tonic;;;;, 33;67;0;0;0;0
 Greyhound, Gin;Grapefruitsaft;;;;, 20;80;0;0;0;0
 Whisky-Cola, Whisky;Cola;;;;, 25;75;0;0;0;0
 Screwdriver, Wodka;Orangensaft;;;;, 33;67;0;0;0;0
 Shirley Temple, Ginger-Ale;Limonade;;;;, 50;50;0;0;0;0
-Acapulco, Tequila-Silver;Weiﬂer-Rum;Ananassaft;Grapefruitsaft;;, 20;20;40;20;0;0
+Acapulco, Tequila-Silver;Wei√üer-Rum;Ananassaft;Grapefruitsaft;;, 20;20;40;20;0;0
 Horny-Bull, Tequila-Silver;Orangensaft;;;;, 33;67;0;0;0;0
-Daiquiri, Weiﬂer-Rum;Limettensaft;;;;, 65;35;0;0;0;0
+Daiquiri, Wei√üer-Rum;Limettensaft;;;;, 65;35;0;0;0;0
 Gimlet, Gin;Limettensaft;;;;, 80;20;0;0;0;0
 Gin Rickey, Gin;Limettensaft;Soda;;;, 34;20;46;0;0;0
-Rickey Cocktail, Weiﬂer-Rum;Limettensaft;Soda;;;, 28;17;60;0;0;0
+Rickey Cocktail, Wei√üer-Rum;Limettensaft;Soda;;;, 28;17;60;0;0;0
 Gin and Sin, Gin;Orangensaft;Zitronensaft;;;, 33;33;34;0;0;0
 Gin Fizz, Gin;Zitronensaft;Soda;;;, 30;20;50;0;0;0
 Lemon Drop, Wodka;Zitronensaft;;;;, 67;33;0;0;0;0

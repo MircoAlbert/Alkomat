@@ -19,7 +19,9 @@ class ZutatenLesen {
 			reader=new BufferedReader(new FileReader(zutatentxt));
 			info = reader.readLine();
 			zutaten = info.split(",");
-						
+			for(int i=0;i<zutaten.length;i++)
+				if(zutaten[i].equals("leer"))
+					zutaten[i]="";
 			} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			

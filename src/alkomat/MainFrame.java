@@ -379,7 +379,7 @@ public class MainFrame{
 						System.out.println(s);
 					for(int i=0;i<6;i++)
 						if(auswahl_zutat_akt[i]==null)
-							auswahl_zutat_akt[i]="";
+							auswahl_zutat_akt[i]="leer";
 					try {
 						cocktailsmoeglichList = cocktailPruefen.loadCocktail(auswahl_zutat_akt);
 					} catch (IOException e2) {
@@ -843,6 +843,7 @@ public class MainFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				panelMenue.setVisible(false);
 				tastatur.setVisible(true);
+				menue.setVisible(true);
 				aktPanel=tastatur;
 			}
 			
@@ -1263,6 +1264,10 @@ public class MainFrame{
 			FileUtils.writeLines(GUI.hash, hashcodes);
 			System.out.println("Standard-Passwort gesetzt");
 			JOptionPane.showMessageDialog(GUI.f, "Standard-Passwort gesetzt!","Standard-Passwort gesetzt!", JOptionPane.WARNING_MESSAGE);
+		}
+		if(!GUI.zutaten.exists()){
+			String zut = "leer,leer,leer,leer,leer,leer";
+			FileUtils.writeStringToFile(GUI.zutaten,zut,"UTF-8");
 		}
 		GUI.auswahl_zutat_akt = (new ZutatenLesen()).leseZutaten();
 		GUI.bar1.setString("1 - "+GUI.auswahl_zutat_akt[0]);
