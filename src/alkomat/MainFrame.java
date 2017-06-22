@@ -2,6 +2,7 @@ package alkomat;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -34,7 +35,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
+import javax.swing.text.DocumentFilter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,7 +49,7 @@ public class MainFrame{
 	String stern = "*";
 	int x = 0, y = 0, b = 165, h = 40, lab = 1;
 	int fuellmengeGlas = 150;
-	JButton close = alkomat.closeButton.button("Close");
+	JButton close = alkomat.CloseButton.button("Close");
 	JLabel wartenOben = new JLabel("Bitte Warten!");
 	JLabel wartenUnten = new JLabel("Cocktail wird gemixt!");
 	JLabel passwordField = new JLabel("", JLabel.CENTER);
@@ -101,7 +102,7 @@ public class MainFrame{
 	String auswahl = "";
 	String pwChange = "";
 
-	String[] zutatenliste= ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);;
+	String[] zutatenliste= ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);
 	String[] auswahl_zutat = new String[6];
 	String[] auswahl_zutat_akt = new String[6];
 		
@@ -151,7 +152,6 @@ public class MainFrame{
 	Icon fuellmenge300IconVoll = new ImageIcon(glasVoll.getImage().getScaledInstance(60, 91,java.awt.Image.SCALE_SMOOTH));
 	Icon fuellmenge300IconLeer = new ImageIcon(glasLeer.getImage().getScaledInstance(60, 91,java.awt.Image.SCALE_SMOOTH));
 	
-	
 	JLabel background = new JLabel();
 		
 	File zutaten = new File("./res/Zutaten.txt");
@@ -168,9 +168,11 @@ public class MainFrame{
 	
 	CocktailPruefen cocktailPruefen = new CocktailPruefen();
 	
-	ActionListener al;
+	DocumentFilter filter;
 	
-	JTextField cocktailName =new JTextField("Cocktail-Name");
+	ActionListener al;
+ 
+    JTextField cocktailName =new JTextField("Cocktail-Name");
 	JTextField zutat1 =new JTextField();
 	JTextField zutat2 =new JTextField();
 	JTextField zutat3 =new JTextField();
@@ -214,6 +216,8 @@ public class MainFrame{
 	JPanel tastatur = new JPanel();		
 	
 	final PanelVirtualKeyboardReal panelKeyboard;
+	
+	CocktailZähler cocktailZähler = new CocktailZähler();
 		
 	JButton menueButton(String a, int x, int y, int b, int h) // MenüButton zum rückkehren ins Hauptmenü
 	{
@@ -224,7 +228,7 @@ public class MainFrame{
 		cb.setContentAreaFilled(false);
 		cb.setBounds(x, y, b, h);
 		cb.setBorderPainted(false);
-		
+		cb.getFont();
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -396,9 +400,11 @@ public class MainFrame{
 
 						CocktailButtonProperties(cocktailsmoeglichList.toArray(new Cocktail[0]));
 					} else {
-						cpanels.get(0).removeAll();
-						cpanels.get(0).revalidate();
-						cpanels.get(0).repaint();
+						for(int j=0;j<cpanels.size();j++){
+						cpanels.get(j).removeAll();
+						cpanels.get(j).revalidate();
+						cpanels.get(j).repaint();
+						}
 						System.out.println("keine Cocktails möglich!");
 						JOptionPane.showMessageDialog(f, "Keine Cocktails möglich!","Keine Cocktails möglich", JOptionPane.WARNING_MESSAGE);
 					}
@@ -474,9 +480,12 @@ public class MainFrame{
 		int breite = 864 / 3, höhe = 460 / 2, zwischenraum = 1;
 		int odd = 0, even = 0;
 		int i = 0;
-		cpanels.get(0).removeAll();
-		cpanels.get(0).revalidate();
-		cpanels.get(0).repaint();
+		for(int j=0;j<cpanels.size();j++){
+		cpanels.get(j).removeAll();
+		cpanels.get(j).revalidate();
+		cpanels.get(j).repaint();
+		//TODO cocktail-Panels, notfalls for Schleife entfernen
+		}
 
 		System.out.println(anzahlButtons);
 		while (i <= anzahlButtons) {
@@ -531,16 +540,24 @@ public class MainFrame{
 		ActionListener al = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				if((bar1.getValue()<20)||(bar2.getValue()<20)||(bar3.getValue()<20)||(bar4.getValue()<20)||(bar5.getValue()<20)||(bar6.getValue()<20)){
+				/*if((bar1.getValue()<20)||(bar2.getValue()<20)||(bar3.getValue()<20)||(bar4.getValue()<20)||(bar5.getValue()<20)||(bar6.getValue()<20)){
 					JOptionPane.showMessageDialog(f, "Zutatenmengen überprüfen!","Zutatenmengen überprüfen", JOptionPane.WARNING_MESSAGE);
-				}
-				else{	
+				}*/
+				//else
+				//TODO bei niedriger Menge keine Cocktails möglich
+				{	
 				Double[] mengenGeordnet = (new MengenPruefen()).mengenOrdnen(a.getRezept(), auswahl_zutat_akt,
 						a.getMengen());
 				pumpenAnsteuerung.start(mengenGeordnet,(Integer) fuellmengeGlas, aktPanel, panelWait, cancel, menue, sperren);
 				menue.setVisible(false);
 				sperren.setVisible(false);
 				CancelButtonProperties();
+				try {
+					(cocktailZähler).counter();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				}
 			}
 
@@ -830,7 +847,7 @@ public class MainFrame{
 	}
 	
 	JButton neuerCocktail(int x, int y, int b, int h){
-		JButton cb = new JButton("<html><center>Neuen Cocktail<br>hinzufügen</center></html>",auswahlButtonIcon);
+		JButton cb = new JButton("<html><center><font color='white'><font size='+1'>Neuen Cocktail<br>hinzufügen</center></font></html>",auswahlButtonIcon);
 		cb.setBounds(x,y,b,h);
 		cb.setHorizontalTextPosition(JButton.CENTER);
 		cb.setVerticalTextPosition(JButton.CENTER);
@@ -852,8 +869,10 @@ public class MainFrame{
 		return cb;
 	}
 	
-	MainFrame()  throws UnsupportedEncodingException, IOException {
+	MainFrame()  throws UnsupportedEncodingException, IOException, FontFormatException {
 		System.out.println(getClass().getClassLoader().getResource("res/background.jpg"));
+		
+		
 		
 		menue = menueButton("Menü", 345, h, b, h);
 		cancel = cancelButton("Cancel", 514, h, b, h);
@@ -887,11 +906,13 @@ public class MainFrame{
 		
 					
 		f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/Icon.png")));
-		close.setBounds(852, h, b, h);
-		f.getContentPane().add(close);
+		//close.setBounds(852, h, b, h);
+		//f.getContentPane().add(close);
+		//close.setVisible(true);
+		//TODO close Button auskommentiert
 		f.getContentPane().add(sperren);
 		sperren.setVisible(false);
-		
+				
 		cpanels.add(new JPanel());
 		cpanels.get(0).setBounds(40, 80, 1024 - 80, 460);
 		cpanels.get(0).setOpaque(false);
@@ -900,42 +921,48 @@ public class MainFrame{
 		cpanels.get(0).setLayout(null);
 		f.getContentPane().add(cpanels.get(0));
 
-		bar1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar1.setFont(new Font("Tahoma",Font.BOLD,16));
 		bar1.setStringPainted(true);
 		f.getContentPane().add(bar1);
 		bar1.setBounds(7, y, 165, h);
+		//bar1.setFont(slapstickComic);
 		bar1.setString("Behaelter 1");
 		bar1.setOpaque(false);
 
-		bar2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar2.setFont(new Font("Tahoma",Font.BOLD,16));
 		bar2.setStringPainted(true);
 		f.getContentPane().add(bar2);
 		bar2.setBounds(176, y, 165, h);
+		//bar2.setFont(slapstickComic);
 		bar2.setString("Behaelter 2");
 		bar2.setOpaque(false);
 
-		bar3.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar3.setFont(new Font("Tahoma",Font.BOLD,16));
 		bar3.setStringPainted(true);
 		f.getContentPane().add(bar3);
 		bar3.setBounds(345, y, 165, h);
+		//bar3.setFont(slapstickComic);
 		bar3.setString("Behaelter 3");
 		bar3.setOpaque(false);
 
-		bar4.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar4.setFont(new Font("Tahoma",Font.BOLD,16));
 		bar4.setStringPainted(true);
 		f.getContentPane().add(bar4);
 		bar4.setBounds(514, y, 165, h);
+		//bar4.setFont(slapstickComic);
 		bar4.setString("Behaelter 4");
 		bar4.setOpaque(false);
 
-		bar5.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar5.setFont(new Font("Tahoma",Font.BOLD,16));
 		bar5.setStringPainted(true);
 		f.getContentPane().add(bar5);
 		bar5.setBounds(683, y, 165, h);
+		//bar5.setFont(slapstickComic);
 		bar5.setString("Behaelter 5");
 		bar5.setOpaque(false);
 		
-		bar6.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		bar6.setFont(new Font("Tahoma",Font.BOLD,16));
+		//bar6.setFont(slapstickComic);
 		bar6.setStringPainted(true);
 		f.getContentPane().add(bar6);
 		bar6.setBounds(852, y, 165, h);
@@ -1017,10 +1044,10 @@ public class MainFrame{
 		panelPW.add(altesPW);
 		
 		panelMenue.setLayout(null);
-		panelMenue.add(menueButtonCocktails("Cocktails", 315, 50, 157, 175));
-		panelMenue.add(menueButtonZutaten("<html>Zutaten<br>ändern</html>", 472, 50, 157, 175));
-		panelMenue.add(menueButtonReinigung("Reinigungsmodus", 315, 225, 157, 175));
-		panelMenue.add(menueButtonPasswortAendern("<html><center>Passwort<br>ändern</center></html>", 472,225,157,175));
+		panelMenue.add(menueButtonCocktails("<html><font color='white'><font size='+1'>Cocktails</font></html>", 315, 50, 157, 175));
+		panelMenue.add(menueButtonZutaten("<html><font color='white'><font size='+1'>Zutaten<br>ändern</font></html>", 472, 50, 157, 175));
+		panelMenue.add(menueButtonReinigung("<html><center><font color='black'><font size='+1'>Reinigungs<br>modus</font></center></html>", 315, 225, 157, 175));
+		panelMenue.add(menueButtonPasswortAendern("<html><center><font color='black'><font size='+1'>Passwort<br>ändern</center></font></html>", 472,225,157,175));
 		panelMenue.add(fuellmenge150);
 		panelMenue.add(fuellmenge200);
 		panelMenue.add(fuellmenge250);
@@ -1104,12 +1131,11 @@ public class MainFrame{
 		reinigungsPanel.setOpaque(false);
 		reinigungsPanel.setLayout(null);
 		
-		//Test
 		tastatur.setLayout(new GridLayout(2,0));
 		labelPanel.setLayout(null);
 		labelPanel.setBounds(0,0,864,230);
 		labelPanel.setOpaque(false);
-		cocktailName.setBounds(293,15,278,40);
+		cocktailName.setBounds(333,15,278,40);
 		
 		list.add(cocktailName);
 		list.add(zutat1);
@@ -1163,6 +1189,7 @@ public class MainFrame{
 				menge4String = String.valueOf(Math.round(((menge4Double/gesamt)*100)*100)/100.0);
 				menge5String = String.valueOf(Math.round(((menge5Double/gesamt)*100)*100)/100.0);
 				menge6String = String.valueOf(Math.round(((menge6Double/gesamt)*100)*100)/100.0);
+				
 				String line = cocktailNameString+", "+zutat1String+";"+zutat2String+";"+zutat3String+";"+zutat4String+";"+zutat5String+";"+zutat6String+", "+menge1String+";"+menge2String+";"+menge3String+";"+menge4String+";"+menge5String+";"+menge6String;
 				try {
 					BufferedWriter writer = new BufferedWriter(new FileWriter(rezepte,true));
@@ -1171,35 +1198,67 @@ public class MainFrame{
 					writer.close();
 				} catch (IOException e) {}
 				System.out.println(line);
+				try {
+					zutatenliste = ((new ZutatenListeLesen()).zutatenAusCocktailListe()).toArray(new String[0]);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				model1 = new SortedComboBoxModel<String>(zutatenliste);
+				model2 = new SortedComboBoxModel<String>(zutatenliste);
+				model3 = new SortedComboBoxModel<String>(zutatenliste);
+				model4 = new SortedComboBoxModel<String>(zutatenliste);
+				model5 = new SortedComboBoxModel<String>(zutatenliste);
+				model6 = new SortedComboBoxModel<String>(zutatenliste);
+				comboBox_1.setModel(model1);
+				comboBox_2.setModel(model2);
+				comboBox_3.setModel(model3);
+				comboBox_4.setModel(model4);
+				comboBox_5.setModel(model5);
+				comboBox_6.setModel(model6);
+				JOptionPane.showMessageDialog(f,"Cocktail gespeichert!");
+				cocktailName.setText("Cocktail Name");
+				zutat1.setText("");
+				zutat2.setText("");
+				zutat3.setText("");
+				zutat4.setText("");
+				zutat5.setText("");
+				zutat6.setText("");
+				menge1.setText("0");
+				menge2.setText("0");
+				menge3.setText("0");
+				menge4.setText("0");
+				menge5.setText("0");
+				menge6.setText("0");				
 			}
 			
 		};
 		panelKeyboard = new PanelVirtualKeyboardReal(al);
 		panelKeyboard.setOpaque(false);
-		zutat1.setBounds(5, 95, 134, 40);
-		zutat2.setBounds(149, 95, 134, 40);
-		zutat3.setBounds(293, 95, 134, 40);
-		zutat4.setBounds(437, 95, 134, 40);
-		zutat5.setBounds(581, 95, 134, 40);
-		zutat6.setBounds(725, 95, 134, 40);
-		menge1.setBounds(5, 175, 134, 40);
-		menge2.setBounds(149, 175, 134, 40);
-		menge3.setBounds(293, 175, 134, 40);
-		menge4.setBounds(437, 175, 134, 40);
-		menge5.setBounds(581, 175, 134, 40);
-		menge6.setBounds(725, 175, 134, 40);
-		zutat1l.setBounds(5, 55, 134, 40);
-		zutat2l.setBounds(149, 55, 134, 40);
-		zutat3l.setBounds(293, 55, 134, 40);
-		zutat4l.setBounds(437, 55, 134, 40);
-		zutat5l.setBounds(581, 55, 134, 40);
-		zutat6l.setBounds(725, 55, 134, 40);
-		menge1l.setBounds(5, 135, 134, 40);
-		menge2l.setBounds(149, 135, 134, 40);
-		menge3l.setBounds(293, 135, 134, 40);
-		menge4l.setBounds(437, 135, 134, 40);
-		menge5l.setBounds(581, 135, 134, 40);
-		menge6l.setBounds(725, 135, 134, 40);
+		zutat1.setBounds(6, 95, 147, 40);
+		zutat2.setBounds(163, 95, 147, 40);
+		zutat3.setBounds(320, 95, 147, 40);
+		zutat4.setBounds(477, 95, 147, 40);
+		zutat5.setBounds(634, 95, 147, 40);
+		zutat6.setBounds(791, 95, 147, 40);
+		menge1.setBounds(6, 175, 147, 40);
+		menge2.setBounds(163, 175, 147, 40);
+		menge3.setBounds(320, 175, 147, 40);
+		menge4.setBounds(477, 175, 147, 40);
+		menge5.setBounds(634, 175, 147, 40);
+		menge6.setBounds(791, 175, 147, 40);
+		zutat1l.setBounds(6, 55, 147, 40);
+		zutat2l.setBounds(162, 55, 147, 40);
+		zutat3l.setBounds(320, 55, 147, 40);
+		zutat4l.setBounds(477, 55, 147, 40);
+		zutat5l.setBounds(634, 55, 147, 40);
+		zutat6l.setBounds(791, 55, 147, 40);
+		menge1l.setBounds(6, 135, 147, 40);
+		menge2l.setBounds(163, 135, 147, 40);
+		menge3l.setBounds(320, 135, 147, 40);
+		menge4l.setBounds(477, 135, 147, 40);
+		menge5l.setBounds(634, 135, 147, 40);
+		menge6l.setBounds(791, 135, 147, 40);
 		for(int i=0;i<list.size();i++){
 			labelPanel.add(list.get(i));
 			list.get(i).setFont(new java.awt.Font("Tahoma", 0, 18));
@@ -1225,7 +1284,7 @@ public class MainFrame{
 		tastatur.add(labelPanel);
 		tastatur.add(panelKeyboard);
 				
-		tastatur.setBounds(40, 80, 864, 460);
+		tastatur.setBounds(40, 80, 944, 460);
 		tastatur.setOpaque(false);
 		f.add(tastatur);
 		tastatur.setVisible(false);
@@ -1246,7 +1305,7 @@ public class MainFrame{
 		
 	}
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, FontFormatException{
 		File dir = new File("./res");
 		if(!dir.exists())
 			dir.mkdir();
@@ -1257,6 +1316,9 @@ public class MainFrame{
 		GUI.zutaten = new File("./res/Zutaten.txt");
 		GUI.hash = new File("./res/hash.txt");
 		GUI.fuellmenge150.setIcon(GUI.fuellmenge150IconVoll);
+		if(!GUI.cocktailZähler.zähler.exists()){
+			FileUtils.writeStringToFile(GUI.cocktailZähler.zähler, "0", "UTF-8");
+		}
 		if(!GUI.hash.exists()){
 			List<String> hashcodes = new ArrayList<String>();
 			hashcodes.add(GUI.pwcheck.get_SHA_512_SecurePassword("1234", "alkomat"));

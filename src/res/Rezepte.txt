@@ -1,20 +1,8 @@
 ﻿Readme - Diese Zeile NICHT löschen - Ein Cocktail pro Zeile - Format für neue Cocktails : Name, Zutat1;Zutat2;Zutat3;Zutat4;Zutat5;Zutat6, Menge1;Menge2;Menge3;Menge4;Menge5;Menge6
-Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;20;15;15;10
-Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
-Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
-Sex on the Beach, Orangensaft;Tequila;Grenadine;Coca-Cola;Gin;Rum, 10;20;30;40;50;60
-Planters Punch, Wodka;Orangensaft;Soda;Zitronensaft;Maracujasaft;Rum, 10;20;30;40;50;60
-Bahama Mama, Coca-Cola;Wodka;Rum;Maracujasaft;Grenadine;Soda, 10;20;30;40;50;60
-Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;20;15;15;10
-Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
-Touchdown, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;20;15;15;10
-Zombie, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
-Tequila Sunrise, Orangensaft;Wodka;Maracujasaft;Grenadine;Zitronensaft;Rum, 10;20;30;40;50;60
 Cuba Libre, Weißer-Rum;Cola;;;;, 30;70;0;0;0;0
 Gin Tonic, Gin;Tonic;;;;, 33;67;0;0;0;0
 Greyhound, Gin;Grapefruitsaft;;;;, 20;80;0;0;0;0
 Whisky-Cola, Whisky;Cola;;;;, 25;75;0;0;0;0
-Screwdriver, Wodka;Orangensaft;;;;, 33;67;0;0;0;0
 Shirley Temple, Ginger-Ale;Limonade;;;;, 50;50;0;0;0;0
 Acapulco, Tequila-Silver;Weißer-Rum;Ananassaft;Grapefruitsaft;;, 20;20;40;20;0;0
 Horny-Bull, Tequila-Silver;Orangensaft;;;;, 33;67;0;0;0;0
@@ -29,3 +17,14 @@ Ward 8, Whisky;Zitronensaft;Orangensaft;;;, 70;15;15;0;0;0
 Bay Breeze, Wodka;Cranberrysaft;Ananassaft;;;, 25;56;19;0;0;0
 Cape Cod, Wodka;Cranberrysaft;;;;, 25;75;0;0;0;0
 Sea Breeze, Wodka;Cranberrysaft;Grapefruitsaft;;;, 21;63;16;0;0;0
+Touchdown, Orangensaft;Maracujasaft;Wodka;Zitronensaft;Apricot Brandy;, 21.43;21.43;28.57;14.29;14.29;0.0
+Bacardi Cocktail, Weißer Rum;Zitronensaft;;;;, 66.67;33.33;0.0;0.0;0.0;0.0
+Bacardi Sunrise, Weißer Rum;Zitronensaft;Orangensaft;;;, 25.0;12.5;62.5;0.0;0.0;0.0
+Bahama Bay, Weißer Rum;Zitronensaft;Orangensaft;;;, 25.0;25.0;50.0;0.0;0.0;0.0
+Carribean Night, Brauner Rum;Zitronensaft;Orangensaft;Ananassaft;;, 27.27;9.09;27.27;36.36;0.0;0.0
+Daiquiri, Weißer Rum;Zitronensaft;;;;, 66.67;33.33;0.0;0.0;0.0;0.0
+Old San Juan Cocktail, Brauner Rum;Zitronensaft;Ananassaft;;;, 66.67;16.67;16.67;0.0;0.0;0.0
+Orange Daiquiri, Weißer Rum;Zitronensaft;Orangensaft;;;, 40.0;20.0;40.0;0.0;0.0;0.0
+Screwdriver, Wodka;Orangensaft;;;;, 33.33;66.67;0.0;0.0;0.0;0.0
+Tropical Orange, Zitronensaft;Orangensaft;Ananassaft;;;, 9.09;45.45;45.45;0.0;0.0;0.0
+Tequila Sunrise, Zitronensaft;Orangensaft;Tequila silver;;;, 6.67;60.0;33.33;0.0;0.0;0.0

@@ -7,9 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class standardRezepte {
+public class StandardRezepte {
 
-	standardRezepte() throws IOException{
+	StandardRezepte() throws IOException{
 		File standardRezepte = new File("Rezepte.txt");
 		File rezepteNeu = new File("./Rezepte.txt");
 		BufferedReader reader = new BufferedReader(new FileReader(standardRezepte));

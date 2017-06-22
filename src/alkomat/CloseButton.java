@@ -4,7 +4,7 @@ import javax.swing.*;
 //import java.awt.*;
 import java.awt.event.*;
 
-class closeButton {
+class CloseButton {
 
 	static JButton button(String a){
 		JButton b = new JButton(a);
