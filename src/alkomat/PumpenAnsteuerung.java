@@ -185,40 +185,52 @@ class PumpenAnsteuerung // zur Ansteuerung der IO-Pins
 		}
 		System.out.println(Math.round(mengenGeordnet[0])+", " +Math.round(mengenGeordnet[1])+", " +Math.round(mengenGeordnet[2])+", " +Math.round(mengenGeordnet[3])+", " +Math.round(mengenGeordnet[4])+", " +Math.round(mengenGeordnet[5])+", " +maxMenge);
 		if(pumpenStatus[0]){	
-		pin1.low();
-		timer.schedule((new setHigh(pin1)), Math.round(mengenGeordnet[0]));
-		timer.schedule((new setLow(pin7)), Math.round(mengenGeordnet[0])+250);
-		timer.schedule((new setHigh(pin7)), Math.round(mengenGeordnet[0])+6200);
+		pin7.low();
+		timer.schedule((new setHigh(pin7)),6200);
+		timer.schedule((new setLow(pin1)), 6200+250);
+		timer.schedule((new setHigh(pin1)), Math.round(mengenGeordnet[0]+6450));
+		timer.schedule((new setLow(pin7)), Math.round(mengenGeordnet[0])+250+6450);
+		timer.schedule((new setHigh(pin7)), Math.round(mengenGeordnet[0])+1250+6450);
 		}
 		if(pumpenStatus[1]){	
-		timer.schedule((new setLow(pin2)),200);
-		timer.schedule((new setHigh(pin2)), Math.round(mengenGeordnet[1]));
-		timer.schedule((new setLow(pin8)), Math.round(mengenGeordnet[1])+250);
-		timer.schedule((new setHigh(pin8)), Math.round(mengenGeordnet[1])+6000);
+		timer.schedule((new setLow(pin8)),200);
+		timer.schedule((new setHigh(pin8)), 6200);
+		timer.schedule((new setLow(pin2)),6400);
+		timer.schedule((new setHigh(pin2)), Math.round(mengenGeordnet[1]+6400));
+		timer.schedule((new setLow(pin8)), Math.round(mengenGeordnet[1])+250+6400);
+		timer.schedule((new setHigh(pin8)), Math.round(mengenGeordnet[1])+1250+6400);
 		}
 		if(pumpenStatus[2]){
-		timer.schedule((new setLow(pin3)), 400);
-		timer.schedule((new setHigh(pin3)), Math.round(mengenGeordnet[2]));
-		timer.schedule((new setLow(pin9)), Math.round(mengenGeordnet[2])+250);
-		timer.schedule((new setHigh(pin9)), Math.round(mengenGeordnet[2])+5700);
+		timer.schedule((new setLow(pin9)),400);
+		timer.schedule((new setHigh(pin9)), 5700+400);
+		timer.schedule((new setLow(pin3)), 400+5900);
+		timer.schedule((new setHigh(pin3)), Math.round(mengenGeordnet[2]+5900));
+		timer.schedule((new setLow(pin9)), Math.round(mengenGeordnet[2])+250+5900);
+		timer.schedule((new setHigh(pin9)), Math.round(mengenGeordnet[2])+1250+5900);
 		}
 		if(pumpenStatus[3]){	
-		timer.schedule((new setLow(pin4)),600);
-		timer.schedule((new setHigh(pin4)), Math.round(mengenGeordnet[3]));
-		timer.schedule((new setLow(pin10)), Math.round(mengenGeordnet[3])+250);
-		timer.schedule((new setHigh(pin10)), Math.round(mengenGeordnet[3])+7000);
+		timer.schedule((new setLow(pin10)),600);
+		timer.schedule((new setHigh(pin10)),7600);
+		timer.schedule((new setLow(pin4)),600+7800);
+		timer.schedule((new setHigh(pin4)), Math.round(mengenGeordnet[3]+7800));
+		timer.schedule((new setLow(pin10)), Math.round(mengenGeordnet[3])+250+7800);
+		timer.schedule((new setHigh(pin10)), Math.round(mengenGeordnet[3])+1250+7800);
 		}
 		if(pumpenStatus[4]){
-		timer.schedule((new setLow(pin5)), 800);
-		timer.schedule((new setHigh(pin5)), Math.round(mengenGeordnet[4]));
-		timer.schedule((new setLow(pin11)), Math.round(mengenGeordnet[4])+250);
-		timer.schedule((new setHigh(pin11)), Math.round(mengenGeordnet[4])+5500);
+		timer.schedule((new setLow(pin11)),800);
+		timer.schedule((new setHigh(pin11)), 5500+800);
+		timer.schedule((new setLow(pin5)), 800+6500);
+		timer.schedule((new setHigh(pin5)), Math.round(mengenGeordnet[4]+6500));
+		timer.schedule((new setLow(pin11)), Math.round(mengenGeordnet[4])+250+6500);
+		timer.schedule((new setHigh(pin11)), Math.round(mengenGeordnet[4])+1250+6500);
 		}
 		if(pumpenStatus[5]){	
-		timer.schedule((new setLow(pin6)), 1000);
-		timer.schedule((new setHigh(pin6)), Math.round(mengenGeordnet[5]));
-		timer.schedule((new setLow(pin12)), Math.round(mengenGeordnet[5])+250);
-		timer.schedule((new setHigh(pin12)), Math.round(mengenGeordnet[5])+5500);
+		timer.schedule((new setLow(pin12)),1000);
+		timer.schedule((new setHigh(pin12)),6500);
+		timer.schedule((new setLow(pin6)), 1000+6700);
+		timer.schedule((new setHigh(pin6)), Math.round(mengenGeordnet[5]+6700));
+		timer.schedule((new setLow(pin12)), Math.round(mengenGeordnet[5])+250+6700);
+		timer.schedule((new setHigh(pin12)), Math.round(mengenGeordnet[5])+1250+6700);
 		}
 		panelList.setVisible(false);
 		panelWait.setVisible(true);
